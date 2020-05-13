@@ -23,7 +23,7 @@ public class ProductItemEndpoint {
 
     @PostMapping("/newProductItem")
     public void addNewProduct(@RequestBody ProductItem productItem){
-        System.out.println(Utils.ic(Utils.ANSI_CYAN,"A new productItem ID: " + productItem.getId()));
         ps.newProductItem(productItem);
+        System.out.println(Utils.ic(Utils.ANSI_CYAN,"A new productItem ID: " + productItem.getId()));
     }
 }
