@@ -15,13 +15,13 @@ public class ProductItemEndpoint {
     @Autowired
     ProductItemService ps;
 
-    @GetMapping("/allproductItems")
+    @GetMapping("/allproductitems")
     public Iterable<ProductItem> getAllProductItems() {
         Iterable<ProductItem> productItems = ps.getAllProductItems();
         return productItems;
     }
 
-    @PostMapping("/newProductItem")
+    @PostMapping("/newproductitem")
     public void addNewProduct(@RequestBody ProductItem productItem){
         ps.newProductItem(productItem);
         System.out.println(Utils.ic(Utils.ANSI_CYAN,"A new productItem ID: " + productItem.getId()));

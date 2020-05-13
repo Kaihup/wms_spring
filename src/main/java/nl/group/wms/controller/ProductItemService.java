@@ -18,14 +18,13 @@ public class ProductItemService {
     @Autowired
     ProductRepository products;
 
-
     public Iterable<ProductItem> getAllProductItems() {
         Iterable<ProductItem> productItems = pr.findAll();
         return productItems;
     }
 
     public void newProductItem(ProductItem productItem) {
-        productItem.addStatusToMap(ProductItem.status.CHECKEDIN);
+        productItem.addStatusToMap(ProductItem.status.CHECKED_IN);
         pr.save(productItem);
         products.findById(productItem.getProduct().getId()).get().increaseStock(1);
     }
