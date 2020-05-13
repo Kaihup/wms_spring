@@ -23,9 +23,15 @@ public class ProductItemEndpoint {
 
 
     @PostMapping("/newProductItem")
+<<<<<<< HEAD
     public void addNewProduct(@RequestBody Product product){
         //System.out.println(Utils.ic(Utils.ANSI_CYAN,"A new productItem ID: " + productItem.getId()));
         ps.newProductItem();
+=======
+    public void addNewProduct(@RequestBody ProductItem productItem){
+        ps.newProductItem(productItem);
+        System.out.println(Utils.ic(Utils.ANSI_CYAN,"A new productItem ID: " + productItem.getId()));
+>>>>>>> master
     }
 
 

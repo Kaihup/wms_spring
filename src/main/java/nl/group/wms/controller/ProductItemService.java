@@ -12,6 +12,7 @@ public class ProductItemService {
 
     @Autowired
     ProductItemRepository pr;
+    ProductRepository ps;
 
     public Iterable<ProductItem> getAllProductItems() {
         Iterable<ProductItem> productItems = pr.findAll();
@@ -24,6 +25,8 @@ public class ProductItemService {
         productItem.setProduct(product);
         //long id = product.getId();
         product.increaseStock(1);
+        System.out.println("new product item");
+        System.out.println(product.getInStock());
         productItem.addStatusToMap(ProductItem.status.CHECKEDIN);
         pr.save(productItem);
     }
