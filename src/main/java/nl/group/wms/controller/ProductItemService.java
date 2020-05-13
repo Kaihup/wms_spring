@@ -14,7 +14,6 @@ public class ProductItemService {
 
     @Autowired
     ProductItemRepository pr;
-    ProductRepository ps;
 
     public Iterable<ProductItem> getAllProductItems() {
         Iterable<ProductItem> productItems = pr.findAll();
@@ -23,6 +22,7 @@ public class ProductItemService {
 
     public void newProductItem(ProductItem productItem) {
         Product product = productItem.getProduct();
+        System.out.println(productItem.getProduct().getId());
         //long id = product.getId();
         product.increaseStock(1);
         System.out.println("new product item");
