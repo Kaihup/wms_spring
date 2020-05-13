@@ -12,7 +12,7 @@ public class ProductItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    public enum status {CHECKEDIN,TWO,THREE};
+    public enum status {CHECKED_IN,IN_STORAGE,RESERVED,READY_FOR_TRANSIT,CHECKED_OUT};
     @ManyToOne
     private Product product;
 
