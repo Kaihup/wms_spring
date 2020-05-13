@@ -10,9 +10,14 @@ public class ProductItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+<<<<<<< HEAD
     public enum status {CHECKEDIN,TWO,THREE};
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "product_id")
+=======
+    public enum status {CHECKED_IN,IN_STORAGE,RESERVED,READY_FOR_TRANSIT,CHECKED_OUT};
+    @ManyToOne
+>>>>>>> master
     private Product product;
 
     private HashMap<LocalDateTime, Enum<status>> statusMap = new HashMap<>();

@@ -1,12 +1,13 @@
 function showProducts() {
     var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
         if (this.readyState == 4) {
             console.log(this.responseText);
             var productsRow = JSON.parse(this.responseText);
             console.log(productsRow);
             var result = "<table class='table table-striped'><thead>";
             result += "<tr><th scope='col'> Name </th>" +
+                "<th scope='col'>In Stock</th>" +
                 "<th scope='col'>Price</th>" +
                 "<th scope='col'>EAN code</th>" +
                 "<th scope='col'>Description</th>" +
@@ -18,6 +19,7 @@ function showProducts() {
 
             for (var x = 0; x < productsRow.length; x++) {
                 result += "<tr><td>" + productsRow[x].name + "</td>" +
+                    "<td>" + productsRow[x].inStock + "</td>" +
                     "<td>" + productsRow[x].price + "</td>" +
                     "<td>" + productsRow[x].eanCode + "</td>" +
                     "<td>" + productsRow[x].description + "</td>" +

@@ -21,7 +21,7 @@ public class ProductEndpoint {
         return producten;
     }
 
-    @PostMapping("/newProduct")
+    @PostMapping("/newproduct")
     public void addNewProduct(@RequestBody Product product){
         System.out.println(Utils.ic(Utils.ANSI_CYAN,"A new product: " + product.getName()));
         ps.newProduct(product);
