@@ -14,7 +14,10 @@ public class ProductItemService {
 
     @Autowired
     ProductItemRepository pr;
-    ProductRepository ps;
+    
+    @Autowired
+    ProductRepository products;
+
 
     public Iterable<ProductItem> getAllProductItems() {
         Iterable<ProductItem> productItems = pr.findAll();
@@ -22,12 +25,10 @@ public class ProductItemService {
     }
 
     public void newProductItem(ProductItem productItem) {
-        Product product = productItem.getProduct();
-        //long id = product.getId();
-        product.increaseStock(1);
-        System.out.println("new product item");
-        System.out.println(product.getInStock());
         productItem.addStatusToMap(ProductItem.status.CHECKEDIN);
         pr.save(productItem);
+        products.findById(productItem.getProduct().getId()).get().increaseStock(1);
     }
+    
+    
 }
