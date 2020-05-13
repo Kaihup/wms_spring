@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 @Service
 @Transactional
 public class ProductItemService {
@@ -20,8 +18,10 @@ public class ProductItemService {
         return productItems;
     }
 
-    public void newProductItem(ProductItem productItem) {
-        Product product = productItem.getProduct();
+    public void newProductItem() {
+        Product product = new Product();
+        ProductItem productItem = new ProductItem();
+        productItem.setProduct(product);
         //long id = product.getId();
         product.increaseStock(1);
         productItem.addStatusToMap(ProductItem.status.CHECKEDIN);

@@ -1,7 +1,5 @@
 package nl.group.wms.domein;
 
-import nl.group.wms.controller.ProductService;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -13,7 +11,8 @@ public class ProductItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     public enum status {CHECKEDIN,TWO,THREE};
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     private HashMap<LocalDateTime, Enum<status>> statusMap = new HashMap<>();
