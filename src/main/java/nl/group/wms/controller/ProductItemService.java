@@ -19,10 +19,8 @@ public class ProductItemService {
         return productItems;
     }
 
-    public void newProductItem() {
-        Product product = new Product();
-        ProductItem productItem = new ProductItem();
-        productItem.setProduct(product);
+    public void newProductItem(ProductItem productItem) {
+        Product product = productItem.getProduct();
         //long id = product.getId();
         product.increaseStock(1);
         System.out.println("new product item");
