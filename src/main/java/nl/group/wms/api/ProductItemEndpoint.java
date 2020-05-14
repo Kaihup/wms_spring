@@ -2,6 +2,7 @@ package nl.group.wms.api;
 
 import nl.group.wms.Utils;
 import nl.group.wms.controller.ProductItemService;
+import nl.group.wms.domein.Product;
 import nl.group.wms.domein.ProductItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

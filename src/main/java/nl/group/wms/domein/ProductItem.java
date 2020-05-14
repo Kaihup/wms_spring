@@ -1,7 +1,5 @@
 package nl.group.wms.domein;
 
-import nl.group.wms.controller.ProductService;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
