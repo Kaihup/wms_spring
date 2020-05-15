@@ -21,4 +21,11 @@ public class ProductService {
         pr.save(product);
     }
 
+
+
+//    public void deleteProduct(long productId) {
+//        pr.delete((pr.findById(productId)));
+//        System.out.println(Utils.ic(Utils.ANSI_RED, "Product deleted"));
+//    }
+
 }

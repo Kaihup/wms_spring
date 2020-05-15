@@ -1,27 +1,77 @@
 package nl.group.wms.domein;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Box {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String location; //output: l1b5h3
+    @ManyToOne
+    private Product Product;
+    private int length;
+    private int width;
+    private int height;
+    private int maxProductItems;
+    private int maxWeight;
+
 
     public long getId() {
         return id;
     }
 
-    public String getLocation() {
-        return location;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public Product getProduct() {
+        return Product;
     }
+
+    public void setProduct(Product product) {
+        Product = product;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getMaxProductItems() {
+        return maxProductItems;
+    }
+
+    public void setMaxProductItems(int maxProductItems) {
+        this.maxProductItems = maxProductItems;
+    }
+
+    public int getMaxWeight() {
+        return maxWeight;
+    }
+
+    public void setMaxWeight(int maxWeight) {
+        this.maxWeight = maxWeight;
+    }
+
+
 }
