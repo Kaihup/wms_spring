@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product</title>
+    <title>Add Box</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -24,7 +24,7 @@
 
 </head>
 
-<body onload="showProducts()">
+<body onload="showBoxes(); productDropdown()">
     <!-- Site Navigation -->
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container">
@@ -38,11 +38,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Home</a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link " href="catalog.html">Catalog<span class="sr-only">(current)</span></a>
-                    </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="add-box.html">Boxes</a>
+                        <a class="nav-link " href="./catalog.html">Catalog</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link " href="#">Add box<span class="sr-only">(current)</span></a>
                     </li>
                 </ul>
             </div>
@@ -53,52 +53,69 @@
     <div class="container pt-5 mt-5">
 
         <!-- Add Product Form -->
-        <h3>Add new product</h3>
-        <p>Fill in the form to add a new product to the product catalog.</p>
+        <h3>Add new Box</h3>
+        <p>Fill in the form to add a new Box</p>
+        <input type="button" class="form-control btn btn-outline-success mb-3" value="Test"
+            onclick="productDropdown();"></input>
+        <!-- FORM -->
         <form>
-
+            <!-- row 1 -->
             <div class="form-row mb-3">
+                <!-- products dropdown -->
                 <div class="col-3">
-                    <input type="text" class="form-control" placeholder="Name" id=ipname>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="ipproduct">Product</label>
+                        </div>
+                        <select class="custom-select" id="ipproduct">
+                            <option selected> Choose...</option>
+
+
+                        </select>
+
+                    </div>
                 </div>
+                <!-- max products -->
                 <div class="col-3">
-                    <input type="number" class="form-control" placeholder="Price" id=ipprice>
+                    <input type="text" class="form-control" placeholder="Max Product Items" id=ipmaxProductItems>
                 </div>
+                <!-- max weight -->
                 <div class="col-3">
-                    <input type="number" class="form-control" placeholder="EAN Code" id=ipeanCode>
+                    <input type="text" class="form-control" placeholder="Max Weight" id=ipmaxWeight>
                 </div>
             </div>
 
+            <!-- row 2 -->
             <div class="form-row mb-3">
+                <!-- length -->
                 <div class="col-3">
-                    <input type="number" class="form-control" placeholder="Length" id=iplength>
+                    <input type="text" class="form-control" placeholder="Lenght" id=iplength>
                 </div>
+                <!-- width -->
                 <div class="col-3">
-                    <input type="number" class="form-control" placeholder="Width" id=ipwidth>
+                    <input type="text" class="form-control" placeholder="Width" id=ipwidth>
                 </div>
+                <!-- height -->
                 <div class="col-3">
-                    <input type="number" class="form-control" placeholder="Height" id=ipheight>
+                    <input type="text" class="form-control" placeholder="Height" id=ipheight>
                 </div>
+
             </div>
 
+            <!-- row 3 -->
             <div class="form-row mb-3">
                 <div class="col-3">
-                    <input type="number" class="form-control" placeholder="Weight" id=ipweight>
-                </div>
-                <div class="col-6">
-                    <input type="text" class="form-control" placeholder="Description" id=ipdescription>
+                    <input type="button" class="form-control btn btn-outline-success mb-3" value="Add new Box"
+                        onclick="postBox();"></input>
                 </div>
             </div>
         </form>
 
-        <div>
-            <button type="button" class="btn btn-outline-success mb-3" onclick="postProduct();">Add
-                product to catalog</button>
-        </div>
 
 
-        <h3 class="mt-4">Product catalog</h3>
-        <div id=catalogTable></div>
+
+        <h3 class="mt-4">Box Table</h3>
+        <div id=boxesTable></div>
 
 
 

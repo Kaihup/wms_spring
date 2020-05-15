@@ -8,11 +8,13 @@ import java.util.HashMap;
 public class ProductItem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     public enum status {CHECKED_IN,IN_STORAGE,RESERVED,READY_FOR_TRANSIT,CHECKED_OUT};
     @ManyToOne
     private Product product;
+    @ManyToOne
+    private Box box;
 
     private HashMap<LocalDateTime, Enum<status>> statusMap = new HashMap<>();
 
