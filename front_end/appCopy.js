@@ -111,14 +111,15 @@ function showProduct(id){
 
 function checkbackorderline(id, naam, check){
 	var table = document.getElementById("backorderTable");
-	var rid = "p"+id;
+	var rid = id;
 	if (document.getElementById(rid)== null){
 		var row = table.insertRow(1);
-		row.id = "p"+id;
+		row.id = id;
+		var inputid = "ip"+id;
 		var cell1 = row.insertCell(0);
 		var cell2 = row.insertCell(1);
 		cell1.innerHTML = naam;
-		cell2.innerHTML = "<input type=\"number\">";
+		cell2.innerHTML = "<input type=\"number\" id='"+inputid+"'>";
 	} else {
 		table.deleteRow(document.getElementById(rid).rowIndex);
 	}	
@@ -130,5 +131,38 @@ function sendbackorder(){
 	xhr.open("POST", "http://localhost:8082/newbackorder", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send("{}");
+	var xhr2 = new XMLHttpRequest();
+	xhr2.open("GET", "http://localhost:8082/getlatestbackorderid", true);
+	xhr2.send();
+	
+	xhr2.onreadystatechange = function () {
+		if (this.readyState == 4) {
+			console.log(this.responseText);
+			var boid = this.responseText;
+			var bodyboid = {};
+			bodyboid.id = boid;
+			var list = document.getElementById("backorderTable").rows;
+			for(var x = 1; x < list.length; x++){
+				var inputid = "ip" + list[x].id;
+				var amountp = document.getElementById(inputid).value;
+				var prid = list[x].id;
+				var namep = list[x].cells[0].innerHTML;
+				
+				var theObject = {};
+				theObject.backOrder = bodyboid;
+				theObject.amount = amountp;
+				theObject.product = namep
+				var objJSON = JSON.stringify(theObject);
+				console.log(objJSON);
+				var xhr3 = new XMLHttpRequest();
+				xhr3.open("POST", "http://localhost:8082/newbackorderline", true);
+				xhr3.setRequestHeader("Content-Type", "application/json");
+				xhr3.send(objJSON);
+				
+			} 
+		}
+		
+	}
+	
 }
 
