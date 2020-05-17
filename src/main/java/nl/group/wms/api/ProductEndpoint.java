@@ -27,9 +27,19 @@ public class ProductEndpoint {
         ps.newProduct(product);
     }
 
-//    @GetMapping("/deleteproduct")
-//    public void deleteExistingProduct() {
-//        ps.deleteProduct(2);
-//    }
+    @PostMapping("/deleteproduct")
+    public void deleteProduct(@RequestBody Long id){
+        ps.deleteProduct(id);
+    }
+
+    @PostMapping("/editproduct")
+    public void editProduct(@RequestBody Product product){
+        ps.editProduct(product);
+    }
+
+    @PostMapping("/getproduct")
+    public Product getProduct(@RequestBody Long id){
+        return ps.getProduct(id);
+    }
 
 }
