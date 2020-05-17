@@ -27,6 +27,4 @@ public class ProductItemService {
         System.out.println(Utils.ic(Utils.ANSI_CYAN, "Total ProductItem count: " + Long.toString(pr.count())));
         products.findById(productItem.getProduct().getId()).get().increaseStock(1);
     }
-    
-    
 }

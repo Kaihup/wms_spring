@@ -169,7 +169,7 @@ function showProducts() {
 						"</td><td>" +
 						productsRow[x].height +
 						"</td><td>" +
-						productsRow[x].weigh +
+						productsRow[x].weight +
 						"</td>";
 				}
 				catalogTable += "</tbody></table>";
