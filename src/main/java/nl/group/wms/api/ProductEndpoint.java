@@ -22,14 +22,10 @@ public class ProductEndpoint {
     }
 
     @PostMapping("/newproduct")
-    public void addNewProduct(@RequestBody Product product){
-        System.out.println(Utils.ic(Utils.ANSI_CYAN,"Added a new product: " + product.getName()));
+    public void addNewProduct(@RequestBody Product product) {
+        System.out.println(Utils.ic(Utils.ANSI_CYAN, "Added a new product: " + product.getName()));
         ps.newProduct(product);
     }
 
-//    @GetMapping("/deleteproduct")
-//    public void deleteExistingProduct() {
-//        ps.deleteProduct(2);
-//    }
 
 }
