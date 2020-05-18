@@ -17,7 +17,6 @@ public class CustomerService {
         cr.save(customer);
     }
 
-
     public Iterable<Customer> getAllCustomers() {
         Iterable<Customer> customers = cr.findAll();
         return customers;
