@@ -126,11 +126,11 @@ function checkbackorderline(id, naam, check){
 function sendbackorder(){
 	var table = document.getElementById("backorderTable");
 	var xhr = new XMLHttpRequest();
-	xhr.open("POST", "http://localhost:8082/newbackorder", true);
+	xhr.open("POST", "http://localhost:8082/newBackOrder", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send("{}");
 	var xhr2 = new XMLHttpRequest();
-	xhr2.open("GET", "http://localhost:8082/getlatestbackorderid", true);
+	xhr2.open("GET", "http://localhost:8082/getLatestBackOrderId", true);
 	xhr2.send();
 	xhr2.onreadystatechange = function () {
 		if (this.readyState == 4) {
@@ -153,7 +153,7 @@ function sendbackorder(){
 				var objJSON = JSON.stringify(theObject);
 				console.log(objJSON);
 				var xhr3 = new XMLHttpRequest();
-				xhr3.open("POST", "http://localhost:8082/newbackorderline", true);
+				xhr3.open("POST", "http://localhost:8082/newBackOrderLine", true);
 				xhr3.setRequestHeader("Content-Type", "application/json");
 				xhr3.send(objJSON);
 				document.getElementById("backorderTable").deleteRow(x);
