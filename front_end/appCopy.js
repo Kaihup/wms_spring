@@ -4,9 +4,7 @@ function showProducts() {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
 		if (this.readyState == 4) {
-			console.log(this.responseText);
 			var productsRow = JSON.parse(this.responseText);
-			console.log(productsRow);
 			var catalogTable = "";
 			if (!productsRow.length) {
 				catalogTable +=
@@ -134,7 +132,6 @@ function sendbackorder(){
 	var xhr2 = new XMLHttpRequest();
 	xhr2.open("GET", "http://localhost:8082/getlatestbackorderid", true);
 	xhr2.send();
-	
 	xhr2.onreadystatechange = function () {
 		if (this.readyState == 4) {
 			console.log(this.responseText);
@@ -142,27 +139,29 @@ function sendbackorder(){
 			var bodyboid = {};
 			bodyboid.id = boid;
 			var list = document.getElementById("backorderTable").rows;
-			for(var x = 1; x < list.length; x++){
+			for(var x = 1; x < list.length; ){
 				var inputid = "ip" + list[x].id;
 				var amountp = document.getElementById(inputid).value;
 				var prid = list[x].id;
-				var namep = list[x].cells[0].innerHTML;
 				
 				var theObject = {};
+				var prbody = {};
+				prbody.id = prid;
 				theObject.backOrder = bodyboid;
 				theObject.amount = amountp;
-				theObject.product = namep
+				theObject.product = prbody;
 				var objJSON = JSON.stringify(theObject);
 				console.log(objJSON);
 				var xhr3 = new XMLHttpRequest();
 				xhr3.open("POST", "http://localhost:8082/newbackorderline", true);
 				xhr3.setRequestHeader("Content-Type", "application/json");
 				xhr3.send(objJSON);
+				document.getElementById("backorderTable").deleteRow(x);
 				
-			} 
-		}
+			} 	
+			showProducts();
+			console.log("backorder verzonden");
+		}	
 		
-	}
-	
+	}	
 }
-

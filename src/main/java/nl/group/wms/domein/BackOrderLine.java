@@ -15,7 +15,9 @@ public class BackOrderLine {
 	
 	@ManyToOne
 	private BackOrder backOrder;
-	private String product;
+	//private String product;
+	@ManyToOne
+	private Product product;
 	private int amount;
 	
 	public long getId() {
@@ -27,10 +29,10 @@ public class BackOrderLine {
 	public void setBackOrder(BackOrder backOrder) {
 		this.backOrder = backOrder;
 	}
-	public String getProduct() {
+	public Product getProduct() {
 		return product;
 	}
-	public void setProduct(String product) {
+	public void setProduct(Product product) {
 		this.product = product;
 	}
 	public int getAmount() {
