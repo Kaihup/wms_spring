@@ -23,7 +23,7 @@ function showProducts() {
 					"<th scope='col'>Height</th>" +
 					"<th scope='col'>Weight</th>" +
 					"<th scope='col'>Backorder</th>" +
-					"<th scope='col'>Edit</th>" + 
+					"<th scope='col'>Edit</th>" +
 					"<th scope='col'>Delete</th></tr>" +
 					"</thead><tbody>";
 
@@ -57,13 +57,23 @@ function showProducts() {
 						productsRow[x].weight +
 						"</td>" +
 						"<td>" +
-						"<input type=\"checkbox\" onchange=\"checkbackorderline('"+productsRow[x].id+"','"+productsRow[x].name+"','"+this+"')\">" +
+						'<input type="checkbox" onchange="checkbackorderline(\'' +
+						productsRow[x].id +
+						"','" +
+						productsRow[x].name +
+						"','" +
+						this +
+						"')\">" +
 						"</td>" +
 						"<td>" +
-						"<button type=\"button\" class=\"btn btn-warning\" onclick=\"editProduct('"+productsRow[x].id + "')\" id=ipedit>Edit</button>" +
+						'<button type="button" class="btn btn-outline-secondary" onclick="editProduct(\'' +
+						productsRow[x].id +
+						"')\" id=ipedit>Edit</button>" +
 						"</td>" +
 						"<td>" +
-						"<button type=\"button\" class=\"btn btn-warning\" onclick=\"deleteProduct('"+productsRow[x].id+"')\" >Delete</button>" +
+						'<button type="button" class="btn btn-outline-danger" onclick="deleteProduct(\'' +
+						productsRow[x].id +
+						"')\" >Delete</button>" +
 						"</td></tr>";
 				}
 				catalogTable += "</tbody></table>";
@@ -75,10 +85,8 @@ function showProducts() {
 	xhr.send();
 }
 
-
-
 function postProduct() {
-	if(document.getElementById("ipaddoredit").innerHTML == "Update product"){
+	if (document.getElementById("ipaddoredit").innerHTML == "Update product") {
 		var xhr = new XMLHttpRequest();
 		var theObject = {};
 		theObject.name = document.getElementById("ipname").value;
@@ -92,17 +100,16 @@ function postProduct() {
 		document.getElementById("ipedit").innerHTML = "Edit";
 		theObject.id = document.getElementById("idhidden").value;
 		document.getElementById("ipaddoredit").innerHTML = "Add product to catalog";
-		
-		xhr.onreadystatechange = function(){
+
+		xhr.onreadystatechange = function () {
 			showProducts();
-		}
+		};
 
 		var objJSON = JSON.stringify(theObject);
 		xhr.open("POST", "http://localhost:8082/editproduct", true);
 		xhr.setRequestHeader("Content-Type", "application/json");
 		xhr.send(objJSON);
-	}
-	else{
+	} else {
 		var namep = document.getElementById("ipname").value;
 		var pricep = document.getElementById("ipprice").value;
 		var eanCodep = document.getElementById("ipeanCode").value;
@@ -124,9 +131,9 @@ function postProduct() {
 
 		var objJSON = JSON.stringify(theObject);
 		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = function(){
+		xhr.onreadystatechange = function () {
 			showProducts(); //Andere function ook gebruiken voor hierboven.
-		}
+		};
 		xhr.open("POST", "http://localhost:8082/newproduct", true);
 		xhr.setRequestHeader("Content-Type", "application/json");
 		xhr.send(objJSON);
@@ -140,26 +147,25 @@ function postProduct() {
 	document.getElementById("ipwidth").value = "";
 	document.getElementById("ipheight").value = "";
 	document.getElementById("ipweight").value = "";
-
 }
 
-function deleteProduct(id){	
+function deleteProduct(id) {
 	var youSure = confirm("Are you sure you want to delete this product?");
 	if (youSure == true) {
 		var xhr = new XMLHttpRequest();
 		xhr.open("POST", "http://localhost:8082/deleteproduct", true);
 		xhr.setRequestHeader("Content-Type", "application/json");
 		xhr.send(id);
-	  } 
-	  xhr.onreadystatechange = function(){
-		showProducts();
 	}
+	xhr.onreadystatechange = function () {
+		showProducts();
+	};
 }
 
-function editProduct(id){
+function editProduct(id) {
 	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function() {
-		if(this.readyState == 4){
+	xhr.onreadystatechange = function () {
+		if (this.readyState == 4) {
 			var product = JSON.parse(this.responseText);
 			document.getElementById("ipname").value = product.name;
 			document.getElementById("ipprice").value = product.price;
@@ -172,37 +178,36 @@ function editProduct(id){
 			document.getElementById("ipaddoredit").innerHTML = "Update product";
 			document.getElementById("idhidden").value = id;
 		}
-	}
+	};
 	xhr.open("POST", "http://localhost:8082/getproduct", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send(id);
 }
 
-function checkbackorderline(id, naam, check){
+function checkbackorderline(id, naam, check) {
 	var table = document.getElementById("backorderTable");
 	var rid = id;
-	if (document.getElementById(rid)== null){
+	if (document.getElementById(rid) == null) {
 		var row = table.insertRow(1);
 		row.id = id;
-		var inputid = "ip"+id;
+		var inputid = "ip" + id;
 		var cell1 = row.insertCell(0);
 		var cell2 = row.insertCell(1);
 		cell1.innerHTML = naam;
-		cell2.innerHTML = "<input type=\"number\" id='"+inputid+"'>";
+		cell2.innerHTML = '<input type="number" id=\'' + inputid + "'>";
 	} else {
 		table.deleteRow(document.getElementById(rid).rowIndex);
-	}	
+	}
 }
 
-
-function sendbackorder(){
+function sendbackorder() {
 	var table = document.getElementById("backorderTable");
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", "http://localhost:8082/newBackOrder", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send("{}");
-	xhr.onreadystatechange = function() {
-		if (this.readyState == 4){
+	xhr.onreadystatechange = function () {
+		if (this.readyState == 4) {
 			var xhr2 = new XMLHttpRequest();
 			xhr2.open("GET", "http://localhost:8082/getLatestBackOrderId", true);
 			xhr2.send();
@@ -213,11 +218,11 @@ function sendbackorder(){
 					var bodyboid = {};
 					bodyboid.id = boid;
 					var list = document.getElementById("backorderTable").rows;
-					for(var x = 1; x < list.length; ){
+					for (var x = 1; x < list.length; ) {
 						var inputid = "ip" + list[x].id;
 						var amountp = document.getElementById(inputid).value;
 						var prid = list[x].id;
-						
+
 						var theObject = {};
 						var prbody = {};
 						prbody.id = prid;
@@ -231,13 +236,12 @@ function sendbackorder(){
 						xhr3.setRequestHeader("Content-Type", "application/json");
 						xhr3.send(objJSON);
 						document.getElementById("backorderTable").deleteRow(x);
-					
-					} 
-					
+					}
+
 					showProducts();
 					console.log("backorder verzonden");
-				}	
-			}		
-		}	
-	}
+				}
+			};
+		}
+	};
 }

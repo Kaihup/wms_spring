@@ -1,21 +1,28 @@
-function navload(){
-    $("#link-login").click(function() {
+function navload() {
+	$(document).ready(function () {
+		$("#page-content").load("pages/login.html");
+	});
+
+	$("#link-login").click(function () {
 		$("#page-content").load("pages/login.html");
 		console.log("page login");
-  });
+	});
 
-  $("#link-catalog").click(function() {
-    $("#page-content").load("pages/catalog.html");
-    console.log("page catalog");
-    showProducts();
-  });
+	$("#link-catalog").click(function () {
+		$("#page-content").load("pages/catalog.html");
+		showProducts();
+		console.log("page catalog");
+	});
 
-  $("#link-registercustomer").click(function(){
-    alert("boe");
-    $("#page-content").load("pages/register-customer.html");
-    console.log("customer register");
-  });
+	$("#link-registercustomer").click(function () {
+		$("#page-content").load("pages/register-customer.html");
+		console.log("page register-customer");
+	});
 
-
-
+	$("#link-boxes").click(function () {
+		$("#page-content").load("pages/boxes.html");
+		showBoxes();
+		productDropdown();
+		console.log("page boxes");
+	});
 }
