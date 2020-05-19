@@ -5,7 +5,7 @@
 </div> -->
 
 <div class="row-full">
-    <img class="img-fluid" src="images/header_img_3.png" alt="">
+    <img class="img-fluid" src="images/header_img_3_ultrawide.png" alt="">
 </div>
 
 
@@ -40,19 +40,11 @@
 
 
                 <div class="d-flex justify-content-center">
-                    <button type="button" class="btn btn-primary mb-3 col-12" id="link-registercustomer">Register new
+                    <button type="button" class="btn btn-primary mb-3 col-12" id="link-registercustomer"
+                        onclick="navigate('pages/register-customer.html')">Register new
                         account</button>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<script>
-    $("#link-registercustomer").click(function () {
-        $("#page-content").load("pages/register-customer.html");
-        console.log("customer register");
-    });
-</script>

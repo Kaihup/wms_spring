@@ -14,15 +14,15 @@ function navload() {
 		console.log("page catalog");
 	});
 
-	$("#link-registercustomer").click(function () {
-		$("#page-content").load("pages/register-customer.html");
-		console.log("page register-customer");
-	});
-
 	$("#link-boxes").click(function () {
 		$("#page-content").load("pages/boxes.html");
 		showBoxes();
 		productDropdown();
 		console.log("page boxes");
 	});
+}
+
+function navigate(pagePath) {
+	$("#page-content").load(pagePath);
+	console.log("navigate to " + pagePath);
 }
