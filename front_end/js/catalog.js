@@ -1,5 +1,3 @@
-//window.onload = showProducts();
-
 function showProducts() {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {

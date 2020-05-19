@@ -8,7 +8,12 @@ function navload(){
     $("#page-content").load("pages/catalog.html");
     console.log("page catalog");
     showProducts();
-});
+  });
+
+  $("#link-registercustomer").click(function(){
+    $("#page-content").load("pages/register-customer.html");
+    console.log("customer register");
+  });
 
 
 
