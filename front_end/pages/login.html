@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- Add Product Form -->
 <h3>Log in:</h3>
 <form>
@@ -25,3 +26,39 @@
 </div>
 
 </div>
+=======
+ <!-- Log in -->
+ <h3>Log in:</h3>
+ <form>
+     <div class="form-row mb-2">
+         <div class="col-4">
+             <input type="text" class="form-control" placeholder="Email" id=ipemail>
+         </div>
+     </div>
+     <div class="form-row mb-2">
+         <div class="col-4">
+             <input type="password" class="form-control" placeholder="Password" id=ippassword>
+         </div>
+     </div>
+ </form>
+
+ <div>
+     <button type="button" class="btn btn-primary mb-3" onclick="sendData()">Log in</button>
+ </div>
+
+ <h3>New customer?</h3>
+
+ 
+ <div>
+     <button type="button" class="btn btn-primary mb-3" id="link-registercustomer">Register new account</button>
+ </div>
+
+ 
+<script>
+ $("#link-registercustomer").click(function(){
+    alert("boe");
+    $("#page-content").load("pages/register-customer.html");
+    console.log("customer register");
+  });
+</script>
+>>>>>>> master

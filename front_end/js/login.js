@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 function registerCustomer() {
 	var firstnamep = document.getElementById("ipfirstname").value;
 	var lastnamep = document.getElementById("iplastname").value;
@@ -73,6 +74,16 @@ function sendData() {
 					value.email == document.getElementById("ipemail").value &&
 					value.password == document.getElementById("ippassword").value
 				) {
+=======
+function sendData(){
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState == 4){
+			var listOfCustomers = JSON.parse(this.responseText);
+			for(const value of listOfCustomers){
+				if (value.email == document.getElementById("ipemail").value &&
+				value.password == document.getElementById("ippassword").value){
+>>>>>>> master
 					alert("Login succesfull");
 					window.location.href = "placeorder.html";
 					return;
@@ -83,6 +94,12 @@ function sendData() {
 			document.getElementById("ippassword").value = "";
 		}
 	};
+<<<<<<< HEAD
 	xhr.open("GET", "http://localhost:8082/getcustomers", true);
 	xhr.send();
 }
+=======
+	xhr.open("GET", "http://localhost:8082/getcustomers",true)
+	xhr.send();
+}
+>>>>>>> master
