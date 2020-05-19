@@ -125,6 +125,7 @@ function productDropdown() {
 	xhr.send();
 }
 
+/*
 function showProducts() {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
@@ -219,3 +220,4 @@ function postProduct() {
 	xhr.send(objJSON);
 	document.getElementById("catalogTable");
 }
+*/
