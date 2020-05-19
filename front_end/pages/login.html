@@ -19,8 +19,16 @@
 
  <h3>New customer?</h3>
 
+ 
  <div>
      <button type="button" class="btn btn-primary mb-3" id="link-registercustomer">Register new account</button>
  </div>
 
-</div>
+ 
+<script>
+ $("#link-registercustomer").click(function(){
+    alert("boe");
+    $("#page-content").load("pages/register-customer.html");
+    console.log("customer register");
+  });
+</script>

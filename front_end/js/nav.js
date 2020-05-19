@@ -11,6 +11,7 @@ function navload(){
   });
 
   $("#link-registercustomer").click(function(){
+    alert("boe");
     $("#page-content").load("pages/register-customer.html");
     console.log("customer register");
   });
