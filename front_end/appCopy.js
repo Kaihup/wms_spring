@@ -123,45 +123,50 @@ function checkbackorderline(id, naam, check){
 	}	
 }
 
+
 function sendbackorder(){
 	var table = document.getElementById("backorderTable");
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", "http://localhost:8082/newBackOrder", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send("{}");
-	var xhr2 = new XMLHttpRequest();
-	xhr2.open("GET", "http://localhost:8082/getLatestBackOrderId", true);
-	xhr2.send();
-	xhr2.onreadystatechange = function () {
-		if (this.readyState == 4) {
-			console.log(this.responseText);
-			var boid = this.responseText;
-			var bodyboid = {};
-			bodyboid.id = boid;
-			var list = document.getElementById("backorderTable").rows;
-			for(var x = 1; x < list.length; ){
-				var inputid = "ip" + list[x].id;
-				var amountp = document.getElementById(inputid).value;
-				var prid = list[x].id;
-				
-				var theObject = {};
-				var prbody = {};
-				prbody.id = prid;
-				theObject.backOrder = bodyboid;
-				theObject.amount = amountp;
-				theObject.product = prbody;
-				var objJSON = JSON.stringify(theObject);
-				console.log(objJSON);
-				var xhr3 = new XMLHttpRequest();
-				xhr3.open("POST", "http://localhost:8082/newBackOrderLine", true);
-				xhr3.setRequestHeader("Content-Type", "application/json");
-				xhr3.send(objJSON);
-				document.getElementById("backorderTable").deleteRow(x);
-				
-			} 	
-			showProducts();
-			console.log("backorder verzonden");
+	xhr.onreadystatechange = function() {
+		if (this.readyState == 4){
+			var xhr2 = new XMLHttpRequest();
+			xhr2.open("GET", "http://localhost:8082/getLatestBackOrderId", true);
+			xhr2.send();
+			xhr2.onreadystatechange = function () {
+				if (this.readyState == 4) {
+					console.log(this.responseText);
+					var boid = this.responseText;
+					var bodyboid = {};
+					bodyboid.id = boid;
+					var list = document.getElementById("backorderTable").rows;
+					for(var x = 1; x < list.length; ){
+						var inputid = "ip" + list[x].id;
+						var amountp = document.getElementById(inputid).value;
+						var prid = list[x].id;
+						
+						var theObject = {};
+						var prbody = {};
+						prbody.id = prid;
+						theObject.backOrder = bodyboid;
+						theObject.amount = amountp;
+						theObject.product = prbody;
+						var objJSON = JSON.stringify(theObject);
+						console.log(objJSON);
+						var xhr3 = new XMLHttpRequest();
+						xhr3.open("POST", "http://localhost:8082/newBackOrderLine", true);
+						xhr3.setRequestHeader("Content-Type", "application/json");
+						xhr3.send(objJSON);
+						document.getElementById("backorderTable").deleteRow(x);
+					
+					} 
+					
+					showProducts();
+					console.log("backorder verzonden");
+				}	
+			}		
 		}	
-		
-	}	
+	}
 }
