@@ -16,16 +16,16 @@ public class PlaceBackOrderEndpoint {
 	@Autowired
 	PlaceBackOrderService pbs;
 	
-	@PostMapping("/newbackorder")
+	@PostMapping("/newBackOrder")
     public void addNewBackOrder(@RequestBody BackOrder backOrder){
         pbs.newBackOrder(backOrder);
     }
-	@PostMapping("/newbackorderline")
+	@PostMapping("/newBackOrderLine")
     public void addNewBackOrderLine(@RequestBody BackOrderLine backOrderLine){
         pbs.newBackOrderLine(backOrderLine);
     }
 	
-	@GetMapping("/getlatestbackorderid")
+	@GetMapping("/getLatestBackOrderId")
 	public long getBackOrderId() {
 		return pbs.getLatestBackOrderId();	
 	}
