@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product</title>
 
+    <!-- CSS Bootstrap-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- CSS App -->
     <link rel="stylesheet" type="text/css" href="style.css">
 
+    <!-- Scripts Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
@@ -19,39 +22,20 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+    <!-- Script app -->
     <script src="app.js"></script>
 
+    <!-- Script Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </head>
 
+
 <body onload="showProducts()">
+
     <!-- main-container-->
     <div class="main-container">
-        <!-- Site Navigation -->
-
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="#"><img src="images/wms_logo_50x50px.png" alt=""></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Home</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link " href="catalog.html">Catalog<span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="add-box.html">Boxes</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
+        <div id="main-nav"> </div> <!-- main navigation import -->
         <!-- Site container -->
         <div class="container pt-5 mt-5">
 
@@ -107,21 +91,9 @@
 
 
 
-        </div>
-
-
-        <!-- Footer -->
-        <footer id="footer " class="page-footer  text-light bg-dark te">
-
-            <!-- Copyright -->
-            <div class="footer-copyright text-center py-3"><span class="small">© 2020 Copyright: WMS Team</span>
-
-            </div>
-            <!-- Copyright -->
-
-        </footer>
-
-    </div>
+        </div><!-- site container end -->
+        <div id="footer"></div><!-- footer import -->
+    </div><!-- main container end -->
 </body>
 
 

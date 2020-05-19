@@ -50,6 +50,7 @@ function showBoxes() {
 						"<button type='button' class='btn btn-outline-danger btn-sm'>delete</button>" +
 						"</td>";
 				}
+
 				boxesTable += "</tbody></table>";
 			}
 			document.getElementById("boxesTable").innerHTML = boxesTable;
@@ -174,6 +175,12 @@ function showProducts() {
 				}
 				catalogTable += "</tbody></table>";
 			}
+
+			console.log(
+				document.getElementsByTagName("html")[0].children[1].children[0]
+					.children[1].children[0].children[5]
+			);
+			console.log(document.getElementById("catalogTable"));
 			document.getElementById("catalogTable").innerHTML = catalogTable;
 		}
 	};

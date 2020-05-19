@@ -1,12 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<!-- Script Jquery-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- Script app -->
-<script src="core-structure/html-loader.js"></script>
-<div id="head"></div> <!-- HEAD IMPORT -->
-<div id="header"></div> <!-- HEADER IMPORT -->
-
 <!-- Add Product Form -->
 <h3>Add new product</h3>
 <p>Fill in the form to add a new product to the product catalog.</p>
@@ -47,25 +38,10 @@
 </form>
 
 <div>
-    <button type="button" class="btn btn-outline-success mb-3" onclick="postProduct(); showProducts();">Add
+    <button type="button" class="btn btn-outline-success mb-3" onclick="postProduct();">Add
         product to catalog</button>
 </div>
 
 
 <h3 class="mt-4">Product catalog</h3>
-<div id=catalogTable></div>
-
-<h3 class="mt-4">Back order</h3>
-<table id=backorderTable class='table table-striped'>
-    <thead>
-        <tr>
-            <th scope='col'> Product </th>
-            <th scope='col'>Amount to backorder</th>
-        </tr>
-    </thead>
-</table>
-<button type="button" class="btn btn-outline-success mb-3" onclick="sendbackorder()">Send backorder</button>
-
-
-
-<div id="footer"></div><!-- FOOTER IMPORT -->
+<div id="catalogTable">abc</div>
