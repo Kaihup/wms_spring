@@ -20,7 +20,7 @@ function showProducts() {
 					"<th scope='col'>Price</th>" +
 					"<th scope='col'>EAN code</th>" +
 					"<th scope='col'>Description</th>" +
-					"<th scope='col'>Lenght</th>" +
+					"<th scope='col'>Length</th>" +
 					"<th scope='col'>Width</th>" +
 					"<th scope='col'>Height</th>" +
 					"<th scope='col'>Weight</th>" +
@@ -80,49 +80,8 @@ function showProducts() {
 
 
 function postProduct() {
-	var namep = document.getElementById("ipname").value;
-	var pricep = document.getElementById("ipprice").value;
-	var eanCodep = document.getElementById("ipeanCode").value;
-	var descriptionp = document.getElementById("ipdescription").value;
-	var lengthp = document.getElementById("iplength").value;
-	var widthp = document.getElementById("ipwidth").value;
-	var heightp = document.getElementById("ipheight").value;
-	var weightp = document.getElementById("ipweight").value;
-
-	var theObject = {};
-	theObject.name = namep;
-	theObject.price = pricep;
-	theObject.eanCode = eanCodep;
-	theObject.description = descriptionp;
-	theObject.length = lengthp;
-	theObject.width = widthp;
-	theObject.height = heightp;
-	theObject.weight = weightp;
-
-	var objJSON = JSON.stringify(theObject);
-	var xhr = new XMLHttpRequest();
-	// xhr.onreadystatechange = function(){
-	//     alert("The product is saved");
-	// }
-	xhr.open("POST", "http://localhost:8082/newproduct", true);
-	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.send(objJSON);
-}
-
-function deleteProduct(id){	
-	var youSure = confirm("Are you sure you want to delete this product?");
-	if (youSure == true) {
+	if(document.getElementById("ipaddoredit").innerHTML == "Update product"){
 		var xhr = new XMLHttpRequest();
-		xhr.open("POST", "http://localhost:8082/deleteproduct", true);
-		xhr.setRequestHeader("Content-Type", "application/json");
-		xhr.send(id);
-	  } 
-}
-
-function editProduct(id){
-	var xhr = new XMLHttpRequest();
-	var changeProduct = document.getElementById("ipedit").innerHTML;
-	if(changeProduct == "Update"){
 		var theObject = {};
 		theObject.name = document.getElementById("ipname").value;
 		theObject.price = document.getElementById("ipprice").value;
@@ -133,31 +92,90 @@ function editProduct(id){
 		theObject.height = document.getElementById("ipheight").value;
 		theObject.weight = document.getElementById("ipweight").value;
 		document.getElementById("ipedit").innerHTML = "Edit";
-		theObject.id = id;
-	
+		theObject.id = document.getElementById("idhidden").value;
+		document.getElementById("ipaddoredit").innerHTML = "Add product to catalog";
+		
+		xhr.onreadystatechange = function(){
+			showProducts();
+		}
+
 		var objJSON = JSON.stringify(theObject);
 		xhr.open("POST", "http://localhost:8082/editproduct", true);
 		xhr.setRequestHeader("Content-Type", "application/json");
 		xhr.send(objJSON);
 	}
+	else{
+		var namep = document.getElementById("ipname").value;
+		var pricep = document.getElementById("ipprice").value;
+		var eanCodep = document.getElementById("ipeanCode").value;
+		var descriptionp = document.getElementById("ipdescription").value;
+		var lengthp = document.getElementById("iplength").value;
+		var widthp = document.getElementById("ipwidth").value;
+		var heightp = document.getElementById("ipheight").value;
+		var weightp = document.getElementById("ipweight").value;
 
-	else if(changeProduct == "Edit"){
-		xhr.onreadystatechange = function() {
-			if(this.readyState == 4){
-				var product = JSON.parse(this.responseText);
-				document.getElementById("ipname").value = product.name;
-				document.getElementById("ipprice").value = product.price;
-				document.getElementById("ipeanCode").value = product.eanCode;
-				document.getElementById("iplength").value = product.length;
-				document.getElementById("ipwidth").value = product.width;
-				document.getElementById("ipheight").value = product.height;
-				document.getElementById("ipweight").value = product.weight;
-				document.getElementById("ipdescription").value = product.description;
-				document.getElementById("ipedit").innerHTML = "Update";
-			}
+		var theObject = {};
+		theObject.name = namep;
+		theObject.price = pricep;
+		theObject.eanCode = eanCodep;
+		theObject.description = descriptionp;
+		theObject.length = lengthp;
+		theObject.width = widthp;
+		theObject.height = heightp;
+		theObject.weight = weightp;
+
+		var objJSON = JSON.stringify(theObject);
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function(){
+			showProducts(); //Andere function ook gebruiken voor hierboven.
 		}
-		xhr.open("POST", "http://localhost:8082/getproduct", true);
+		xhr.open("POST", "http://localhost:8082/newproduct", true);
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.send(objJSON);
+	}
+
+	document.getElementById("ipname").value = "";
+	document.getElementById("ipprice").value = "";
+	document.getElementById("ipeanCode").value = "";
+	document.getElementById("ipdescription").value = "";
+	document.getElementById("iplength").value = "";
+	document.getElementById("ipwidth").value = "";
+	document.getElementById("ipheight").value = "";
+	document.getElementById("ipweight").value = "";
+
+}
+
+function deleteProduct(id){	
+	var youSure = confirm("Are you sure you want to delete this product?");
+	if (youSure == true) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "http://localhost:8082/deleteproduct", true);
 		xhr.setRequestHeader("Content-Type", "application/json");
 		xhr.send(id);
+	  } 
+	  xhr.onreadystatechange = function(){
+		showProducts();
 	}
+}
+
+function editProduct(id){
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if(this.readyState == 4){
+			var product = JSON.parse(this.responseText);
+			document.getElementById("ipname").value = product.name;
+			document.getElementById("ipprice").value = product.price;
+			document.getElementById("ipeanCode").value = product.eanCode;
+			document.getElementById("iplength").value = product.length;
+			document.getElementById("ipwidth").value = product.width;
+			document.getElementById("ipheight").value = product.height;
+			document.getElementById("ipweight").value = product.weight;
+			document.getElementById("ipdescription").value = product.description;
+			document.getElementById("ipaddoredit").innerHTML = "Update product";
+			document.getElementById("idhidden").value = id;
+		}
+	}
+	xhr.open("POST", "http://localhost:8082/getproduct", true);
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(id);
 }
