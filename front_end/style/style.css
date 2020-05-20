@@ -21,6 +21,24 @@
         /* height of your footer */
     }
 
+    .header-img {
+        position: relative;
+        top: -55px;
+    }
+
+    .row-full {
+        width: 100vw;
+        position: relative;
+        margin-left: -50vw;
+        height: 100px;
+        left: 50%;
+        top: -20px;
+    }
+
+    .relative {
+        position: relative;
+    }
+
     footer {
         position: absolute;
         bottom: 0;
