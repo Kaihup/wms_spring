@@ -8,51 +8,84 @@
 </head>
 
 <body>
-    <div id="pTestTable">hoi</div>
+    <input id="fileInput" type="file"><br>
+    <input id="submit" type="button" onclick="previewFile()"><br>
+    <img id="theFile" src="" height="200" alt="Image preview...">
+
+    <hr>
+    Name:
+    <input id="productName" type="text"><br>
+    File:
+    <input id="productImgFile" type="file"><br>
+    <input type="submit" value="Click me" onclick="gatherFileData()">
+
 </body>
 <script>
-    function showPTest() {
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4) {
-                console.log(this.responseText);
-                var pTestRow = JSON.parse(this.responseText);
-                console.log(pTestRow);
 
-                var pTestTable = "<table><thead><tr>" +
-                    "<th>ID</th>" +
-                    "<th>Name</th>" +
-                    "<th>Img</th>" +
-                    "</tr></thead><tbody>";
+    function gatherFileData() {
 
+        const name = document.getElementById("productName").value;
+        console.log(name);
+        const file = document.querySelector('#productImgFile').files[0];
+        const reader = new FileReader();
 
-                for (var x = 0; x < pTestRow.length; x++) {
-                    pTestTable +=
-                        "<tr><td>" +
-                        pTestRow[x].id +
-                        "</td><td>" +
-                        pTestRow[x].name +
-                        "</td><td>"
-                    if (pTestRow[x].datafoto) {
-                        pTestTable += "<img src='data:image/png;base64," + pTestRow[x].datafoto + "'>"
-                    }
+        var blobData;
 
+        reader.addEventListener("load", function () {
+            // convert image file to base64 string
+            blobData = reader.result;
+            console.log("BLOBDATA");
+            console.log(blobData);
+            postFieldData(name, blobData);
+        }, false);
 
-
-
-
-                    "</td></tr>"
-                }
-
-                pTestTable += "</tbody</table>";
-
-                document.getElementById("pTestTable").innerHTML = pTestTable;
-            }
-        };
-        xhr.open("GET", "http://localhost:8082/ptest", true);
-        xhr.send();
+        if (file) {
+            console.log("with file1");
+            reader.readAsDataURL(file);
+        } else {
+            console.log("no file");
+            postFieldData(name, null);
+        }
     }
-    showPTest();
+
+    function postFieldData(name, blobData) {
+
+
+        var fileData = {};
+
+
+        fileData.name = name;
+        fileData.dataBlob = blobData;
+
+        console.log(fileData);
+
+        // var objJSON = JSON.stringify(fileData);
+        // var xhr = new XMLHttpRequest();
+        // xhr.onreadystatechange = function () {
+        //     console.log("FileData is saved");
+        // };
+        // xhr.open("POST", "http://localhost:8082/newbox/" + productp, true);
+        // xhr.setRequestHeader("Content-Type", "application/json");
+        // xhr.send(objJSON);
+        // document.getElementById("boxesTable");
+    }
+
+    function previewFile() {
+        const preview = document.querySelector('#theFile');
+        const file = document.querySelector('#fileInput').files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function () {
+            // convert image file to base64 string
+            console.log(reader.result);
+            // preview.src = reader.result;
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+
 </script>
 
 </html>
