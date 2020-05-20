@@ -1,12 +1,14 @@
 package nl.group.wms.controller;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import nl.group.wms.domein.BackOrder;
+import nl.group.wms.domein.BackOrderDelivery;
 import nl.group.wms.domein.BackOrderLine;
 
 @Service
@@ -18,6 +20,9 @@ public class PlaceBackOrderService {
 	
 	@Autowired
 	BackOrderLineRepository bol;
+	
+	@Autowired
+	BackOrderDeliveryRepository bod;
 	
 	public Iterable<BackOrder> getAllBackOrders() {
         Iterable<BackOrder> backOrders = bo.findAll();
@@ -48,5 +53,23 @@ public class PlaceBackOrderService {
 		return x;
 	}
 	
-
+	public Iterable<BackOrderDelivery> getAllBODeliveries() {
+		Iterable<BackOrderDelivery> BODeliveries = bod.findAll();
+        return BODeliveries;
+	}
+	
+	public void newBODelivery(BackOrderDelivery BODelivery) {
+		BODelivery.addStatusToMap(BackOrderDelivery.status.EXPECTED);
+        bod.save(BODelivery);        
+    }
+	
+	public void addBOLineToDelivery(long lineId, long deliveryId) {
+		Optional<BackOrderLine> line = bol.findById(lineId);
+		Optional<BackOrderDelivery> delivery = bod.findById(deliveryId);
+		BackOrderDelivery newLine = delivery.get();
+		newLine.getLines().add(line.get());
+		bod.save(newLine);
+	}
+	
+	
 }
