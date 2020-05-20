@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="pTestTable">hoi</div>
+</body>
+<script>
+    function showPTest() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                console.log(this.responseText);
+                var pTestRow = JSON.parse(this.responseText);
+                console.log(pTestRow);
+
+                var pTestTable = "<table><thead><tr>" +
+                    "<th>ID</th>" +
+                    "<th>Name</th>" +
+                    "<th>Img</th>" +
+                    "</tr></thead><tbody>";
+
+
+                for (var x = 0; x < pTestRow.length; x++) {
+                    pTestTable +=
+                        "<tr><td>" +
+                        pTestRow[x].id +
+                        "</td><td>" +
+                        pTestRow[x].name +
+                        "</td><td>"
+                    if (pTestRow[x].datafoto) {
+                        pTestTable += "<img src='data:image/png;base64," + pTestRow[x].datafoto + "'>"
+                    }
+
+
+
+
+
+                    "</td></tr>"
+                }
+
+                pTestTable += "</tbody</table>";
+
+                document.getElementById("pTestTable").innerHTML = pTestTable;
+            }
+        };
+        xhr.open("GET", "http://localhost:8082/ptest", true);
+        xhr.send();
+    }
+    showPTest();
+</script>
+
+</html>
