@@ -23,7 +23,7 @@ public class BackOrderDelivery {
 	private LocalDate deliveryDate;
 	private String licensePlateDeliverer;
 	private boolean deviating;
-	public enum status {ONE,TWO,THREE};
+	public enum status {ARRIVED,TWO,THREE};
 	private HashMap<LocalDateTime, Enum<status>> statusMap; 
 	
 	
