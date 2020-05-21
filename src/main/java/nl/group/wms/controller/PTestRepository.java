@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+
 @Component
 public interface PTestRepository extends CrudRepository<PTest, Long> {
     @Query("SELECT u FROM Product u WHERE u.name = ?1")

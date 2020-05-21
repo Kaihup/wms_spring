@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+
 @RestController
 public class PTestEndpoint {
     @Autowired
@@ -37,6 +38,11 @@ public class PTestEndpoint {
         return result;
     }
 
+    @PostMapping("/ptestnext123")
+    public void newPTest123(@RequestBody PTest pTest) {
+        PTest result = pTestService.save(pTest);
+    }
+
     @PostMapping("/ptest/{id}/image")
     public void addImage(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException {
         System.out.println("wezijn hier");
@@ -55,10 +61,4 @@ public class PTestEndpoint {
         pTestService.save(pTest);
         return pTest;
     }
-
-    /*@GetMapping("/order/{id}")
-    public Optional<PTest> getPTestById(@PathVariable long id) {
-        return pTestService.getPTest(id);
-    }*/
 }
-
