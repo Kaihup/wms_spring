@@ -1,6 +1,9 @@
 function navload() {
 	$(document).ready(function () {
-		$("#page-content").load("pages/login.html");
+		/* TERUGZETTEN NAAR LOGIN NA TESTEN */ $("#page-content").load(
+			"pages/catalog.html"
+		);
+		showProducts(); /* VERWIJDER NA TESTEN */
 	});
 
 	$("#link-login").click(function () {
