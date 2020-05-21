@@ -201,6 +201,7 @@ function checkbackorderline(id, naam, check) {
 }
 
 function sendbackorder() {
+	var members = createDeliveries();	
 	var table = document.getElementById("backorderTable");
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", "http://localhost:8082/newBackOrder", true);
@@ -208,17 +209,23 @@ function sendbackorder() {
 	xhr.send("{}");
 	xhr.onreadystatechange = function () {
 		if (this.readyState == 4) {
+			
 			var xhr2 = new XMLHttpRequest();
 			xhr2.open("GET", "http://localhost:8082/getLatestBackOrderId", true);
 			xhr2.send();
 			xhr2.onreadystatechange = function () {
 				if (this.readyState == 4) {
-					console.log(this.responseText);
+					console.log(members);
+					console.log("nr of members: " + members.length);
+					var delArr = createDeliveryArray((table.rows.length - 1), members);
+					//console.log(this.responseText);
 					var boid = this.responseText;
 					var bodyboid = {};
 					bodyboid.id = boid;
 					var list = document.getElementById("backorderTable").rows;
-					for (var x = 1; x < list.length; ) {
+					
+					for (var x = 1, y = 0; x < list.length; ) {
+						
 						var inputid = "ip" + list[x].id;
 						var amountp = document.getElementById(inputid).value;
 						var prid = list[x].id;
@@ -234,6 +241,16 @@ function sendbackorder() {
 						var xhr3 = new XMLHttpRequest();
 						xhr3.open("POST", "http://localhost:8082/newBackOrderLine", true);
 						xhr3.setRequestHeader("Content-Type", "application/json");
+						xhr3.onreadystatechange = function(){
+							if (this.readyState == 4){
+								var xhr4 = new XMLHttpRequest();
+								xhr4.open("POST", "http://localhost:8082/connectDeliveryLine/"+delArr[y]+"/"+this.responseText, true);
+								xhr4.setRequestHeader("Content-Type", "application/json");
+								xhr4.send();
+								y++;
+									
+							}
+						}
 						xhr3.send(objJSON);
 						document.getElementById("backorderTable").deleteRow(x);
 					}
@@ -244,4 +261,54 @@ function sendbackorder() {
 			};
 		}
 	};
+}
+
+function createDeliveries(){
+	var table = document.getElementById("backorderTable");
+	var nrOfLines = table.rows.length-1;
+	var nrOfDeliveries = 1;	
+	if (nrOfLines > 5) {
+		var prob = Math.random();
+		console.log("random nr: "+prob)
+		nrOfDeliveries = (prob > 0.8) ? 3 : (prob > 0.3) ? 2 : 1;
+	} else if (nrOfLines > 2) {
+		var prob = Math.random();
+		console.log("random nr: "+prob)
+		nrOfDeliveries = (prob > 0.95) ? 3 : (prob > 0.75) ? 2 : 1;
+	}
+	console.log("nrOfDeliveries: "+nrOfDeliveries);
+	var memberArray = [];
+	for (var x = 1; x <= nrOfDeliveries; x++) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "http://localhost:8082/newBODelivery", true);
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.send("{ \"member\":"+x+" }");
+		xhr.onreadystatechange = function(){
+			if (this.readyState == 4){
+				memberArray.push(this.responseText);
+			}
+		}
+	}
+	return memberArray;
+}
+
+function createDeliveryArray(nrOfLines, deliveryMembers){
+	var del = deliveryMembers.length;
+	var array = new Array(nrOfLines);
+	if (del == 1){
+		for (var x = 0; x < array.length; x++){
+			array[x] = deliveryMembers[0];
+		}
+	} else if (del == 2){
+		for (var x = 0; x < array.length; x++){
+			array[x] = ((x%2) == 1) ? deliveryMembers[1] : deliveryMembers[0];
+		}
+	} else {
+		for (var x = 0; x < array.length; x++){
+			array[x] = ((x%3) == 0) ? deliveryMembers[0] : ((x%3) == 1)? deliveryMembers[1] : deliveryMembers[2];
+		}
+	}
+	console.log("deliveryarray: ");
+	console.log(array);
+	return array;
 }

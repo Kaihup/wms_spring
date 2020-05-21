@@ -32,8 +32,9 @@ public class PlaceBackOrderService {
         Iterable<BackOrderLine> backOrderLines = bol.findAll();
         return backOrderLines;
     }
-	public void newBackOrderLine(BackOrderLine backOrderLine) {
-        bol.save(backOrderLine);        
+	public long newBackOrderLine(BackOrderLine backOrderLine) {
+        bol.save(backOrderLine); 
+        return backOrderLine.getId();
     }
 	public void newBackOrder(BackOrder backOrder) {
 		backOrder.setOrderDate(LocalDateTime.now());
@@ -58,9 +59,10 @@ public class PlaceBackOrderService {
         return BODeliveries;
 	}
 	
-	public void newBODelivery(BackOrderDelivery BODelivery) {
+	public long newBODelivery(BackOrderDelivery BODelivery) {
 		BODelivery.addStatusToMap(BackOrderDelivery.status.EXPECTED);
-        bod.save(BODelivery);        
+        bod.save(BODelivery); 
+        return BODelivery.getId();
     }
 	
 	public void addBOLineToDelivery(long lineId, long deliveryId) {

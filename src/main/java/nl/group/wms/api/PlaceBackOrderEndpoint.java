@@ -24,8 +24,8 @@ public class PlaceBackOrderEndpoint {
         pbs.newBackOrder(backOrder);
     }
 	@PostMapping("/newBackOrderLine")
-    public void addNewBackOrderLine(@RequestBody BackOrderLine backOrderLine){
-        pbs.newBackOrderLine(backOrderLine);
+    public long addNewBackOrderLine(@RequestBody BackOrderLine backOrderLine){
+        return pbs.newBackOrderLine(backOrderLine);
     }
 	
 	@GetMapping("/getLatestBackOrderId")
@@ -33,17 +33,16 @@ public class PlaceBackOrderEndpoint {
 		return pbs.getLatestBackOrderId();	
 	}
 	@PostMapping("/newBODelivery")
-    public void addNewBODelivery(@RequestBody BackOrderDelivery backOrderDelivery){
-        pbs.newBODelivery(backOrderDelivery);
+    public long addNewBODelivery(@RequestBody BackOrderDelivery backOrderDelivery){
+        return pbs.newBODelivery(backOrderDelivery);
     }
 	@GetMapping("/allBODeliveries")
     public Iterable<BackOrderDelivery> getAllBODeliveries() {
         Iterable<BackOrderDelivery> deliveries = pbs.getAllBODeliveries();
         return deliveries;
     }
-	@PostMapping("/{deliveryId}/{lineId}")
+	@PostMapping("/connectDeliveryLine/{deliveryId}/{lineId}")
 	public void addBOLineToDelivery(@PathVariable long deliveryId, @PathVariable long lineId) {
-		
 		pbs.addBOLineToDelivery(lineId, deliveryId);
 	}
 }
