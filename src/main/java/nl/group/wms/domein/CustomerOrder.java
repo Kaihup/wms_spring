@@ -3,6 +3,7 @@ package nl.group.wms.domein;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 @Entity
 public class CustomerOrder {
@@ -12,6 +13,8 @@ public class CustomerOrder {
     private long id;
     public enum status {RECEIVED,SEND};
     private HashMap<LocalDateTime, Enum<status>> statusMap = new HashMap<>();
+    @OneToMany
+    private List<OrderLine> orderline;
 
     public long getId() {
         return id;
@@ -31,5 +34,13 @@ public class CustomerOrder {
 
     public void addStatusToMap(Enum status){
         statusMap.put(LocalDateTime.now(),status);
+    }
+
+    public List<OrderLine> getOrderline() {
+        return orderline;
+    }
+
+    public void setOrderline(List<OrderLine> orderline) {
+        this.orderline = orderline;
     }
 }
