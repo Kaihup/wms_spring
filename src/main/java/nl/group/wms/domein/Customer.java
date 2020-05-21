@@ -1,15 +1,13 @@
 package nl.group.wms.domein;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String firstName;
     private String lastName;
@@ -23,6 +21,16 @@ public class Customer {
     private String mobilePhoneNumber;
     private String email;
     private String password;
+    @OneToMany
+    private List<CustomerOrder> customerOrders;
+
+    public List<CustomerOrder> getCustomerOrders() {
+        return customerOrders;
+    }
+
+    public void setCustomerOrders(List<CustomerOrder> customerOrders) {
+        this.customerOrders = customerOrders;
+    }
 
     public long getId() {
         return id;
@@ -127,4 +135,5 @@ public class Customer {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

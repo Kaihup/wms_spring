@@ -53,7 +53,6 @@ function registerCustomer() {
 	xhr.open("GET", "http://localhost:8082/getcustomers", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send();
-	navigate('pages/login.html');
 }
 
 function addNewCustomer(objJSON){
@@ -61,6 +60,6 @@ function addNewCustomer(objJSON){
 	xhr.open("POST", "http://localhost:8082/newcustomer", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send(objJSON);
-	alert("Register Succesfull!")
-	window.location.href = "login.html";
+	alert("Register Succesfull!");
+	navigate('pages/login.html');
 }
