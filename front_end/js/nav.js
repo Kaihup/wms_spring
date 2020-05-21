@@ -23,6 +23,11 @@ function navload() {
 		productDropdown();
 		console.log("page boxes");
 	});
+
+	$("#link-BOdeliveries").click(function () {
+		$("#page-content").load("pages/delivery.html");
+		console.log("page login");
+	});
 }
 
 function navigate(pagePath) {
