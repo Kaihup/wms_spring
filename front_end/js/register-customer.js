@@ -53,6 +53,7 @@ function registerCustomer() {
 	xhr.open("GET", "http://localhost:8082/getcustomers", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send();
+	navigate('pages/login.html');
 }
 
 function addNewCustomer(objJSON){
