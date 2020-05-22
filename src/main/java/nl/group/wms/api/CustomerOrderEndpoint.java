@@ -33,6 +33,11 @@ public class CustomerOrderEndpoint {
         return cos.newOrderLine(orderLine);
     }
 
+    @PostMapping("/updateOrderLine")
+    public void updateOrderLine(@RequestBody int amountIncrease, @RequestBody long orderLineId){
+        cos.updateOrderLine(amountIncrease, orderLineId);
+    }
+
     @PostMapping("/getTotalPrice")
     public int getTotalPrice(@RequestBody long customerOrderId){
         return cos.getTotalPrice(customerOrderId);
@@ -45,8 +50,7 @@ public class CustomerOrderEndpoint {
 
     @PostMapping("/purchaseOrder")
     public void purchaseOrder(@RequestBody long customerOrderId){
-        cos.getTotalPrice(customerOrderId);
+        cos.purchaseOrder(customerOrderId);
     }
-
 
 }

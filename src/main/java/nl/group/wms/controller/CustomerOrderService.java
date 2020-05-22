@@ -3,6 +3,7 @@ package nl.group.wms.controller;
 import nl.group.wms.domein.Customer;
 import nl.group.wms.domein.CustomerOrder;
 import nl.group.wms.domein.OrderLine;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,17 @@ public class CustomerOrderService {
         olr.save(orderLine);
         orderLine.getProduct().decreaseStock(orderLine.getAmount());
         return orderLine.getId();
+    }
+
+    public void updateOrderLine(int amountIncrease, long orderLineId){
+        OrderLine orderLine = olr.findById(orderLineId).get();
+        int currentAmount = orderLine.getAmount();
+        if (amountIncrease > currentAmount){
+            orderLine.setAmount(currentAmount);
+        }
+        else{
+            orderLine.setAmount(currentAmount + amountIncrease);
+        }
     }
 
     public Iterable<CustomerOrder> getAllOrders(){
@@ -67,8 +79,12 @@ public class CustomerOrderService {
         }
     }
 
-    public void purchaseOrder(){
-        //De order kopen.
+    public void purchaseOrder(long customerOrderId){
+        CustomerOrder customerOrder = cor.findById(customerOrderId).get();
+        List<OrderLine> orderLines = customerOrder.getOrderline();
+        for (OrderLine orderLine : orderLines){
+            //Lijst van producten teruggeven?
+        }
     }
 
 
