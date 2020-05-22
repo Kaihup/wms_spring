@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import nl.group.wms.domein.BackOrder;
 import nl.group.wms.domein.BackOrderDelivery;
@@ -24,6 +25,11 @@ public class PlaceBackOrderService {
 	
 	@Autowired
 	BackOrderDeliveryRepository bod;
+	
+	public BackOrderDelivery getBODelivery(long id) {
+        BackOrderDelivery delivery = bod.findById(id).get();
+        return delivery;
+    }
 	
 	public Iterable<BackOrder> getAllBackOrders() {
         Iterable<BackOrder> backOrders = bo.findAll();

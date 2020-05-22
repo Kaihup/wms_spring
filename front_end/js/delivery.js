@@ -78,13 +78,6 @@ function markDeliveryArrived(){
 }
 
 function changeWindow(deliveryId){
-    document.getElementById("idhidden2").value = deliveryId;
-    navigateShow('pages/delivery-details.html', test());
-    //document.getElementById("showDId").value = deliveryId;
-
-    
-}
-
-function test(){
-    alert("hoi");
+    sessionStorage.setItem("showDeliveryId", deliveryId);
+    navigateShow('pages/delivery-details.html', pageDetails);
 }
