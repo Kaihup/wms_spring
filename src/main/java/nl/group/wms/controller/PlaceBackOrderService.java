@@ -1,5 +1,6 @@
 package nl.group.wms.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -73,5 +74,12 @@ public class PlaceBackOrderService {
 		bod.save(newLine);
 	}
 	
+	public void setDeliveryArrived(long deliveryId, String licensePlate) {
+		BackOrderDelivery delivery = bod.findById(deliveryId).get();
+		delivery.addStatusToMap(BackOrderDelivery.status.ARRIVED);
+		delivery.setDeliveryDate(LocalDate.now());
+		delivery.setLicensePlateDeliverer(licensePlate);
+		bod.save(delivery);
+	}
 	
 }

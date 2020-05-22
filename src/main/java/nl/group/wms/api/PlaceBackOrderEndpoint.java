@@ -45,4 +45,8 @@ public class PlaceBackOrderEndpoint {
 	public void addBOLineToDelivery(@PathVariable long deliveryId, @PathVariable long lineId) {
 		pbs.addBOLineToDelivery(lineId, deliveryId);
 	}
+	@PostMapping("/setDeliveryArrived/{deliveryId}/{licensePlate}")
+	public void setDeliveryArrived(@PathVariable long deliveryId, @PathVariable String licensePlate) {
+		pbs.setDeliveryArrived(deliveryId, licensePlate);
+	}
 }

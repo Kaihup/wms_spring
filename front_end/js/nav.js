@@ -26,11 +26,18 @@ function navload() {
 
 	$("#link-BOdeliveries").click(function () {
 		$("#page-content").load("pages/delivery.html");
-		console.log("page login");
+		showDeliveries();
+		console.log("page B.O.D");
 	});
 }
 
 function navigate(pagePath) {
 	$("#page-content").load(pagePath);
 	console.log("navigate to " + pagePath);
+}
+
+function navigateShow(pagePath, customFunction) {
+	$("#page-content").load(pagePath);
+	console.log("navigate to " + pagePath);
+	customFunction();
 }
