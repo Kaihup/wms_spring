@@ -2,9 +2,9 @@ function showProducts() {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
 		if (this.readyState == 4) {
-			console.log(this.responseText);
+			//console.log(this.responseText);
 			var productsRow = JSON.parse(this.responseText);
-			console.log(productsRow);
+			//console.log(productsRow);
 			var catalogTable = "";
 			if (!productsRow.length) {
 				catalogTable +=
