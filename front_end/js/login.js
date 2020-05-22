@@ -9,7 +9,7 @@ function sendData() {
 					value.password == document.getElementById("ippassword").value
 				) {
 					alert("Login succesfull");
-					window.location.href = "placeorder.html";
+					navigate("pages/test.html")
 					return;
 				}
 			}
