@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-wms"
+    }
+  },
+  "defaultProject": "angular-wms",
+  "cli": {
+    "analytics": "4eea4d09-dddd-4ccc-bd40-a5bb946ef282"
+  }
 }

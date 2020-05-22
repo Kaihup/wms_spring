@@ -37,7 +37,6 @@ function navigate(pagePath) {
 }
 
 function navigateShow(pagePath, customFunction) {
-	$("#page-content").load(pagePath);
+	$("#page-content").load(pagePath, customFunction);
 	console.log("navigate to " + pagePath);
-	customFunction();
 }
