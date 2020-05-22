@@ -3,7 +3,6 @@ package nl.group.wms.controller;
 import nl.group.wms.domein.Customer;
 import nl.group.wms.domein.CustomerOrder;
 import nl.group.wms.domein.OrderLine;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +28,7 @@ public class CustomerOrderService {
 
     public long newOrderLine(OrderLine orderLine){
         olr.save(orderLine);
-        orderLine.getProduct().increaseStock(-orderLine.getAmount());
+        orderLine.getProduct().decreaseStock(orderLine.getAmount());
         return orderLine.getId();
     }
 
