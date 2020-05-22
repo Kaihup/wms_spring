@@ -29,13 +29,13 @@ public class CustomerOrderEndpoint {
     }
 
     @PostMapping("/newOrderLine")
-    public long newOrderLine(@RequestBody OrderLine orderLine){
-        return cos.newOrderLine(orderLine);
+    public long newOrderLine(@RequestBody OrderLine orderline){
+        return cos.newOrderLine(orderline);
     }
 
     @PostMapping("/getTotalPrice")
     public int getTotalPrice(){
-        return cos.getTotalPrice();
+        return cos.getTotalPrice(1);
     }
 
     @PostMapping("/removeProductItems")

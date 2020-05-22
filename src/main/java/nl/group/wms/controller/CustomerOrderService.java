@@ -3,10 +3,12 @@ package nl.group.wms.controller;
 import nl.group.wms.domein.Customer;
 import nl.group.wms.domein.CustomerOrder;
 import nl.group.wms.domein.OrderLine;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,8 +47,9 @@ public class CustomerOrderService {
         cor.save(newCustomerOrder);
     }
 
-    public int getTotalPrice(){
-        Iterable<OrderLine> orderLines = olr.findAll();
+    public int getTotalPrice(long customerOrderId){
+        CustomerOrder customerOrder = cor.findById(customerOrderId).get();
+        List<OrderLine> orderLines = customerOrder.getOrderline();
         int totalPrice = 0;
         for (OrderLine orderLine : orderLines){
             totalPrice += orderLine.getPrice()*orderLine.getAmount();
