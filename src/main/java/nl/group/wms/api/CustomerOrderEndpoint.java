@@ -44,8 +44,8 @@ public class CustomerOrderEndpoint {
     }
 
     @PostMapping("/purchaseOrder")
-    public void purchaseOrder(){
-        //De order kopen.
+    public void purchaseOrder(@RequestBody long customerOrderId){
+        cos.getTotalPrice(customerOrderId);
     }
 
 

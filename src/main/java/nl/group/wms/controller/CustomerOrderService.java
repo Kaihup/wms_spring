@@ -27,7 +27,7 @@ public class CustomerOrderService {
 
     public long newOrderLine(OrderLine orderLine){
         olr.save(orderLine);
-        orderLine.getProduct().increaseStock(-orderLine.getAmount());
+        orderLine.getProduct().decreaseStock(orderLine.getAmount());
         return orderLine.getId();
     }
 
@@ -45,9 +45,9 @@ public class CustomerOrderService {
         cor.save(newCustomerOrder);
     }
 
-    public int getTotalPrice(){
-        Iterable<OrderLine> orderLines = olr.findAll();
-        int totalPrice = 0;
+    public int getTotalPrice(long customerOrderId){
+        CustomerOrder customerOrder = cor.findById(customerOrderId).get();
+        List<OrderLine> orderLines = customerOrder.getOrderline();
         for (OrderLine orderLine : orderLines){
             totalPrice += orderLine.getPrice()*orderLine.getAmount();
         }
