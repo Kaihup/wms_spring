@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "voorbeeld-ata": {
+    "angular-wms": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/voorbeeld-ata",
+            "outputPath": "dist/angular-wms",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -62,18 +62,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "voorbeeld-ata:build"
+            "browserTarget": "angular-wms:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "voorbeeld-ata:build:production"
+              "browserTarget": "angular-wms:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "voorbeeld-ata:build"
+            "browserTarget": "angular-wms:build"
           }
         },
         "test": {
@@ -110,15 +110,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "voorbeeld-ata:serve"
+            "devServerTarget": "angular-wms:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "voorbeeld-ata:serve:production"
+              "devServerTarget": "angular-wms:serve:production"
             }
           }
         }
       }
     }},
-  "defaultProject": "voorbeeld-ata"
+  "defaultProject": "angular-wms"
 }
