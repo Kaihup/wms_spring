@@ -3,7 +3,6 @@ package nl.group.wms.api;
 import nl.group.wms.Utils;
 import nl.group.wms.controller.CustomerService;
 import nl.group.wms.domein.Customer;
-import nl.group.wms.domein.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +23,11 @@ public class CustomerEndpoint {
     public Iterable<Customer> getAllCustomers(){
         Iterable<Customer> customers = cs.getAllCustomers();
         return customers;
+    }
+
+    @PostMapping("/getcustomer")
+    public Customer getCustomer(@RequestBody long Id){
+        return getCustomer(Id);
     }
 
     @PostMapping("/newCustomerOrder/{customerOrderId}/{customerId}")

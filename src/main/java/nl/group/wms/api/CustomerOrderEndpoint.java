@@ -2,6 +2,7 @@ package nl.group.wms.api;
 
 import nl.group.wms.controller.CustomerOrderService;
 import nl.group.wms.domein.CustomerOrder;
+import nl.group.wms.domein.OrderLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,26 +10,43 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerOrderEndpoint {
 
     @Autowired
-    CustomerOrderService os;
+    CustomerOrderService cos;
 
     @PostMapping("/addNewOrder")
-    public void addNewOrder(@RequestBody CustomerOrder customerOrder){
-        System.out.println("This is a new order");
-        os.addNewOrder(customerOrder);
+    public long addNewOrder(@RequestBody CustomerOrder customerOrder){
+        return cos.addNewOrder(customerOrder);
     }
 
     @GetMapping("/getAllOrders")
     public Iterable<CustomerOrder> getAllOrders(){
-        Iterable<CustomerOrder> customerOrders = os.getAllOrders();
+        Iterable<CustomerOrder> customerOrders = cos.getAllOrders();
         return customerOrders;
     }
 
-    @PostMapping("/newOrderLine/{orderLineId}/{customerOrderId")
+    @PostMapping("/addOrderLine/{orderLineId}/{customerOrderId}")
     public void addOrderLine(@PathVariable long orderLineId, @PathVariable long customerOrderId){
-        os.addOrderLine(orderLineId,customerOrderId);
+        cos.addOrderLine(orderLineId,customerOrderId);
     }
 
+    @PostMapping("/newOrderLine")
+    public long newOrderLine(@RequestBody OrderLine orderLine){
+        return cos.newOrderLine(orderLine);
+    }
 
+    @PostMapping("/getTotalPrice")
+    public int getTotalPrice(){
+        return cos.getTotalPrice();
+    }
+
+    @PostMapping("/removeProductItems")
+    public void removeProductItems(@RequestBody int amountRemoved, @RequestBody long orderLineId){
+        cos.removeProductItems(amountRemoved, orderLineId);
+    }
+
+    @PostMapping("/purchaseOrder")
+    public void purchaseOrder(){
+        //De order kopen.
+    }
 
 
 }

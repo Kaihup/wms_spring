@@ -19,15 +19,23 @@ public class CustomerOrderService {
     @Autowired
     OrderLineRepository olr;
 
-    public void addNewOrder(CustomerOrder customerOrder){
-        customerOrder.addStatusToMap(CustomerOrder.status.RECEIVED);
+    public long addNewOrder(CustomerOrder customerOrder){
+        customerOrder.addStatusToMap(CustomerOrder.status.NEW_ORDER_INCOMING);
         cor.save(customerOrder);
+        return customerOrder.getId();
+    }
+
+    public long newOrderLine(OrderLine orderLine){
+        olr.save(orderLine);
+        orderLine.getProduct().increaseStock(-orderLine.getAmount());
+        return orderLine.getId();
     }
 
     public Iterable<CustomerOrder> getAllOrders(){
         Iterable<CustomerOrder> customerOrders = cor.findAll();
         return customerOrders;
     }
+
 
     public void addOrderLine(long orderLineId, long customerOrderId){
         Optional<OrderLine> orderLine = olr.findById(orderLineId);
@@ -37,7 +45,29 @@ public class CustomerOrderService {
         cor.save(newCustomerOrder);
     }
 
+    public int getTotalPrice(){
+        Iterable<OrderLine> orderLines = olr.findAll();
+        int totalPrice = 0;
+        for (OrderLine orderLine : orderLines){
+            totalPrice += orderLine.getPrice()*orderLine.getAmount();
+        }
+        return totalPrice;
+    }
 
+    public void removeProductItems(int amountRemoved, long orderLineId){
+        OrderLine orderLine = olr.findById(orderLineId).get();
+        int currentAmount = orderLine.getAmount();
+        if (amountRemoved > currentAmount){
+            orderLine.setAmount(0);
+        }
+        else{
+            orderLine.setAmount(currentAmount - amountRemoved);
+        }
+    }
+
+    public void purchaseOrder(){
+        //De order kopen.
+    }
 
 
 }

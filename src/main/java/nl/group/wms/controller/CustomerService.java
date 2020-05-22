@@ -26,6 +26,11 @@ public class CustomerService {
         return customers;
     }
 
+    public Customer getCustomer(long Id){
+        Customer customer = cr.findById(Id).get();
+        return customer;
+    }
+
     public void addOrder(long customerOrderId, long customerId){
         Optional<CustomerOrder> customerOrder = cor.findById(customerOrderId);
         Optional<Customer> customer = cr.findById(customerId);
@@ -33,4 +38,6 @@ public class CustomerService {
         newOrder.getCustomerOrders().add(customerOrder.get());
         cr.save(newOrder);
     }
+
+
 }
