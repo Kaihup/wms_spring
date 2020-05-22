@@ -3,23 +3,22 @@ package nl.group.wms.domein;
 import javax.persistence.*;
 
 @Entity
-public class PTest {
+public class FileData {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private String name;
-    private int stock;
+    private String extension;
     @Column(columnDefinition = "LONGBLOB")
-    private byte[] datafoto;
+    private byte[] data;
 
-
-    public byte[] getDatafoto() {
-        return datafoto;
+    public byte[] getData() {
+        return data;
     }
 
-    public void setDatafoto(byte[] datafoto) {
-        this.datafoto = datafoto;
+    public void setData(byte[] data) {
+        this.data = data;
     }
 
 
@@ -39,11 +38,11 @@ public class PTest {
         this.name = name;
     }
 
-    public int getStock() {
-        return stock;
+    public String getExtension() {
+        return extension;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 }
