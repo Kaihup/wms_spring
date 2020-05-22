@@ -1,13 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StudentComponent } from './student/student.component';
+import { ProductComponent } from './product/product.component'; // Product Component
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  imports:      [ 
-    BrowserModule,
-    FormsModule
-  ],
-  declarations: [ AppComponent, StudentComponent ]
+  declarations: [AppComponent, ProductComponent], // Eigen werk
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule], // Library modules
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
