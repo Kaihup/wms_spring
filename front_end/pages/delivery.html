@@ -3,7 +3,7 @@
 <form>
     <div class="form-row mb-3">
         <div class="col-3">
-            <input type="number" class="form-control" placeholder="BackOrderDelivery Id" id=ipboid>
+            <input type="number" class="form-control" placeholder="BackOrderDelivery Id" id=ipbodid>
         </div>
     </div>
 
@@ -15,10 +15,16 @@
 </form>
 
 <div>
-    <button type="button" class="btn btn-outline-success mb-3" >Mark delivery as received</button>
+    <button type="button" class="btn btn-outline-success mb-3" onclick="markDeliveryArrived()">Mark delivery as received</button>
 </div>
 
 
 <h3 class="mt-4">Delivery Overview</h3>
 <div id=deliveryTable></div>
+
+<div>
+    <input type="hidden" id="idhidden2">
+</div>
+
+
 

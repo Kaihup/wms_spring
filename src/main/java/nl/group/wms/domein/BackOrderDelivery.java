@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,15 +27,24 @@ public class BackOrderDelivery {
 	private String licensePlateDeliverer;
 	private boolean deviating;
 	public enum status {EXPECTED,ARRIVED,TWO,THREE};
+	@Column(columnDefinition = "LONGBLOB")
 	private HashMap<LocalDateTime, Enum<status>> statusMap = new HashMap<>(); 
+	private Enum currentStatus;
 	@OneToMany
 	private List<BackOrderLine> lines;
 	
 	
 	public void addStatusToMap(Enum status){
         statusMap.put(LocalDateTime.now(),status);
+        currentStatus = status;
     }
 	
+	public Enum getCurrentStatus() {
+		return currentStatus;
+	}
+	public void setCurrentStatus(Enum currentStatus) {
+		this.currentStatus = currentStatus;
+	}
 	public long getId() {
 		return id;
 	}

@@ -39,8 +39,27 @@
         position: relative;
     }
 
+    .thumbnail {
+        width: 100px;
+        max-height: 80px;
+    }
+
+    .thumbnail:hover {
+        position: absolute;
+        margin-top: -20px;
+        width: 250px;
+        max-height: 200px;
+        cursor: zoom-in;
+        transition: width 0.5s;
+    }
+
     footer {
         position: absolute;
         bottom: 0;
         width: 100%;
+    }
+
+    #catalogTable td {
+        height: 105px;
+        vertical-align: middle;
     }
