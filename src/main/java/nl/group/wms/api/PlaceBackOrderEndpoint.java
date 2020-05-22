@@ -41,6 +41,12 @@ public class PlaceBackOrderEndpoint {
         Iterable<BackOrderDelivery> deliveries = pbs.getAllBODeliveries();
         return deliveries;
     }
+	@GetMapping("/getBODelivery/{id}")
+    public BackOrderDelivery getBODelivery(@PathVariable long id) {
+        BackOrderDelivery delivery = pbs.getBODelivery(id);
+        return delivery;
+    }
+	
 	@PostMapping("/connectDeliveryLine/{deliveryId}/{lineId}")
 	public void addBOLineToDelivery(@PathVariable long deliveryId, @PathVariable long lineId) {
 		pbs.addBOLineToDelivery(lineId, deliveryId);
