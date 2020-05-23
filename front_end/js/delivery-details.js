@@ -45,13 +45,14 @@ function pageDetails(){
                     document.getElementById("ipConfirm"+x).disabled = true;
                 }
             }
-            if (!(object.currentStatus == "EXPECTED" || object.currentStatus == "COMPLETE")){
+            if ((object.currentStatus == "NEEDS_RESOLVING" || object.currentStatus == "ARRIVED")){
                 var counter = 0
                 for(var x=0; x<object.lines.length ;x++){
                     var confirmation = document.getElementById("ipConfirm"+x).innerHTML;
                     if (confirmation != "Confirmed") counter++;
                     if (!(document.getElementById("ipResolve"+x).hidden || document.getElementById("ipResolve"+x).disabled)) counter++;
                 }
+                console.log("counter: " + counter);
                 if (counter == 0) document.getElementById("ipcheckComplete").disabled = false;
             }   
         }
