@@ -64,4 +64,16 @@ public class PlaceBackOrderEndpoint {
         BackOrderLine line = pbs.getBOLine(id);
         return line;
     }
+	@PostMapping("/setDeliveryDeviating/{id}")
+	public void setDeliveryDeviating(@PathVariable long id) {
+		pbs.setDeliveryDeviating(id);
+	}
+	@PostMapping("/resolveDeviation/{id}")
+	public void resolveDeviation(@PathVariable long id) {
+		pbs.resolveDeviation(id);
+	}
+	@PostMapping("/completeDelivery/{id}")
+	public void completeDelivery(@PathVariable long id) {
+		pbs.completeDelivery(id);
+	}
 }

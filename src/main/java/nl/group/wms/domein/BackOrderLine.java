@@ -21,10 +21,17 @@ public class BackOrderLine {
 	private int amount;
 	private boolean deliveryConfirmed;
 	private boolean needsResolving;
+	private boolean isResolved;
 	private int amountReceived;
 	
 	
 	
+	public boolean isResolved() {
+		return isResolved;
+	}
+	public void setResolved(boolean isResolved) {
+		this.isResolved = isResolved;
+	}
 	public boolean isDeliveryConfirmed() {
 		return deliveryConfirmed;
 	}

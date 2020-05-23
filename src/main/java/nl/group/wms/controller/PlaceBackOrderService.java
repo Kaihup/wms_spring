@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import nl.group.wms.domein.BackOrder;
 import nl.group.wms.domein.BackOrderDelivery;
 import nl.group.wms.domein.BackOrderLine;
+import nl.group.wms.domein.Product;
+import nl.group.wms.domein.ProductItem;
 
 @Service
 @Transactional
@@ -25,6 +27,12 @@ public class PlaceBackOrderService {
 	
 	@Autowired
 	BackOrderDeliveryRepository bod;
+	
+	@Autowired
+	ProductItemRepository pir;
+	
+	@Autowired
+	ProductRepository pr;
 	
 	public void updateBackOrderLine(BackOrderLine updatedLine) {
 		BackOrderLine line = bol.findById(updatedLine.getId()).get();
@@ -97,6 +105,37 @@ public class PlaceBackOrderService {
 		delivery.setDeliveryDate(LocalDate.now());
 		delivery.setLicensePlateDeliverer(licensePlate);
 		bod.save(delivery);
+	}
+	
+	public void setDeliveryDeviating(long deliveryId) {
+		BackOrderDelivery delivery = bod.findById(deliveryId).get();
+		delivery.setDeviating(true);
+		delivery.addStatusToMap(BackOrderDelivery.status.NEEDS_RESOLVING);
+		bod.save(delivery);
+	}
+	
+	public void resolveDeviation(long lineId) {
+		BackOrderLine line = bol.findById(lineId).get();
+		line.setNeedsResolving(false);
+		line.setResolved(true);
+		bol.save(line);
+	}
+	
+	public void completeDelivery(long deliveryId) {
+		BackOrderDelivery delivery = bod.findById(deliveryId).get();
+		delivery.addStatusToMap(BackOrderDelivery.status.COMPLETE);
+		delivery.setComplete(true);
+		bod.save(delivery);
+		for (BackOrderLine line: delivery.getLines()) {
+			Product product = pr.findById(line.getProduct().getId()).get();
+			for(int x = 0; x < line.getAmountReceived(); x++) {
+				ProductItem item = new ProductItem();
+				item.setProduct(product);
+				item.addStatusToMap(ProductItem.status.CHECKED_IN);
+				pir.save(item);
+			}
+			product.increaseStock(line.getAmountReceived());
+		}
 	}
 	
 }

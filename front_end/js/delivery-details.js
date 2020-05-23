@@ -23,11 +23,21 @@ function pageDetails(){
                 "<th scope='col'>Deviation handling</th></tr>" +
                 "</thead><tbody>";
             for (var x=0; x<object.lines.length;x++){
+                var disable = (object.lines[x].deliveryConfirmed) ? "disabled" : "";
+                var ed = (object.lines[x].deliveryConfirmed) ? "ed" : "";
+                var amountToShow = (object.lines[x].amountReceived < 0) ? "" : object.lines[x].amountReceived ;
+                var hide = (object.lines[x].needsResolving) ? ">Resolve deviation" : 
+                    (object.lines[x].resolved) ? "disabled >Resolved by Supervisor" : "hidden >Resolve deviation";
                 detailTable += "<tr><td>"+object.lines[x].product.name+"</td>" +
                     "<td id=ipAmountOrdered"+x+">"+ object.lines[x].amount +"</td>" +
-                    "<td><input type=\"number\" class=\"form-control\" placeholder=\"\" id=ipAmountReceived"+x+"></td>" +
-                    "<td><button type=\"button\" class=\"btn btn-outline-secondary\" id=ipConfirm"+x+" onclick=confirmation("+x+","+object.lines.length+","+ object.lines[x].id +")>Confirm</button></td>" +
-                    "<td><button type=\"button\" class=\"btn btn-outline-danger\" id=ipResolve"+x+" hidden=true>Resolve deviation</button></td></tr>";
+                    "<td><input type=\"number\" class=\"form-control\" placeholder=\"\" " +
+                        "id=ipAmountReceived"+x+" "+disable+" value="+ amountToShow +"></td>" +
+                    "<td><button type=\"button\" class=\"btn btn-outline-secondary\"" +
+                        " id=ipConfirm"+x+" onclick=confirmation("+x+","+ object.lines.length +"," + 
+                        object.lines[x].id +") " + disable + ">Confirm"+ed+"</button></td>" +
+                    "<td><button type=\"button\" class=\"btn btn-outline-danger\" id=ipResolve"+x+" " +
+                        " onclick=resolveIssue("+x+","+ object.lines.length +","+ object.lines[x].id +") " + 
+                        hide +"</button></td></tr>";
             }
             document.getElementById("deliveryDetailTable").innerHTML = detailTable;
             if (object.currentStatus == "EXPECTED") {
@@ -35,15 +45,25 @@ function pageDetails(){
                     document.getElementById("ipConfirm"+x).disabled = true;
                 }
             }
+            if (!(object.currentStatus == "EXPECTED" || object.currentStatus == "COMPLETE")){
+                var counter = 0
+                for(var x=0; x<object.lines.length ;x++){
+                    var confirmation = document.getElementById("ipConfirm"+x).innerHTML;
+                    if (confirmation != "Confirmed") counter++;
+                    if (!(document.getElementById("ipResolve"+x).hidden || document.getElementById("ipResolve"+x).disabled)) counter++;
+                }
+                if (counter == 0) document.getElementById("ipcheckComplete").disabled = false;
+            }   
         }
     }
     xhr.send();    
 }
 
 function confirmation(id, lines, BOLID){
+    var deliveryId = sessionStorage.getItem("showDeliveryId");
     var received = document.getElementById("ipAmountReceived"+id).value;
-    if (received == "") {
-        alert("Please insert the received amount.")
+    if (received == 0) {
+        if (!confirm("Are you sure to confirm that the amount received equals 0 ?"))
         return;
     }
     var xhr = new XMLHttpRequest();
@@ -59,16 +79,20 @@ function confirmation(id, lines, BOLID){
                 document.getElementById("ipResolve"+id).hidden = false;
                 document.getElementById("showDeviating").innerHTML = true;
                 object.needsResolving = true;
+                var xhr1 = new XMLHttpRequest();
+                xhr1.open("POST", "http://localhost:8082/setDeliveryDeviating/"+deliveryId, true);
+                xhr1.setRequestHeader("Content-Type", "application/json");
+                xhr1.send();
+                console.log("afwijkend");
             }
             document.getElementById("ipConfirm"+id).innerHTML = "Confirmed";
             document.getElementById("ipConfirm"+id).disabled = true;
             document.getElementById("ipAmountReceived"+id).disabled = true;
             var counter = 0
-            //checked_for_complete activatie, moet nog aangepast worden naar wanneer alle deviations resolved zijn.
             for(var x=0; x<lines ;x++){
                 var confirmation = document.getElementById("ipConfirm"+x).innerHTML;
                 if (confirmation != "Confirmed") counter++;
-                if (document.getElementById("ipResolve"+x)) counter++;
+                if (!(document.getElementById("ipResolve"+x).hidden || document.getElementById("ipResolve"+x).disabled)) counter++;
             }
             if (counter == 0) document.getElementById("ipcheckComplete").disabled = false;
             var objJSON = JSON.stringify(object);
@@ -79,5 +103,35 @@ function confirmation(id, lines, BOLID){
         }
     }
     xhr.send()
+    
+}
+
+function resolveIssue(id, lines, BOLID){
+    document.getElementById("ipResolve"+id).disabled = true;
+    document.getElementById("ipResolve"+id).innerHTML = "Resolved by Supervisor";
+    var counter = 0
+    for(var x=0; x<lines ;x++){
+        var confirmation = document.getElementById("ipConfirm"+x).innerHTML;
+        if (confirmation != "Confirmed") counter++;
+        if (!(document.getElementById("ipResolve"+x).hidden || document.getElementById("ipResolve"+x).disabled)) counter++;
+    }
+    if (counter == 0) document.getElementById("ipcheckComplete").disabled = false;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://localhost:8082/resolveDeviation/"+ BOLID, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+
+}
+
+function deliveryCompleted(){
+    var deliveryId = sessionStorage.getItem("showDeliveryId");
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://localhost:8082/completeDelivery/"+ deliveryId, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function(){
+        if (this.readyState == 4)
+        navigateShow("pages/delivery.html", showDeliveries);
+    }
+    xhr.send();
     
 }
