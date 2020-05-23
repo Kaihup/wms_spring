@@ -19,7 +19,30 @@ public class BackOrderLine {
 	@ManyToOne
 	private Product product;
 	private int amount;
+	private boolean deliveryConfirmed;
+	private boolean needsResolving;
+	private int amountReceived;
 	
+	
+	
+	public boolean isDeliveryConfirmed() {
+		return deliveryConfirmed;
+	}
+	public void setDeliveryConfirmed(boolean deliveryConfirmed) {
+		this.deliveryConfirmed = deliveryConfirmed;
+	}
+	public boolean isNeedsResolving() {
+		return needsResolving;
+	}
+	public void setNeedsResolving(boolean needsResolving) {
+		this.needsResolving = needsResolving;
+	}
+	public int getAmountReceived() {
+		return amountReceived;
+	}
+	public void setAmountReceived(int amountReceived) {
+		this.amountReceived = amountReceived;
+	}
 	public long getId() {
 		return id;
 	}

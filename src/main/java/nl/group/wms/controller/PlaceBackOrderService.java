@@ -26,9 +26,20 @@ public class PlaceBackOrderService {
 	@Autowired
 	BackOrderDeliveryRepository bod;
 	
+	public void updateBackOrderLine(BackOrderLine updatedLine) {
+		BackOrderLine line = bol.findById(updatedLine.getId()).get();
+		line = updatedLine;
+		bol.save(line);
+	}
+	
 	public BackOrderDelivery getBODelivery(long id) {
         BackOrderDelivery delivery = bod.findById(id).get();
         return delivery;
+    }
+	
+	public BackOrderLine getBOLine(long id) {
+        BackOrderLine line = bol.findById(id).get();
+        return line;
     }
 	
 	public Iterable<BackOrder> getAllBackOrders() {

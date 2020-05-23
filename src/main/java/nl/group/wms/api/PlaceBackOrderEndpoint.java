@@ -55,4 +55,13 @@ public class PlaceBackOrderEndpoint {
 	public void setDeliveryArrived(@PathVariable long deliveryId, @PathVariable String licensePlate) {
 		pbs.setDeliveryArrived(deliveryId, licensePlate);
 	}
+	@PostMapping("/updateBackOrderLine")
+	public void updateBackOrderLine(@RequestBody BackOrderLine line) {
+		pbs.updateBackOrderLine(line);
+	}
+	@GetMapping("/getBackOrderLine/{id}")
+    public BackOrderLine getBOLine(@PathVariable long id) {
+        BackOrderLine line = pbs.getBOLine(id);
+        return line;
+    }
 }
