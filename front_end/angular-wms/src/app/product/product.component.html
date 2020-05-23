@@ -7,11 +7,11 @@ Prijs: <input type=text [(ngModel)]=prijs>
 
 <input type="button" value="knop" (click)="getProducts()" />
 
-<div *ngIf="producten">
+<div *ngIf="product">
     <div *ngFor="let product of producten">Hier is een {{product.naam}} voor €{{product.prijs}}</div>
 </div>
 
-
+<div *ngFor="let product of producten">Hier is een {{product.naam}} voor €{{product.prijs}}</div>
 
 
 
