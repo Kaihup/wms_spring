@@ -21,16 +21,6 @@ public class Customer {
     private String mobilePhoneNumber;
     private String email;
     private String password;
-    @OneToMany
-    private List<CustomerOrder> customerOrders;
-
-    public List<CustomerOrder> getCustomerOrders() {
-        return customerOrders;
-    }
-
-    public void setCustomerOrders(List<CustomerOrder> customerOrders) {
-        this.customerOrders = customerOrders;
-    }
 
     public long getId() {
         return id;

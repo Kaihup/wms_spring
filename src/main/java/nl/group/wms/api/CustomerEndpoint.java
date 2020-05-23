@@ -29,10 +29,10 @@ public class CustomerEndpoint {
         return getCustomer(Id);
     }
 
-    @PostMapping("/newCustomerOrder/{customerOrderId}/{customerId}")
-    public void addOrder(@PathVariable long customerOrderId, @PathVariable long customerId){
-        cs.addOrder(customerOrderId, customerId);
-    }
+//    @PostMapping("/newCustomerOrder/{customerOrderId}/{customerId}")
+//    public void addOrder(@PathVariable long customerOrderId, @PathVariable long customerId){
+//        cs.addOrder(customerOrderId, customerId);
+//    }
 
 
 }

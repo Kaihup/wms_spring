@@ -37,13 +37,13 @@ public class CustomerService {
         return customer;
     }
 
-    public void addOrder(long customerOrderId, long customerId){
-        Optional<CustomerOrder> customerOrder = cor.findById(customerOrderId);
-        Optional<Customer> customer = cr.findById(customerId);
-        Customer newOrder = customer.get();
-        newOrder.getCustomerOrders().add(customerOrder.get());
-        cr.save(newOrder);
-    }
+//    public void addOrder(long customerOrderId, long customerId){
+//        Optional<CustomerOrder> customerOrder = cor.findById(customerOrderId);
+//        Optional<Customer> customer = cr.findById(customerId);
+//        Customer newOrder = customer.get();
+//        newOrder.getCustomerOrders().add(customerOrder.get());
+//        cr.save(newOrder);
+//    }
 
     void sendEmail(Customer customer){
         SimpleMailMessage msg = new SimpleMailMessage();

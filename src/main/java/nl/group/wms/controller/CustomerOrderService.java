@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,9 +28,22 @@ public class CustomerOrderService {
         return customerOrder.getId();
     }
 
+    public List<CustomerOrder> getAllOrders(long customerId){
+        Iterable<CustomerOrder> customerOrders = cor.findAll();
+        List<CustomerOrder> customerOrders1 = new ArrayList<>();
+        for (CustomerOrder customerOrder : customerOrders){
+            if(customerOrder.getCustomer().getId() == customerId){
+                customerOrders1.add(customerOrder);
+            }
+        }
+        return customerOrders1;
+    }
+
+
     public long newOrderLine(OrderLine orderLine){
         olr.save(orderLine);
         orderLine.getProduct().decreaseStock(orderLine.getAmount());
+        orderLine.setPrice(orderLine.getAmount()*orderLine.getProduct().getPrice());
         return orderLine.getId();
     }
 
@@ -38,32 +52,21 @@ public class CustomerOrderService {
         int currentAmount = orderLine.getAmount();
         if (amountIncrease > currentAmount){
             orderLine.setAmount(currentAmount);
+            orderLine.setPrice(orderLine.getAmount()*orderLine.getProduct().getPrice());
         }
         else{
             orderLine.setAmount(currentAmount + amountIncrease);
+            orderLine.setPrice(orderLine.getAmount()*orderLine.getProduct().getPrice());
         }
     }
 
-    public Iterable<CustomerOrder> getAllOrders(){
-        Iterable<CustomerOrder> customerOrders = cor.findAll();
-        return customerOrders;
-    }
-
-
-    public void addOrderLine(long orderLineId, long customerOrderId){
-        Optional<OrderLine> orderLine = olr.findById(orderLineId);
-        Optional<CustomerOrder> customerOrder = cor.findById(customerOrderId);
-        CustomerOrder newCustomerOrder = customerOrder.get();
-        newCustomerOrder.getOrderline().add(orderLine.get());
-        cor.save(newCustomerOrder);
-    }
-
     public int getTotalPrice(long customerOrderId){
-        CustomerOrder customerOrder = cor.findById(customerOrderId).get();
-        List<OrderLine> orderLines = customerOrder.getOrderline();
+        Iterable<OrderLine> orderLines = olr.findAll();
         int totalPrice = 0;
         for (OrderLine orderLine : orderLines){
-            totalPrice += orderLine.getPrice()*orderLine.getAmount();
+            if(orderLine.getCustomerOrder().getId() == customerOrderId){
+                totalPrice += orderLine.getPrice();
+            }
         }
         return totalPrice;
     }
@@ -79,13 +82,13 @@ public class CustomerOrderService {
         }
     }
 
-    public void purchaseOrder(long customerOrderId){
-        CustomerOrder customerOrder = cor.findById(customerOrderId).get();
-        List<OrderLine> orderLines = customerOrder.getOrderline();
-        for (OrderLine orderLine : orderLines){
-            //Lijst van producten teruggeven?
-        }
-    }
+//    public void purchaseOrder(long customerOrderId){
+//        CustomerOrder customerOrder = cor.findById(customerOrderId).get();
+//        List<OrderLine> orderLines = customerOrder.getOrderline();
+//        for (OrderLine orderLine : orderLines){
+//            //Lijst van producten teruggeven?
+//        }
+//    }
 
 
 }
