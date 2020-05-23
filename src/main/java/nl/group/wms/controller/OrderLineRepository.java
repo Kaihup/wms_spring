@@ -6,5 +6,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface OrderLineRepository extends CrudRepository<OrderLine, Long> {
-
+    //List<CustomerOrderLine> findByOrderId(Long orderId);
 }

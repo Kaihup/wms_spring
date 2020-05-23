@@ -3,7 +3,6 @@ package nl.group.wms.domein;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 
 @Entity
 public class CustomerOrder {
@@ -11,7 +10,10 @@ public class CustomerOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    public enum status {NEW_ORDER_INCOMING,RECEIVED,SEND};
+
+    public enum status {NEW_ORDER_INCOMING, RECEIVED, SEND}
+
+    ;
     private HashMap<LocalDateTime, Enum<status>> statusMap = new HashMap<>();
     @ManyToOne
     private Customer customer;
@@ -40,7 +42,7 @@ public class CustomerOrder {
         this.statusMap = statusMap;
     }
 
-    public void addStatusToMap(Enum status){
-        statusMap.put(LocalDateTime.now(),status);
+    public void addStatusToMap(Enum status) {
+        statusMap.put(LocalDateTime.now(), status);
     }
 }

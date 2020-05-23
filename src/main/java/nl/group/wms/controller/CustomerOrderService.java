@@ -1,16 +1,13 @@
 package nl.group.wms.controller;
 
-import nl.group.wms.domein.Customer;
 import nl.group.wms.domein.CustomerOrder;
 import nl.group.wms.domein.OrderLine;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -22,17 +19,20 @@ public class CustomerOrderService {
     @Autowired
     OrderLineRepository olr;
 
-    public long addNewOrder(CustomerOrder customerOrder){
+    @Autowired
+    ProductRepository pr;
+
+    public long addNewOrder(CustomerOrder customerOrder) {
         customerOrder.addStatusToMap(CustomerOrder.status.NEW_ORDER_INCOMING);
         cor.save(customerOrder);
         return customerOrder.getId();
     }
 
-    public List<CustomerOrder> getAllOrders(long customerId){
+    public List<CustomerOrder> getAllOrders(long customerId) {
         Iterable<CustomerOrder> customerOrders = cor.findAll();
         List<CustomerOrder> customerOrders1 = new ArrayList<>();
-        for (CustomerOrder customerOrder : customerOrders){
-            if(customerOrder.getCustomer().getId() == customerId){
+        for (CustomerOrder customerOrder : customerOrders) {
+            if (customerOrder.getCustomer().getId() == customerId) {
                 customerOrders1.add(customerOrder);
             }
         }
@@ -40,44 +40,52 @@ public class CustomerOrderService {
     }
 
 
-    public long newOrderLine(OrderLine orderLine){
+    public long newOrderLine(OrderLine orderLine) {
+         /* Omdat niet zeker is of de prijs aan de voorkant wordt meegenomen is,
+         het veiliger om met productId te werken. */
+        Long productId = orderLine.getProduct().getId();
+
+        /* Op basis van productId is het product met de bijbehorende prijs op te vragen.
+         Zo weet je zeker dat je de goede prijs hebt */
+        int unitPrice = pr.findById(productId).get().getPrice();
+        int amount = orderLine.getAmount();
+
+        int totalPrice = amount * unitPrice;
+        orderLine.setPrice(totalPrice);
         olr.save(orderLine);
         orderLine.getProduct().decreaseStock(orderLine.getAmount());
-        orderLine.setPrice(orderLine.getAmount()*orderLine.getProduct().getPrice());
         return orderLine.getId();
     }
 
-    public void updateOrderLine(int amountIncrease, long orderLineId){
+    public void updateOrderLine(int amountIncrease, long orderLineId) {
         OrderLine orderLine = olr.findById(orderLineId).get();
         int currentAmount = orderLine.getAmount();
-        if (amountIncrease > currentAmount){
+        if (amountIncrease > currentAmount) {
             orderLine.setAmount(currentAmount);
-            orderLine.setPrice(orderLine.getAmount()*orderLine.getProduct().getPrice());
-        }
-        else{
+            orderLine.setPrice(orderLine.getAmount() * orderLine.getProduct().getPrice());
+        } else {
             orderLine.setAmount(currentAmount + amountIncrease);
-            orderLine.setPrice(orderLine.getAmount()*orderLine.getProduct().getPrice());
+            orderLine.setPrice(orderLine.getAmount() * orderLine.getProduct().getPrice());
         }
     }
 
-    public int getTotalPrice(long customerOrderId){
+    public int getTotalPrice(long customerOrderId) {
         Iterable<OrderLine> orderLines = olr.findAll();
         int totalPrice = 0;
-        for (OrderLine orderLine : orderLines){
-            if(orderLine.getCustomerOrder().getId() == customerOrderId){
+        for (OrderLine orderLine : orderLines) {
+            if (orderLine.getCustomerOrder().getId() == customerOrderId) {
                 totalPrice += orderLine.getPrice();
             }
         }
         return totalPrice;
     }
 
-    public void removeProductItems(int amountRemoved, long orderLineId){
+    public void removeProductItems(int amountRemoved, long orderLineId) {
         OrderLine orderLine = olr.findById(orderLineId).get();
         int currentAmount = orderLine.getAmount();
-        if (amountRemoved > currentAmount){
+        if (amountRemoved > currentAmount) {
             orderLine.setAmount(0);
-        }
-        else{
+        } else {
             orderLine.setAmount(currentAmount - amountRemoved);
         }
     }
