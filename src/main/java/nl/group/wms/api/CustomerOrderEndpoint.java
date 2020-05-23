@@ -6,6 +6,8 @@ import nl.group.wms.domein.OrderLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class CustomerOrderEndpoint {
 
@@ -17,15 +19,11 @@ public class CustomerOrderEndpoint {
         return cos.addNewOrder(customerOrder);
     }
 
-    @GetMapping("/getAllOrders")
-    public Iterable<CustomerOrder> getAllOrders(){
-        Iterable<CustomerOrder> customerOrders = cos.getAllOrders();
+    //This if for one customer
+    @PostMapping("/getAllOrders")
+    public List<CustomerOrder> getAllOrders(@RequestBody long customerId){
+        List<CustomerOrder> customerOrders = cos.getAllOrders(customerId);
         return customerOrders;
-    }
-
-    @PostMapping("/addOrderLine/{orderLineId}/{customerOrderId}")
-    public void addOrderLine(@PathVariable long orderLineId, @PathVariable long customerOrderId){
-        cos.addOrderLine(orderLineId,customerOrderId);
     }
 
     @PostMapping("/newOrderLine")
@@ -33,9 +31,15 @@ public class CustomerOrderEndpoint {
         return cos.newOrderLine(orderLine);
     }
 
+    @PostMapping("/updateOrderLine")
+    public void updateOrderLine(@RequestBody int amountIncrease, @RequestBody long orderLineId){
+        cos.updateOrderLine(amountIncrease, orderLineId);
+    }
+
+    //This if for one customer
     @PostMapping("/getTotalPrice")
-    public int getTotalPrice(){
-        return cos.getTotalPrice();
+    public int getTotalPrice(@RequestBody long customerOrderId){
+        return cos.getTotalPrice(customerOrderId);
     }
 
     @PostMapping("/removeProductItems")
@@ -43,10 +47,9 @@ public class CustomerOrderEndpoint {
         cos.removeProductItems(amountRemoved, orderLineId);
     }
 
-    @PostMapping("/purchaseOrder")
-    public void purchaseOrder(){
-        //De order kopen.
-    }
-
+//    @PostMapping("/purchaseOrder")
+//    public void purchaseOrder(@RequestBody long customerOrderId){
+//        cos.purchaseOrder(customerOrderId);
+//    }
 
 }
