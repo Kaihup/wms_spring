@@ -13,8 +13,16 @@ public class CustomerOrder {
     private long id;
     public enum status {NEW_ORDER_INCOMING,RECEIVED,SEND};
     private HashMap<LocalDateTime, Enum<status>> statusMap = new HashMap<>();
-    @OneToMany
-    private List<OrderLine> orderline;
+    @ManyToOne
+    private Customer customer;
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
     public long getId() {
         return id;
@@ -34,13 +42,5 @@ public class CustomerOrder {
 
     public void addStatusToMap(Enum status){
         statusMap.put(LocalDateTime.now(),status);
-    }
-
-    public List<OrderLine> getOrderline() {
-        return orderline;
-    }
-
-    public void setOrderline(List<OrderLine> orderline) {
-        this.orderline = orderline;
     }
 }

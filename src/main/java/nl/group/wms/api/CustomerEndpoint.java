@@ -14,8 +14,7 @@ public class CustomerEndpoint {
 
     @PostMapping("/newcustomer")
     public void addNewCustomer(@RequestBody Customer customer){
-        System.out.println(Utils.ic(Utils.ANSI_RED,"A new costumer: " + customer.getEmail()
-                + " " + customer.getLastName()));
+        System.out.println(Utils.ic(Utils.ANSI_RED,"A new costumer: " + customer.getEmail()));
         cs.addNewCustomer(customer);
     }
 
@@ -30,12 +29,10 @@ public class CustomerEndpoint {
         return getCustomer(Id);
     }
 
-    @PostMapping("/newCustomerOrder/{customerOrderId}/{customerId}")
-    public void addOrder(@PathVariable long customerOrderId, @PathVariable long customerId){
-        cs.addOrder(customerOrderId, customerId);
-    }
+//    @PostMapping("/newCustomerOrder/{customerOrderId}/{customerId}")
+//    public void addOrder(@PathVariable long customerOrderId, @PathVariable long customerId){
+//        cs.addOrder(customerOrderId, customerId);
+//    }
 
 
 }
-
-
