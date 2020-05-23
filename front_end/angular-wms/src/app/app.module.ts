@@ -4,12 +4,26 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ProductComponent } from './product/product.component'; // Product Component
+
 import { HttpClientModule } from '@angular/common/http';
+/* INFO: https://scotch.io/courses/build-your-first-angular-website/creating-an-angular-header-and-footer */
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppBootstrapModule } from './app-bootstrap.module';
+
+/* ngx Bootstrap modules */
 
 @NgModule({
-  declarations: [AppComponent, ProductComponent], // Eigen werk
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule], // Library modules
+  declarations: [AppComponent, HeaderComponent, FooterComponent], // Eigen werk
+  imports: [
+    BrowserModule,
+    AppBootstrapModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+  ], // Library modules
   providers: [],
   bootstrap: [AppComponent],
 })

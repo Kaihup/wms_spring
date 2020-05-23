@@ -6,24 +6,21 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'voorbeeld-ata';
-  voornaam = 'een voornaam';
-  leeftijd = '40';
-  nogEen = 'next';
-  achternaam: string = 'een achternaam';
-
-  getLeeftijd(deleeftijdupdate): string {
-    this.leeftijd += deleeftijdupdate;
-    return 'hoi';
-  }
-
-  jojo() {
-    this.voornaam = 'Dit is mijn nieuwe voornaam';
-  }
-
-  veranderAchternaam($event) {
-    console.log($event);
-    this.achternaam = $event.target.value;
-    console.log($event);
-  }
+  title = 'angular-wms';
+  // voornaam = 'een voornaam';
+  // leeftijd = '40';
+  // nogEen = 'next';
+  // achternaam: string = 'een achternaam';
+  // getLeeftijd(deleeftijdupdate): string {
+  //   this.leeftijd += deleeftijdupdate;
+  //   return 'hoi';
+  // }
+  // jojo() {
+  //   this.voornaam = 'Dit is mijn nieuwe voornaam';
+  // }
+  // veranderAchternaam($event) {
+  //   console.log($event);
+  //   this.achternaam = $event.target.value;
+  //   console.log($event);
+  // }
 }
