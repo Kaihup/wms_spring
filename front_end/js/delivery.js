@@ -22,6 +22,7 @@ function showDeliveries() {
 					"</thead><tbody>";
 
 				for (var x = 0; x < deliveryRows.length; x++) {
+					if(deliveryRows[x].currentStatus == "COMPLETE") continue;
 					deliveryTable +=
 						"<tr id=" +
 						deliveryRows[x].id +

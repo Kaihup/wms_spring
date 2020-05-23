@@ -41,6 +41,7 @@ function pageDetails(){
             }
             document.getElementById("deliveryDetailTable").innerHTML = detailTable;
             if (object.currentStatus == "EXPECTED") {
+                document.getElementById("ipDelete").disabled = false;
                 for (var x=0; x<object.lines.length;x++){
                     document.getElementById("ipConfirm"+x).disabled = true;
                 }
@@ -135,4 +136,18 @@ function deliveryCompleted(){
     }
     xhr.send();
     
+}
+
+function deleteDelivery(){
+    var deliveryId = sessionStorage.getItem("showDeliveryId");
+    if (confirm("Are you sure to delete this delivery from the system? This is a permanent action.")){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8082/deleteDelivery/"+ deliveryId, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function(){
+            if (this.readyState == 4)
+            navigateShow("pages/delivery.html", showDeliveries);
+        }
+        xhr.send();
+    }
 }
