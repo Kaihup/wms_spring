@@ -3,17 +3,16 @@
 /* INFO: Bootstrap install: https://loiane.com/2017/08/how-to-add-bootstrap-to-an-angular-cli-project/ */
 
 /* @import "~bootstrap/dist/css/bootstrap.min.css"; */
+
 * {
   box-sizing: border-box;
 }
 
-*:before,
-*:after {
+*:before, *:after {
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   height: 100%;
   position: relative;
 }
