@@ -312,8 +312,16 @@ function checkbackorderline(id, naam, check) {
 }
 
 function sendbackorder() {
-	var members = createDeliveries();
 	var table = document.getElementById("backorderTable");
+	for (var x = 1; x<table.rows.length; x++){
+		var inputid = "ip"+table.rows[x].id;
+		var amountp = document.getElementById(inputid).value;
+		if (amountp < 1) {
+			alert("Please insert an amount bigger than zero.");
+			return;
+		}
+	}
+	var members = createDeliveries();
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", "http://localhost:8082/newBackOrder", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
