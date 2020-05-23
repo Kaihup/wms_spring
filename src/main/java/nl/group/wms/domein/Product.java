@@ -102,6 +102,12 @@ public class Product {
         }
     }
 
+    public void decreaseStock(int amount){
+        if (amount < 0){
+            this.inStock -= amount;
+        }
+    }
+
 
     public FileData getFileData() {
         return fileData;

@@ -8,6 +8,7 @@ import { ProductService } from './product.service';
   providers: [ProductService],
   // styleUrls: ['./app.component.css'],
 })
+
 export class ProductComponent {
   product1: Product = new Product();
   product2: Product;

@@ -13,6 +13,16 @@ public class OrderLine {
     private int price;
     @ManyToOne
     private Product product;
+    @ManyToOne
+    private CustomerOrder customerOrder;
+
+    public CustomerOrder getCustomerOrder() {
+        return customerOrder;
+    }
+
+    public void setCustomerOrder(CustomerOrder customerOrder) {
+        this.customerOrder = customerOrder;
+    }
 
     public Product getProduct() {
         return product;
