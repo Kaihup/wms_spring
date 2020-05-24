@@ -1,5 +1,6 @@
 package nl.group.wms.controller;
 
+import nl.group.wms.Utils;
 import nl.group.wms.domein.CustomerOrder;
 import nl.group.wms.domein.CustomerOrderLine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class CustomerOrderService {
         return customerOrder.getId();
     }
 
-    public List<CustomerOrder> getAllCustomerOrders(long customerId) {
+    public List<CustomerOrder> getAllCustomerOrdersByCustomerId(long customerId) {
         Iterable<CustomerOrder> customerOrders = cor.findAll();
         List<CustomerOrder> customerOrders1 = new ArrayList<>();
         for (CustomerOrder customerOrder : customerOrders) {
@@ -38,6 +39,28 @@ public class CustomerOrderService {
         }
         return customerOrders1;
     }
+
+    public Iterable<CustomerOrder> getAllCustomerOrders() {
+        Iterable<CustomerOrder> customerOrders = cor.findAll();
+        return customerOrders;
+    }
+
+//    public Iterable<CustomerOrderLine> getNextPickingOrder() {
+//
+//        Iterable<CustomerOrder> orders = cor.findAll();
+//
+//        CustomerOrder nextOrderToPick;
+//
+//        if (orders.iterator().hasNext()) {
+//            nextOrderToPick = orders.iterator().next();
+//        }
+//
+//        for (CustomerOrder order : orders) {
+//            for (HashMap<LocalDateTime,>)
+////            CustomerOrder.status.CONFIRMED;
+//        }
+//        return nextCustomerOrderToPick;
+//    }
 
 
     public long newCustomerOrderLine(CustomerOrderLine customerOrderLine) {
@@ -88,6 +111,25 @@ public class CustomerOrderService {
         } else {
             customerOrderLine.setAmount(currentAmount - amountRemoved);
         }
+    }
+
+    public Iterable<CustomerOrderLine> getNextCustomerOrderToPick() {
+        Iterable<CustomerOrder> customerOrders = getAllCustomerOrders();
+        CustomerOrder nextOrderToPick = customerOrders.iterator().next();
+        for (CustomerOrder order : customerOrders) {
+            if (order.getCurrentStatus() == CustomerOrder.status.CONFIRMED) {
+                if (order.getCurrentStatusLocalDateTime().isBefore(nextOrderToPick.getCurrentStatusLocalDateTime())) {
+                    nextOrderToPick = order;
+                    System.out.println(Utils.ic(Utils.ANSI_CYAN, "Next order to pick " + nextOrderToPick.getId()));
+                }
+            }
+        }
+        return getCustomerOrderLinesById(nextOrderToPick.getId());
+    }
+
+    public Iterable<CustomerOrderLine> getCustomerOrderLinesById(long customerOrderId) {
+        Iterable<CustomerOrderLine> orderLines = olr.findByCustomerOrderId(customerOrderId);
+        return orderLines;
     }
 
 //    public void purchaseOrder(long customerOrderId){

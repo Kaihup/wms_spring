@@ -11,7 +11,7 @@ public class CustomerOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    public enum status {NEW_ORDER_INCOMING, RECEIVED, SEND}
+    public enum status {NEW_ORDER_INCOMING, CONFIRMED, SEND}
 
     ;
     private HashMap<LocalDateTime, Enum<status>> statusMap = new HashMap<>();
@@ -44,5 +44,21 @@ public class CustomerOrder {
 
     public void addStatusToMap(Enum status) {
         statusMap.put(LocalDateTime.now(), status);
+    }
+
+    public Enum<status> getCurrentStatus() {
+        Enum<status> result = status.NEW_ORDER_INCOMING;
+        for (Enum<status> status : statusMap.values()) {
+            result = status;
+        }
+        return result;
+    }
+
+    public LocalDateTime getCurrentStatusLocalDateTime() {
+        LocalDateTime result = null;
+        for (LocalDateTime localDateTime : statusMap.keySet()) {
+            result = localDateTime;
+        }
+        return result;
     }
 }
