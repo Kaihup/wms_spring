@@ -29,13 +29,6 @@ public class CustomerOrderEndpoint {
     }
 
 
-    @GetMapping("/getNextCustomerOrderToPick")
-    public Iterable<CustomerOrderLine> getNextCustomerOrderToPick() {
-        Iterable<CustomerOrderLine> customerOrderLines = cos.getNextCustomerOrderToPick();
-        return customerOrderLines;
-    }
-
-
     @PostMapping("/newCustomerOrderLine")
     public long newOrderLine(@RequestBody CustomerOrderLine customerOrderLine) {
         return cos.newCustomerOrderLine(customerOrderLine);
@@ -58,7 +51,7 @@ public class CustomerOrderEndpoint {
     }
 
     @PostMapping("/purchaseOrder")
-    public void purchaseOrder(@RequestBody long customerOrderId){
+    public void purchaseOrder(@RequestBody long customerOrderId) {
         cos.purchaseOrder(customerOrderId);
     }
 
