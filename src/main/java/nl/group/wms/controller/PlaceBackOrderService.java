@@ -138,4 +138,8 @@ public class PlaceBackOrderService {
 		}
 	}
 	
+	public void deleteDelivery(long deliveryId) {
+		bod.deleteById(deliveryId); 
+	}
+	
 }

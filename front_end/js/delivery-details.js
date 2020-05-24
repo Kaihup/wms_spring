@@ -1,5 +1,5 @@
 function pageDetails(){
-    console.log("JAJA");
+    //console.log("JAJA");
     var deliveryId = sessionStorage.getItem("showDeliveryId");
     console.log(deliveryId);
     document.getElementById("showDId").innerHTML = deliveryId;
@@ -10,6 +10,7 @@ function pageDetails(){
         if (this.readyState == 4) {
             //console.log(this.responseText);
             var object = JSON.parse(this.responseText);
+            if(object.currentStatus == "COMPLETE") navigateShow("pages/store-items.html", pageStoreItems);
             console.log(object);
             document.getElementById("showBOId").innerHTML = object.lines[0].backOrder.id;
             document.getElementById("showDDate").innerHTML = object.deliveryDate;
@@ -41,6 +42,7 @@ function pageDetails(){
             }
             document.getElementById("deliveryDetailTable").innerHTML = detailTable;
             if (object.currentStatus == "EXPECTED") {
+                document.getElementById("ipDelete").disabled = false;
                 for (var x=0; x<object.lines.length;x++){
                     document.getElementById("ipConfirm"+x).disabled = true;
                 }
@@ -135,4 +137,18 @@ function deliveryCompleted(){
     }
     xhr.send();
     
+}
+
+function deleteDelivery(){
+    var deliveryId = sessionStorage.getItem("showDeliveryId");
+    if (confirm("Are you sure to delete this delivery from the system? This is a permanent action.")){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8082/deleteDelivery/"+ deliveryId, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function(){
+            if (this.readyState == 4)
+            navigateShow("pages/delivery.html", showDeliveries);
+        }
+        xhr.send();
+    }
 }
