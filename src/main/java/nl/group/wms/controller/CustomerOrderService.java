@@ -117,7 +117,7 @@ public class CustomerOrderService {
         Iterable<CustomerOrder> customerOrders = getAllCustomerOrders();
         CustomerOrder nextOrderToPick = customerOrders.iterator().next();
         for (CustomerOrder order : customerOrders) {
-            if (order.getCurrentStatus() == CustomerOrder.status.CONFIRMED) {
+            if (order.getCurrentStatus() == CustomerOrder.status.READY_FOR_PICKING) {
                 if (order.getCurrentStatusLocalDateTime().isBefore(nextOrderToPick.getCurrentStatusLocalDateTime())) {
                     nextOrderToPick = order;
                     System.out.println(Utils.ic(Utils.ANSI_CYAN, "Next order to pick " + nextOrderToPick.getId()));
@@ -132,13 +132,8 @@ public class CustomerOrderService {
         return orderLines;
     }
 
-//    public void purchaseOrder(long customerOrderId){
-//        CustomerOrder customerOrder = cor.findById(customerOrderId).get();
-//        List<OrderLine> orderLines = customerOrder.getOrderline();
-//        for (OrderLine orderLine : orderLines){
-//            //Lijst van producten teruggeven?
-//        }
-//    }
-
-
+    public void purchaseOrder(long customerOrderId) {
+        CustomerOrder customerOrder = cor.findById(customerOrderId).get();
+        customerOrder.addStatusToMap(CustomerOrder.status.READY_FOR_PICKING);
+    }
 }
