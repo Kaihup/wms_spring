@@ -14,6 +14,11 @@ public class CustomerOrderEndpoint {
     @Autowired
     CustomerOrderService cos;
 
+    @PostMapping("/testing")
+    public void test(@RequestBody String id){
+        System.out.println("this works " + id);
+    }
+
     @PostMapping("/addNewCustomerOrder")
     public long addNewOrder(@RequestBody CustomerOrder customerOrder){
         return cos.addNewCustomerOrder(customerOrder);
