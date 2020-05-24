@@ -11,9 +11,8 @@ public class CustomerOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    public enum status {NEW_ORDER_INCOMING, RECEIVED, SEND}
+    public enum status {NEW_ORDER_INCOMING, CONFIRMED_AND_READY_FOR_PICKING, SEND}
 
-    ;
     private HashMap<LocalDateTime, Enum<status>> statusMap = new HashMap<>();
     @ManyToOne
     private Customer customer;

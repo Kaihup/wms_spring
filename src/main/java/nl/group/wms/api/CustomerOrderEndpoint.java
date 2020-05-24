@@ -49,9 +49,9 @@ public class CustomerOrderEndpoint {
         cos.removeProductItems(amountRemoved, customerOrderLineId);
     }
 
-//    @PostMapping("/purchaseOrder")
-//    public void purchaseOrder(@RequestBody long customerOrderId){
-//        cos.purchaseOrder(customerOrderId);
-//    }
+    @PostMapping("/purchaseOrder")
+    public void purchaseOrder(@RequestBody long customerOrderId){
+        cos.purchaseOrder(customerOrderId);
+    }
 
 }
