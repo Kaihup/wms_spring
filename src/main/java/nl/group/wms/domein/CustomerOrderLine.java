@@ -1,10 +1,9 @@
 package nl.group.wms.domein;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-public class OrderLine {
+public class CustomerOrderLine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
