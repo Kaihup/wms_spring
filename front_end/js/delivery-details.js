@@ -1,5 +1,5 @@
 function pageDetails(){
-    console.log("JAJA");
+    //console.log("JAJA");
     var deliveryId = sessionStorage.getItem("showDeliveryId");
     console.log(deliveryId);
     document.getElementById("showDId").innerHTML = deliveryId;
@@ -10,6 +10,7 @@ function pageDetails(){
         if (this.readyState == 4) {
             //console.log(this.responseText);
             var object = JSON.parse(this.responseText);
+            if(object.currentStatus == "COMPLETE") navigateShow("pages/store-items.html", pageStoreItems);
             console.log(object);
             document.getElementById("showBOId").innerHTML = object.lines[0].backOrder.id;
             document.getElementById("showDDate").innerHTML = object.deliveryDate;

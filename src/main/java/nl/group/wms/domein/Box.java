@@ -15,9 +15,19 @@ public class Box {
     private int height;
     private int maxProductItems;
     private int maxWeight;
+    private int currentItems; //zowel fysiek als toegewezen om in op te bergen
 
 
-    public long getId() {
+    
+    public int getCurrentItems() {
+		return currentItems;
+	}
+
+	public void setCurrentItems(int currentItems) {
+		this.currentItems = currentItems;
+	}
+
+	public long getId() {
         return id;
     }
 
