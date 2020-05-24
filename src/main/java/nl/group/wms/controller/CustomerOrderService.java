@@ -90,13 +90,8 @@ public class CustomerOrderService {
         }
     }
 
-//    public void purchaseOrder(long customerOrderId){
-//        CustomerOrder customerOrder = cor.findById(customerOrderId).get();
-//        List<OrderLine> orderLines = customerOrder.getOrderline();
-//        for (OrderLine orderLine : orderLines){
-//            //Lijst van producten teruggeven?
-//        }
-//    }
-
-
+    public void purchaseOrder(long customerOrderId){
+        CustomerOrder customerOrder = cor.findById(customerOrderId).get();
+        customerOrder.addStatusToMap(CustomerOrder.status.CONFIRMED_AND_READY_FOR_PICKING);
+    }
 }

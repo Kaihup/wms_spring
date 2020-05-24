@@ -14,7 +14,6 @@ export class CustomerShopComponent implements OnInit {
   shopTable: string;
   products: Observable<Product[]>;
   productList: Product[] = [];
-  
   constructor(private http: HttpClient) { }
 
 
@@ -23,6 +22,7 @@ export class CustomerShopComponent implements OnInit {
 
   
   showProductsToBuy(){
+    console.log("show1");
     this.shopTable = "";
     this.shopTable +=
     "<table class='table img-table table-striped'><thead>" +
@@ -42,6 +42,8 @@ export class CustomerShopComponent implements OnInit {
   }
 
   showProductsAvailable(){//: Observable<Product>{
+    //this.keepreloading = false;
+    console.log("show2");
     //return this.http.get<Product>("http://localhost:8082/allproducts");
     //this.products = this.http.get<Product>("http://localhost:8082/allproducts");
     this.products = this.http.get<Product[]>("http://localhost:8082/allproducts");
@@ -50,6 +52,9 @@ export class CustomerShopComponent implements OnInit {
     //this.products.subscribe((productlist => this.myGridO;
     //return this.products;
   }
+  
+
+ 
 }
 
 
