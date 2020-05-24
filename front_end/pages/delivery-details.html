@@ -1,6 +1,10 @@
 
     <h3>BackOrder delivery details</h3>
-
+    <div class="text-right">
+        <button id="ipDelete" type="button" class="btn btn-outline-danger" 
+            >DELETE delivery</button>
+    </div>
+  
     <div class="row mx-sm-n1">
         <div class="col px-sm-1">BackOrder ID:</div>
         <div id="showBOId" class="col px-sm-1">xxx</div>
@@ -42,7 +46,8 @@
     <h3>BackOrder lines</h3>
     <div id="deliveryDetailTable"></div>
     <div>
-        <button type="button" class="btn btn-outline-success mb-3" disabled>Add status CHECKED_FOR_COMPLETE</button>
+        <button id="ipcheckComplete" type="button" class="btn btn-outline-success mb-3" 
+            disabled onclick="deliveryCompleted()">Add status COMPLETE</button>
     </div>
     
 
