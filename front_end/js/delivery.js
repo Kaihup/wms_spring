@@ -12,16 +12,18 @@ function showDeliveries() {
 			} else {
 				deliveryTable +=
 					"<table class='table table-striped'><thead>" +
-					"<tr><th scope='col'>BackOrder ID</th>" +
-					"<th scope='col'>BackOrderDelivery ID</th>" +
-					"<th scope='col'>Status</th>" +
-					"<th scope='col'>Delivery date</th>" +
-					"<th scope='col'>License plate</th>" +
+					"<tr><th scope='col' onclick=sortTable(0)>BackOrder ID</th>" +
+					"<th scope='col' onclick=sortTable(1)>BackOrderDelivery ID</th>" +
+					"<th scope='col' onclick=sortTable(2)>Status</th>" +
+					"<th scope='col' onclick=sortTable(3)>Delivery date</th>" +
+					"<th scope='col' onclick=sortTable(4)>License plate</th>" +
 					"<th scope='col'>Details</th>" +
 					"</tr>" +
 					"</thead><tbody>";
 
 				for (var x = 0; x < deliveryRows.length; x++) {
+					//if(deliveryRows[x].currentStatus == "COMPLETE") continue;
+					var showOrStore = (deliveryRows[x].currentStatus == "COMPLETE") ? "Store" : "Show";
 					deliveryTable +=
 						"<tr id=" +
 						deliveryRows[x].id +
@@ -43,7 +45,7 @@ function showDeliveries() {
 						"<td>" +
 						'<button type="button" class="btn btn-outline-secondary" onclick=changeWindow(' +
 						deliveryRows[x].id +
-						")>Show</button>" +
+						")>"+ showOrStore +"</button>" +
 						"</td>" +
 						"</tr>";
 				}
@@ -88,3 +90,41 @@ function changeWindow(deliveryId){
     sessionStorage.setItem("showDeliveryId", deliveryId);
     navigateShow('pages/delivery-details.html', pageDetails);
 }
+
+function sortTable(n) {
+	var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+	table = document.getElementById("deliveryTable").getElementsByTagName("TABLE")[0];
+	console.log(table);
+	switching = true;
+	dir = "asc";
+	while (switching) {
+	  switching = false;
+	  rows = table.rows;
+	  for (i = 1; i < (rows.length - 1); i++) {
+		shouldSwitch = false;
+		x = rows[i].getElementsByTagName("TD")[n];
+		y = rows[i + 1].getElementsByTagName("TD")[n];
+		if (dir == "asc") {
+		  if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+			shouldSwitch = true;
+			break;
+		  }
+		} else if (dir == "desc") {
+		  if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+			shouldSwitch = true;
+			break;
+		  }
+		}
+	  }
+	  if (shouldSwitch) {
+		rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+		switching = true;
+		switchcount ++;
+	  } else {
+		if (switchcount == 0 && dir == "asc") {
+		  dir = "desc";
+		  switching = true;
+		}
+	  }
+	}
+  }
