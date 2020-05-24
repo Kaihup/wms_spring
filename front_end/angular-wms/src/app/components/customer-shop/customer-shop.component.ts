@@ -1,4 +1,4 @@
-/* import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../../product/product';
@@ -7,7 +7,7 @@ import { Product } from '../../product/product';
   selector: 'app-customer-shop',
   templateUrl: './customer-shop.component.html',
   styleUrls: ['./customer-shop.component.css'],
-})a
+})
 @Injectable()
 export class CustomerShopComponent implements OnInit {
   shopTable: string;
@@ -51,4 +51,3 @@ export class CustomerShopComponent implements OnInit {
     //return this.products;
   }
 }
- */
