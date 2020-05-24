@@ -1,1 +1,20 @@
 <div class="header-img"><img src="assets/img/ecommerce-background_temp.png" style="width: 1040px" /> </div>
+
+<!-- <div>
+    <button type="button" class="btn btn-outline-success mb-3" (click)="showProductsToBuy()" id="itworks">Show</button>
+</div> -->
+
+<div [innerHTML] = showProductsToBuy()></div>
+<div>
+    {{showProductsAvailable()}}
+</div>
+
+<!-- <input type="button" value="knop" (click)="showProductsAvailable()" /> -->
+
+<div *ngIf="productList">
+    <div *ngFor="let product of productList">Hier is een {{product.name}} voor €{{product.price}}</div>
+</div>
+
+<!-- <div>
+    {{showProductsAvailable()}}
+</div> -->
