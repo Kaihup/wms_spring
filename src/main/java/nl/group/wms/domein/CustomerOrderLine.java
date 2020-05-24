@@ -3,7 +3,7 @@ package nl.group.wms.domein;
 import javax.persistence.*;
 
 @Entity
-public class OrderLine {
+public class CustomerOrderLine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
