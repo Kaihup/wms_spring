@@ -1,0 +1,44 @@
+<!-- Add Product Form -->
+<h3>Recieve BackOrderDelivery</h3>
+<form>
+    <div class="form-row mb-3">
+        <div class="col-3">
+            <input type="number" class="form-control" placeholder="BackOrderDelivery Id" id=ipbodid>
+        </div>
+    </div>
+
+    <div class="form-row mb-3">
+        <div class="col-3">
+            <input type="text" class="form-control" placeholder="License plate deliverer" id=iplicense>
+        </div>
+    </div>
+</form>
+
+<div>
+    <button type="button" class="btn btn-outline-success mb-3" onclick="markDeliveryArrived()">Mark delivery as
+        received</button>
+</div>
+
+
+<h3 class="mt-4">Delivery Overview</h3>
+<!-- search balk? <div class="input-group">
+    <input type="text" class="form-control" aria-label="Text input with segmented dropdown button">
+    <div class="input-group-append">
+      <button type="button" class="btn btn-outline-secondary">Action</button>
+      <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="sr-only">Toggle Dropdown</span>
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">Backorder ID</a>
+        <a class="dropdown-item" href="#">Delivery ID</a>
+        <a class="dropdown-item" href="#">Status</a>
+        <a class="dropdown-item" href="#">Delivery date</a>
+        <a class="dropdown-item" href="#">License plate</a>
+      </div>
+    </div>
+  </div> -->
+<p>Click headers to sort table</p>
+<div id=deliveryTable></div>
+
+
+

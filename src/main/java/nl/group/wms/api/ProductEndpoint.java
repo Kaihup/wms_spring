@@ -22,24 +22,26 @@ public class ProductEndpoint {
     }
 
     @PostMapping("/newproduct")
-    public void addNewProduct(@RequestBody Product product){
-        System.out.println(Utils.ic(Utils.ANSI_CYAN,"Added a new product: " + product.getName()));
+    public void addNewProduct(@RequestBody Product product) {
+        System.out.println(Utils.ic(Utils.ANSI_CYAN, "Added a new product: " + product.getName()));
         ps.newProduct(product);
     }
 
+
     @PostMapping("/deleteproduct")
-    public void deleteProduct(@RequestBody Long id){
+    public void deleteProduct(@RequestBody Long id) {
         ps.deleteProduct(id);
     }
 
     @PostMapping("/editproduct")
-    public void editProduct(@RequestBody Product product){
+    public void editProduct(@RequestBody Product product) {
         ps.editProduct(product);
     }
 
     @PostMapping("/getproduct")
-    public Product getProduct(@RequestBody Long id){
+    public Product getProduct(@RequestBody Long id) {
         return ps.getProduct(id);
     }
+
 
 }

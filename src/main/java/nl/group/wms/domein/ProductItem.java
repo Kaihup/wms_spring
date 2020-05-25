@@ -43,4 +43,11 @@ public class ProductItem {
     }
 
 
+    public Box getBox() {
+        return box;
+    }
+
+    public void setBox(Box box) {
+        this.box = box;
+    }
 }

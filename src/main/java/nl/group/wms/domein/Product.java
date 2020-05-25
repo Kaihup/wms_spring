@@ -1,9 +1,6 @@
 package nl.group.wms.domein;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Product {
@@ -20,6 +17,8 @@ public class Product {
     private int inStock;
     private long eanCode;
     private String description;
+    @ManyToOne
+    private FileData fileData;
 
     public int getInStock() {
         return inStock;
@@ -97,9 +96,24 @@ public class Product {
         this.description = description;
     }
 
-    public void increaseStock(int amount){
-        if(amount > 0) {
+    public void increaseStock(int amount) {
+        if (amount > 0) {
             this.inStock += amount;
         }
+    }
+
+    public void decreaseStock(int amount){
+        if (amount < 0){
+            this.inStock -= amount;
+        }
+    }
+
+
+    public FileData getFileData() {
+        return fileData;
+    }
+
+    public void setFileData(FileData fileData) {
+        this.fileData = fileData;
     }
 }

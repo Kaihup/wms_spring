@@ -3,6 +3,9 @@ package nl.group.wms.api;
 import nl.group.wms.Utils;
 import nl.group.wms.controller.BoxService;
 import nl.group.wms.domein.Box;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +39,11 @@ public class BoxEndPoint {
 //    public void deleteExistingProduct() {
 //        ps.deleteProduct(2);
 //    }
+    
+    @GetMapping("findEmptySpots/{productId}/{amountToStore}")
+    public List<Box> findEmptySpots(@PathVariable long productId, @PathVariable int amountToStore){
+    	return bs.findEmptySpots(productId, amountToStore);	
+    }
 
 
 
