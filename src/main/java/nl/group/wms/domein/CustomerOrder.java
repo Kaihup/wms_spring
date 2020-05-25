@@ -14,7 +14,6 @@ public class CustomerOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
     public enum status {PRE_PURCHASE, READY_FOR_PICKING, SHIPPED_TO_CUSTOMER}
 
     @Column(columnDefinition = "LONGBLOB")
