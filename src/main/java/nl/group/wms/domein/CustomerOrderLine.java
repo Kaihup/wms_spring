@@ -54,4 +54,15 @@ public class CustomerOrderLine {
     public void setAmount(int amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n----line id: " + id);
+        sb.append("\n\t\tamount: " + amount);
+        sb.append("\n\t\tprice: " + price);
+        sb.append("\n\t\tproductId: " + product.getName());
+        sb.append("\n\t\tcustomerOrderId: " + customerOrder.getId());
+        return sb.toString();
+    }
 }
