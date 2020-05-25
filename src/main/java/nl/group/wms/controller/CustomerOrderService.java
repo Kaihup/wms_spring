@@ -23,7 +23,7 @@ public class CustomerOrderService {
     ProductRepository pr;
 
     public long addNewCustomerOrder(CustomerOrder customerOrder) {
-        customerOrder.addStatusToMap(CustomerOrder.status.NEW_ORDER_INCOMING);
+        customerOrder.addStatusToMap(CustomerOrder.status.NEW_INCOMING_ORDER);
         cor.save(customerOrder);
         return customerOrder.getId();
     }
