@@ -11,43 +11,56 @@ import { Product } from '../../product/product';
 @Injectable()
 export class CustomerShopComponent implements OnInit {
   shopTable: string;
+  price: number;
+  priceNice: string;
   products: Observable<Product[]>;
   productList: Product[] = [];
-  constructor(private http: HttpClient) {}
+  CustomerOrderId;
+  constructor(private http: HttpClient) { }
 
-  ngOnInit(): void {}
-
-  showProductsToBuy() {
-    console.log('show1');
-    this.shopTable = '';
-    this.shopTable +=
-      "<table class='table img-table table-striped'><thead>" +
-      "<tr><th scope='col'>Product</th>" +
-      "<th scope='col'>Price</th>" +
-      "<th scope='col'>Items</th>" +
-      "<th scope='col'></th>" +
-      "<th scope='col'>Remove from order</th>" +
-      "<th scope='col'></th>" +
-      "<th scope='col'>Items in current order</th>" +
-      "<th scope='col'>Cost</th>" +
-      "<th scope='col'>Height</th>" +
-      '</thead><tbody>';
-    this.shopTable += '</tbody></table>';
-    return this.shopTable;
+  ngOnInit(): void {
+    this.showProductsAvailable();
   }
 
-  showProductsAvailable() {
-    //: Observable<Product>{
-    //this.keepreloading = false;
-    console.log('show2');
-    //return this.http.get<Product>("http://localhost:8082/allproducts");
-    //this.products = this.http.get<Product>("http://localhost:8082/allproducts");
-    this.products = this.http.get<Product[]>(
-      'http://localhost:8082/allproducts'
-    );
-    this.products.subscribe((productList) => (this.productList = productList));
-    //this.products.subscribe((training) => console.log(training));
-    //this.products.subscribe((productlist => this.myGridO;
-    //return this.products;
+  showProductsToBuy(){
+      return this.productList;
   }
+
+  testing(product: Product){
+
+    product.amount = product.amountadded;
+    console.log(product.name);
+    console.log(product.amountadded);
+  }
+
+  showProductsAvailable(){
+    console.log("show2");
+    this.products = this.http.get<Product[]>("http://localhost:8082/allproducts");
+    this.products.subscribe(productList => this.productList = productList,
+      (err) => console.error(err), () => console.log("observable complete"));
+  }
+
+  currenInOrder(product: Product){
+    return product.amount;
+  }
+  
+  //Hier wordt de order gemaakt, dus dat betekent na inlog dat de customerId hier naar toe gestuurd moet worden.
+  newCustomerOrder(){
+    this.http.post("http://localhost:8082/addNewCustomerOrder",1).subscribe(CustomerOrderId => 
+    {this.CustomerOrderId = CustomerOrderId, console.log(CustomerOrderId + " is making an order")},
+    (err) => console.error(err), () => console.log("observable complete"));
+
+
+    //this.http.post("http://localhost:8082/testing","10").subscribe(response => console.log(response));
+  }
+
+  formattingPrice(product: Product){
+    this.price = product.price;
+    this.priceNice = "";
+    this.priceNice = this.price + "";
+    this.priceNice = "€" + this.priceNice.substring(0,this.priceNice.length-2) + "." 
+      + this.priceNice.substring(this.priceNice.length-2,this.priceNice.length);
+    return this.priceNice;
+  }
+ 
 }
