@@ -1,5 +1,6 @@
 package nl.group.wms.controller;
 
+import nl.group.wms.Utils;
 import nl.group.wms.domein.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,10 +29,10 @@ public class ProductService {
     }
 
     public void editProduct(Product product) {
-        Product product1 = pr.findById(product.getId()).get();
-        product1 = product;
-        pr.save(product1);
+        System.out.println(Utils.ic(Utils.ANSI_RED, "updated product " + product.getName()));
+        pr.save(product);
     }
+
 
     public Product getProduct(Long id) {
         System.out.println("Ik kom hier" + id);

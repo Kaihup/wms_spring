@@ -14,32 +14,22 @@ public class CustomerOrderEndpoint {
     @Autowired
     CustomerOrderService cos;
 
-    @PostMapping("/testing")
-    public long test(@RequestBody String id){
-        System.out.println("this works " + id);
-        return (long)5;
-    }
-
     @PostMapping("/addNewCustomerOrder")
-    public long addNewOrder(@RequestBody long customerOrderId){
+    public long addNewOrder(@RequestBody long customerOrderId) {
         return cos.addNewCustomerOrder(customerOrderId);
     }
-
-    //This if for one customer
+    //This is for one customer
     @GetMapping("/getAllCustomerOrders/{customerId}")
-    public List<CustomerOrder> getAllOrders(@PathVariable long customerId){
-        List<CustomerOrder> customerOrders = cos.getAllCustomerOrders(customerId);
+    public List<CustomerOrder> getAllCustomerOrdersByCustomerId(@PathVariable long customerId) {
+        List<CustomerOrder> customerOrders = cos.getAllCustomerOrdersByCustomerId(customerId);
         return customerOrders;
     }
 
 
-
     @PostMapping("/newCustomerOrderLine")
-    public long newOrderLine(@RequestBody CustomerOrderLine customerOrderLine){
+    public long newOrderLine(@RequestBody CustomerOrderLine customerOrderLine) {
         return cos.newCustomerOrderLine(customerOrderLine);
     }
-
-
 
     @PostMapping("/updateCustomerOrderLine/{amountIncrease}/{customerOrderLineId}")
     public void updateOrderLine(@PathVariable int amountIncrease, @PathVariable long customerOrderLineId){
@@ -53,14 +43,12 @@ public class CustomerOrderEndpoint {
 
     //This if for one customer
     @PostMapping("/getTotalPrice")
-    public int getTotalPrice(@RequestBody long customerOrderId){
+    public int getTotalPrice(@RequestBody long customerOrderId) {
         return cos.getTotalPrice(customerOrderId);
     }
 
-
-
     @PostMapping("/purchaseOrder")
-    public void purchaseOrder(@RequestBody long customerOrderId){
+    public void purchaseOrder(@RequestBody long customerOrderId) {
         cos.purchaseOrder(customerOrderId);
     }
 

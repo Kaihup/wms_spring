@@ -1,16 +1,18 @@
 package nl.group.wms.controller;
 
 import nl.group.wms.domein.Customer;
-import nl.group.wms.domein.CustomerOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
+@EnableJpaRepositories
 public class CustomerService {
 
     @Autowired
@@ -22,7 +24,14 @@ public class CustomerService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void addNewCustomer(Customer customer){
+    public void findCustomerByLastName(String lastName) {
+        List<Customer> customers = cr.findByLastName(lastName);
+        for (Customer customer : customers) {
+            System.out.println(customer.getEmail());
+        }
+    }
+
+    public void addNewCustomer(Customer customer) {
         sendEmail(customer);
         cr.save(customer);
     }
@@ -32,12 +41,13 @@ public class CustomerService {
         return customers;
     }
 
-    public Customer getCustomer(long Id){
+
+    public Customer getCustomer(long Id) {
         Customer customer = cr.findById(Id).get();
         return customer;
     }
 
-//    public void addOrder(long customerOrderId, long customerId){
+//    public void addOrder(long customerOrderId, long customerId) {
 //        Optional<CustomerOrder> customerOrder = cor.findById(customerOrderId);
 //        Optional<Customer> customer = cr.findById(customerId);
 //        Customer newOrder = customer.get();
@@ -45,7 +55,7 @@ public class CustomerService {
 //        cr.save(newOrder);
 //    }
 
-    void sendEmail(Customer customer){
+    void sendEmail(Customer customer) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(customer.getEmail());
         msg.setSubject("Welcome to our WMS, " + customer.getFirstName() + " " + customer.getLastName());

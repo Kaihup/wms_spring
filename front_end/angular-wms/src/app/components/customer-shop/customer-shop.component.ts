@@ -1,14 +1,13 @@
 import { Component, OnInit, Injectable } from '@angular/core';
-import { HttpClient}          from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../../product/product';
 
 @Component({
   selector: 'app-customer-shop',
   templateUrl: './customer-shop.component.html',
-  styleUrls: ['./customer-shop.component.css']
+  styleUrls: ['./customer-shop.component.css'],
 })
-
 @Injectable()
 export class CustomerShopComponent implements OnInit {
   shopTable: string;
@@ -65,5 +64,3 @@ export class CustomerShopComponent implements OnInit {
   }
  
 }
-
-
