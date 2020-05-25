@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 @Service
 @Transactional
 public class CustomerOrderPickingServcie {
@@ -18,40 +20,50 @@ public class CustomerOrderPickingServcie {
     CustomerOrderService cos;
 
     public Iterable<CustomerOrderLine> getNextCustomerOrderToPick() {
+
         Iterable<CustomerOrder> customerOrders = cos.getAllCustomerOrders();
 
+        /* Check if there are orders */
+        if (customerOrders.iterator().hasNext()) {
 
-        if (!customerOrders.iterator().hasNext()) {
-            return null;
-
-        } else {
-
-            CustomerOrder nextOrderToPick = null;
+            /* Fill ArrayList with pickable orders */
+            ArrayList<CustomerOrder> ordersReadyForPicking = new ArrayList<>();
             for (CustomerOrder order : customerOrders) {
-                System.out.println("!1: in order: " + order.getId());
-                System.out.println("current status = " + order.getCurrentStatus());
                 if (order.getCurrentStatus().equals(CustomerOrder.status.READY_FOR_PICKING)) {
-                    System.out.println("!2: in order: " + order.getId());
-                    if (order.getCurrentStatusLocalDateTime().isBefore(nextOrderToPick.getCurrentStatusLocalDateTime())) {
-                        System.out.println("!3: in order: " + order.getId());
-                        nextOrderToPick = order;
-                    }
+                    ordersReadyForPicking.add(order);
                 }
             }
 
-            if (nextOrderToPick != null) {
-                long orderId = nextOrderToPick.getId();
-                System.out.println(Utils.ic(Utils.ANSI_BLUE, "Next order to pick " +
-                        "\n\tOrder ID: " + orderId));
-                //                "\n\tOrderLines: " + getCustomerOrderLinesById(orderId)));
+            /* Check for the oldes pickable order */
+            if (ordersReadyForPicking.size() > 0) {
+                CustomerOrder nextOrderToPick = ordersReadyForPicking.get(0);
+                for (CustomerOrder order : ordersReadyForPicking) {
+                    System.out.println("6");
+                    if (order.getCurrentStatusLocalDateTime().isBefore(nextOrderToPick.getCurrentStatusLocalDateTime())) {
+                        /* Replace new order with older order */
+                        nextOrderToPick = order;
+                    }
+                }
 
+                /* Print stuff about order to console for development purpose */
+                System.out.println(Utils.ic(Utils.ANSI_BLUE, "Next order to pick " +
+                        "\n\tOrder ID: " + nextOrderToPick.getId() +
+                        "\n\tCurrent status: " + nextOrderToPick.getCurrentStatus() +
+                        "\n\tLocalDateTime status: " + nextOrderToPick.getCurrentStatusLocalDateTime() +
+                        "\n\tOrderLines: " + getCustomerOrderLinesById(nextOrderToPick.getId())));
+
+                /* Return orderLines for oldest pickable order */
+                long orderId = nextOrderToPick.getId();
                 return getCustomerOrderLinesById(orderId);
             }
-
-            return null;
-
         }
+
+        /* When here, there are no pickable orders in the database ... :( */
+        System.out.println(Utils.ic(Utils.ANSI_RED, "NO ORDERS WITH STATUS READY_FOR_PICKING"));
+        return null;
+
     }
+
 
     public Iterable<CustomerOrderLine> getCustomerOrderLinesById(long customerOrderId) {
         Iterable<CustomerOrderLine> orderLines = olr.findByCustomerOrderId(customerOrderId);

@@ -74,17 +74,17 @@ public class CustomerOrder {
         Iterator<LocalDateTime> iterator = statusMap.keySet().iterator();
         if (iterator.hasNext()) {
             key = iterator.next();
-            System.out.println("Key = " + key);
+//            System.out.println("Key = " + key);
             while (iterator.hasNext()) {
                 LocalDateTime next = iterator.next();
-                System.out.println("Next = " + next);
+//                System.out.println("Next = " + next);
                 if (next.isAfter(key)) {
                     key = next;
                 }
             }
         }
-        System.out.println("Last = " + key);
-        //System.out.println(statusMap.get(key));
+//        System.out.println("Status = " + key);
+//        System.out.println(statusMap.get(key));
         return statusMap.get(key);
 
     }
