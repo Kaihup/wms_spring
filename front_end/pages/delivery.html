@@ -21,23 +21,22 @@
 
 
 <h3 class="mt-4">Delivery Overview</h3>
-<!-- search balk? <div class="input-group">
-    <input type="text" class="form-control" aria-label="Text input with segmented dropdown button">
+<!-- search balk -->
+<div class="input-group">
+    <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" 
+        placeholder="Search..." id="ipfilter" oninput="filterTable()">
     <div class="input-group-append">
-      <button type="button" class="btn btn-outline-secondary">Action</button>
-      <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="sr-only">Toggle Dropdown</span>
-      </button>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">Backorder ID</a>
-        <a class="dropdown-item" href="#">Delivery ID</a>
-        <a class="dropdown-item" href="#">Status</a>
-        <a class="dropdown-item" href="#">Delivery date</a>
-        <a class="dropdown-item" href="#">License plate</a>
-      </div>
+        <select class="custom-select" name="columNames" id="columNames" onchange="filterTable()">
+            <option value="Backorder ID">Backorder ID</option>
+            <option value="Delivery ID">Delivery ID</option>
+            <option value="Status">Status</option>
+            <option value="Delivery date">Delivery date</option>
+            <option value="License plate">License plate</option>
+        </select>
     </div>
-  </div> -->
-<p>Click headers to sort table</p>
+</div> 
+
+<p class="text-center">Click headers to sort table</p>
 <div id=deliveryTable></div>
 
 

@@ -76,6 +76,11 @@ function confirmStorage(x,y) {
     document.getElementById("ipActuallyStored"+x+y).disabled = true;
     document.getElementById("ipConfirmStorage"+x+y).innerHTML = "Confirmed";
     document.getElementById("ipConfirmStorage"+x+y).disabled = true;
+    var table = document.getElementById("storeItemsTable").innerHTML
+    for (var z = 1; z < table.rows.length; z++){
+        
+    }
+
 }
 
 function confirmButtonCheck(x,y){
