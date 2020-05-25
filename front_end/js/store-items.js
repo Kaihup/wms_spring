@@ -38,7 +38,6 @@ function pageStoreItems(){
                         for(var y=0; y < boxes.length; y++){
                             console.log(boxes);
                             var box = boxes[y];
-                            
                             var availableAmount = box.maxProductItems - box.currentItems;
                             var storeAmount = (amountToStore >= availableAmount) ? 
                                 availableAmount : amountToStore;
@@ -49,12 +48,12 @@ function pageStoreItems(){
                             var showAmount = (y==0) ? object.lines[x].amountReceived : "";
                             storeItemsTable += "<tr><td>"+showName+"</td>" +
                                 "<td >"+ showAmount +"</td>" +
-                                "<td >"+ storeAmount +"</td>" +
+                                "<td id=ipToStore"+x+y+">"+ storeAmount +"</td>" +
                                 "<td><input type=\"number\" class=\"form-control\" " +
-                                    "id=ipActuallyStored"+x+y+"></td>" +
+                                    "id=ipActuallyStored"+x+y+" oninput=confirmButtonCheck("+x+","+y+")></td>" +
                                 "<td >"+ box.id +"</td>" +
-                                "<td><button type=\"button\" class=\"btn btn-outline-secondary\"" +
-                                    " id=ipConfirmStorage"+x+y+">Confirm</button></td></tr>";
+                                "<td><button type=\"button\" class=\"btn btn-outline-warning\"" +
+                                    " id=ipConfirmStorage"+x+y+" onclick=confirmStorage("+x+","+y+")>Confirm</button></td></tr>";
                             
                         }
                         document.getElementById("storeItemsTable").innerHTML = storeItemsTable;
@@ -65,4 +64,26 @@ function pageStoreItems(){
         }
     }
     xhr.send();    
+}
+
+function confirmStorage(x,y) {
+    var a = document.getElementById("ipActuallyStored"+x+y).value;
+    var b = document.getElementById("ipToStore"+x+y).innerHTML;
+    if (a != b) {
+        alert("The actually stored amount does not equal the amount to store. Are you sure?");
+        return;
+    }
+    document.getElementById("ipActuallyStored"+x+y).disabled = true;
+    document.getElementById("ipConfirmStorage"+x+y).innerHTML = "Confirmed";
+    document.getElementById("ipConfirmStorage"+x+y).disabled = true;
+}
+
+function confirmButtonCheck(x,y){
+    var a = document.getElementById("ipActuallyStored"+x+y).value;
+    var b = document.getElementById("ipToStore"+x+y).innerHTML;
+    if (a == b) {
+        document.getElementById("ipConfirmStorage"+x+y).className = "btn btn-outline-success";
+    } else {
+        document.getElementById("ipConfirmStorage"+x+y).className = "btn btn-outline-warning";
+    }
 }
