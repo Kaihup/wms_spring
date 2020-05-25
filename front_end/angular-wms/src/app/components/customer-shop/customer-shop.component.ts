@@ -16,6 +16,7 @@ export class CustomerShopComponent implements OnInit {
   priceNice: string;
   products: Observable<Product[]>;
   productList: Product[] = [];
+  CustomerOrderId;
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -44,10 +45,14 @@ export class CustomerShopComponent implements OnInit {
     return product.amount;
   }
   
+  //Hier wordt de order gemaakt, dus dat betekent na inlog dat de customerId hier naar toe gestuurd moet worden.
   newCustomerOrder(){
-    console.log("Ik kom hier");
-    //this.http.post("http://localhost:8082/addNewCustomerOrder",10).subscribe(response => console.log(response));
-    this.http.post("http://localhost:8082/testing","10").subscribe(response => console.log(response));
+    this.http.post("http://localhost:8082/addNewCustomerOrder",1).subscribe(CustomerOrderId => 
+    {this.CustomerOrderId = CustomerOrderId, console.log(CustomerOrderId + " is making an order")},
+    (err) => console.error(err), () => console.log("observable complete"));
+
+
+    //this.http.post("http://localhost:8082/testing","10").subscribe(response => console.log(response));
   }
 
   formattingPrice(product: Product){
@@ -56,7 +61,6 @@ export class CustomerShopComponent implements OnInit {
     this.priceNice = this.price + "";
     this.priceNice = "€" + this.priceNice.substring(0,this.priceNice.length-2) + "." 
       + this.priceNice.substring(this.priceNice.length-2,this.priceNice.length);
-    console.log(this.priceNice);
     return this.priceNice;
   }
  

@@ -1,5 +1,6 @@
 package nl.group.wms.controller;
 
+import nl.group.wms.domein.Customer;
 import nl.group.wms.domein.CustomerOrder;
 import nl.group.wms.domein.CustomerOrderLine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,14 @@ public class CustomerOrderService {
     CustomerOrderLineRepository olr;
 
     @Autowired
+    CustomerRepository cr;
+
+    @Autowired
     ProductRepository pr;
 
-    public long addNewCustomerOrder(CustomerOrder customerOrder) {
+    public long addNewCustomerOrder(long customerOrderId) {
+        CustomerOrder customerOrder = new CustomerOrder();
+        customerOrder.setCustomer(cr.findById(customerOrderId).get());
         customerOrder.addStatusToMap(CustomerOrder.status.NEW_ORDER_INCOMING);
         cor.save(customerOrder);
         return customerOrder.getId();
@@ -77,6 +83,7 @@ public class CustomerOrderService {
                 totalPrice += customerOrderLine.getPrice();
             }
         }
+        System.out.println("The total price of the order is: " + totalPrice);
         return totalPrice;
     }
 
@@ -92,6 +99,6 @@ public class CustomerOrderService {
 
     public void purchaseOrder(long customerOrderId){
         CustomerOrder customerOrder = cor.findById(customerOrderId).get();
-        customerOrder.addStatusToMap(CustomerOrder.status.CONFIRMED_AND_READY_FOR_PICKING);
+        customerOrder.addStatusToMap(CustomerOrder.status.READY_FOR_PICKING);
     }
 }

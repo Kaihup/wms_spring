@@ -15,13 +15,14 @@ public class CustomerOrderEndpoint {
     CustomerOrderService cos;
 
     @PostMapping("/testing")
-    public void test(@RequestBody String id){
+    public long test(@RequestBody String id){
         System.out.println("this works " + id);
+        return (long)5;
     }
 
     @PostMapping("/addNewCustomerOrder")
-    public long addNewOrder(@RequestBody CustomerOrder customerOrder){
-        return cos.addNewCustomerOrder(customerOrder);
+    public long addNewOrder(@RequestBody long customerOrderId){
+        return cos.addNewCustomerOrder(customerOrderId);
     }
 
     //This if for one customer
@@ -38,9 +39,16 @@ public class CustomerOrderEndpoint {
         return cos.newCustomerOrderLine(customerOrderLine);
     }
 
-    @PostMapping("/updateCustomerOrderLine")
-    public void updateOrderLine(@RequestBody int amountIncrease, @RequestBody long customerOrderLineId){
+
+
+    @PostMapping("/updateCustomerOrderLine/{amountIncrease}/{customerOrderLineId}")
+    public void updateOrderLine(@PathVariable int amountIncrease, @PathVariable long customerOrderLineId){
         cos.updateCustomerOrderLine(amountIncrease, customerOrderLineId);
+    }
+
+    @PostMapping("/removeProductItems")
+    public void removeProductItems(@RequestBody int amountRemoved, @RequestBody long customerOrderLineId){
+        cos.removeProductItems(amountRemoved, customerOrderLineId);
     }
 
     //This if for one customer
@@ -49,10 +57,7 @@ public class CustomerOrderEndpoint {
         return cos.getTotalPrice(customerOrderId);
     }
 
-    @PostMapping("/removeProductItems")
-    public void removeProductItems(@RequestBody int amountRemoved, @RequestBody long customerOrderLineId){
-        cos.removeProductItems(amountRemoved, customerOrderLineId);
-    }
+
 
     @PostMapping("/purchaseOrder")
     public void purchaseOrder(@RequestBody long customerOrderId){
@@ -60,3 +65,14 @@ public class CustomerOrderEndpoint {
     }
 
 }
+
+
+//    @PostMapping("/updateCustomerOrderLine")
+//    public void updateOrderLine(@RequestBody int amountIncrease, @RequestBody long customerOrderLineId){
+//        cos.updateCustomerOrderLine(amountIncrease, customerOrderLineId);
+//    }
+
+//    @PostMapping("/removeProductItems")
+//    public void removeProductItems(@RequestBody int amountRemoved, @RequestBody long customerOrderLineId){
+//        cos.removeProductItems(amountRemoved, customerOrderLineId);
+//    }
