@@ -15,7 +15,7 @@ public class CustomerOrder {
     private long id;
 
 
-    public enum status {NEW_ORDER_INCOMING, READY_FOR_PICKING, SEND}
+    public enum status {PRE_PURCHASE, READY_FOR_PICKING, SHIPPED_TO_CUSTOMER}
 
     @Column(columnDefinition = "LONGBLOB")
     private HashMap<LocalDateTime, Enum<status>> statusMap = new HashMap<>();
@@ -47,7 +47,7 @@ public class CustomerOrder {
     }
 
     public void addStatusToMap(Enum status) {
-        System.out.println(Utils.ic(Utils.ANSI_BLUE, ("added to statusMap: " + LocalDateTime.now() + status)));
+        System.out.println(Utils.ic(Utils.ANSI_GREEN, ("Customer order: " + id + ", added to statusMap: " + LocalDateTime.now() + ", " + status)));
         statusMap.put(LocalDateTime.now(), status);
 //        for (LocalDateTime ld : statusMap.keySet()) {
 //            System.out.println(ld);
