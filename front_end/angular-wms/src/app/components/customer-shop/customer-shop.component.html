@@ -3,32 +3,45 @@
 
 <div class="header-img"><img src="assets/img/ecommerce-background_temp.png" style="width: 1040px" /> </div>
 
-<!-- <div>
-    <button type="button" class="btn btn-outline-success mb-3" (click)="showProductsToBuy()" id="itworks">Show</button>
-</div> -->
+<!-- <div [innerHTML] = "showProductsToBuy()"></div>
 
-<div [innerHTML] = showProductsToBuy()></div>
+<div *ngFor="let product of productList">Hier is een {{product.name}} voor €{{product.price}}</div> -->
 
-<!-- <div>
-    {{showProductsAvailable()}}
-</div> -->
+<table class='table img-table table-striped'><thead>
+    <tr><th scope='col'>Product</th>
+    <th scope='col'>Price</th>
+    <th scope='col'>Items</th>
+    <th scope='col'></th>
+    <th scope='col'>Remove from order</th>
+    <th scope='col'></th>
+    <th scope='col'>Items in current order</th>
+    <th scope='col'></th>
+    <th scope='col'>Cost</th>
+    </thead>
+    <tbody *ngFor="let product of productList">
+    <td class='font-weight-bold'>
+        {{product.name}}
+    </td>  
+    <td>
+        {{formattingPrice(product)}}
+    </td>       
+    <td>
+        <input type="text" style="width: 70px" [(ngModel)]=product.amountadded>
+    </td>     
+    <td>
+        <button type="button" class="btn btn-outline-secondary" (click)="testing(product)">Add to</button>
+    </td>
+    <td>
+        <input type="text" style="width: 70px" [(ngModel)]=product.amountremoved>
+    </td>     
+    <td>
+        <button type="button" class="btn btn-outline-secondary" (click)="testing(product)">Remove</button>
+    </td>
+    <td>
+        {{currenInOrder(product)}}
+    </td>
+    </tbody></table>
 
-<!-- <div>
-    {{loadOnce()}}
-</div> -->
 
-
-
-<input type="button" value="knop" (click)="showProductsAvailable()" />
-
-
-    <div *ngFor="let product of productList">Hier is een {{product.name}} voor €{{product.price}}</div>
-
-<!-- <div>
-    {{showProductsAvailable()}}
-</div> -->
-<!-- 
-<div>
-    <button type="button" class="btn btn-outline-success mb-3" (click)="showProductsToBuy()" id="itworks">Show</button>
-</div>
- -->
+    <button type="button" (click)=newCustomerOrder()>Test</button>
+    
