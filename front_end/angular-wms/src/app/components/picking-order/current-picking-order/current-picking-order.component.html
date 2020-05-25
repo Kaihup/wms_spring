@@ -1,1 +1,56 @@
-<p>current-picking-order works!</p>
+<h1>Current Picking Order</h1>
+<p>
+    Order: ...
+    <br>Order date: ...
+    <br>Order status: ...
+</p>
+
+
+
+<!-- ORDER LINES FOR PICKING-->
+<div class="row">
+    <div class="col-12">
+        <div id="pickingTable">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Ordered Amount</th>
+                        <th scope="col">In Stock</th>
+                        <th scope="col">Stored in Box</th>
+                        <th scope="col">Items picked</th>
+                        <th scope="col">Confirm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>nAmount</td>
+                        <td>nInStock</td>
+                        <td>nInBox</td>
+                        <td><input type="number" class="form-control" id="input-items-picked" placeholder="0"> </td>
+                        <td><button type="button" class="btn btn-outline-success">Confirm</button></td>
+                    </tr>
+                    <tr>
+                        <td>nAmount</td>
+                        <td>nInStock</td>
+                        <td>nInBox</td>
+                        <td><input type="number" class="form-control" id="input-items-picked" placeholder="0"> </td>
+                        <td><button type="button" class="btn btn-outline-success">Confirm</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- SEND ORDER BUTTON -->
+<div class="row">
+    <div class="col-12">
+        <div>
+            <button type="button" class="btn btn-outline-success mb-3 col-12" onclick="" id="send-order-btn">Send order
+                to
+                customer</button>
+        </div>
+    </div>
+</div>

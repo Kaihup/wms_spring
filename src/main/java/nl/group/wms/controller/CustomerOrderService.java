@@ -28,7 +28,7 @@ public class CustomerOrderService {
         return customerOrder.getId();
     }
 
-    public List<CustomerOrder> getAllCustomerOrders(long customerId) {
+    public List<CustomerOrder> getAllCustomerOrdersByCustomerId(long customerId) {
         Iterable<CustomerOrder> customerOrders = cor.findAll();
         List<CustomerOrder> customerOrders1 = new ArrayList<>();
         for (CustomerOrder customerOrder : customerOrders) {
@@ -37,6 +37,21 @@ public class CustomerOrderService {
             }
         }
         return customerOrders1;
+    }
+
+    public Iterable<CustomerOrder> getAllCustomerOrders() {
+        Iterable<CustomerOrder> customerOrders = cor.findAll();
+        return customerOrders;
+    }
+
+    public void addStatusToCustomerOrder(Enum<CustomerOrder.status> statusEnum, Long orderId) {
+        CustomerOrder order = cor.findById(orderId).get();
+        order.addStatusToMap(statusEnum);
+        cor.save(order);
+    }
+
+    public void updateCustomerOrder(CustomerOrder customerOrder) {
+        cor.save(customerOrder);
     }
 
 
@@ -90,8 +105,8 @@ public class CustomerOrderService {
         }
     }
 
-    public void purchaseOrder(long customerOrderId){
+    public void purchaseOrder(long customerOrderId) {
         CustomerOrder customerOrder = cor.findById(customerOrderId).get();
-        customerOrder.addStatusToMap(CustomerOrder.status.CONFIRMED_AND_READY_FOR_PICKING);
+        customerOrder.addStatusToMap(CustomerOrder.status.READY_FOR_PICKING);
     }
 }

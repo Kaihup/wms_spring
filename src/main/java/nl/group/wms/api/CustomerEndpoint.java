@@ -4,16 +4,19 @@ import nl.group.wms.Utils;
 import nl.group.wms.controller.CustomerService;
 import nl.group.wms.domein.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CustomerEndpoint {
 
     @Autowired
     CustomerService cs;
+
+    /* Custom query test/voorbeeld */
+    @GetMapping("/getCustomerByLastName/{lastName}")
+    public void getCustomerByLastName(@PathVariable String lastName) {
+        cs.findCustomerByLastName(lastName);
+    }
 
     @PostMapping("/newcustomer")
     public void addNewCustomer(@RequestBody Customer customer) {

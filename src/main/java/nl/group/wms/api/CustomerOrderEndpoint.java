@@ -14,43 +14,44 @@ public class CustomerOrderEndpoint {
     @Autowired
     CustomerOrderService cos;
 
+
     @PostMapping("/addNewCustomerOrder")
-    public long addNewOrder(@RequestBody CustomerOrder customerOrder){
+    public long addNewOrder(@RequestBody CustomerOrder customerOrder) {
         return cos.addNewCustomerOrder(customerOrder);
     }
 
-    //This if for one customer
+
+    //This is for one customer
     @GetMapping("/getAllCustomerOrders/{customerId}")
-    public List<CustomerOrder> getAllOrders(@PathVariable long customerId){
-        List<CustomerOrder> customerOrders = cos.getAllCustomerOrders(customerId);
+    public List<CustomerOrder> getAllCustomerOrdersByCustomerId(@PathVariable long customerId) {
+        List<CustomerOrder> customerOrders = cos.getAllCustomerOrdersByCustomerId(customerId);
         return customerOrders;
     }
 
 
-
     @PostMapping("/newCustomerOrderLine")
-    public long newOrderLine(@RequestBody CustomerOrderLine customerOrderLine){
+    public long newOrderLine(@RequestBody CustomerOrderLine customerOrderLine) {
         return cos.newCustomerOrderLine(customerOrderLine);
     }
 
     @PostMapping("/updateCustomerOrderLine")
-    public void updateOrderLine(@RequestBody int amountIncrease, @RequestBody long customerOrderLineId){
+    public void updateOrderLine(@RequestBody int amountIncrease, @RequestBody long customerOrderLineId) {
         cos.updateCustomerOrderLine(amountIncrease, customerOrderLineId);
     }
 
     //This if for one customer
     @PostMapping("/getTotalPrice")
-    public int getTotalPrice(@RequestBody long customerOrderId){
+    public int getTotalPrice(@RequestBody long customerOrderId) {
         return cos.getTotalPrice(customerOrderId);
     }
 
     @PostMapping("/removeProductItems")
-    public void removeProductItems(@RequestBody int amountRemoved, @RequestBody long customerOrderLineId){
+    public void removeProductItems(@RequestBody int amountRemoved, @RequestBody long customerOrderLineId) {
         cos.removeProductItems(amountRemoved, customerOrderLineId);
     }
 
     @PostMapping("/purchaseOrder")
-    public void purchaseOrder(@RequestBody long customerOrderId){
+    public void purchaseOrder(@RequestBody long customerOrderId) {
         cos.purchaseOrder(customerOrderId);
     }
 
