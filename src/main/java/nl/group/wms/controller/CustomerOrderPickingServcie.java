@@ -38,8 +38,7 @@ public class CustomerOrderPickingServcie {
             if (ordersReadyForPicking.size() > 0) {
                 CustomerOrder nextOrderToPick = ordersReadyForPicking.get(0);
                 for (CustomerOrder order : ordersReadyForPicking) {
-                    System.out.println("6");
-                    if (order.getCurrentStatusLocalDateTime().isBefore(nextOrderToPick.getCurrentStatusLocalDateTime())) {
+                    if (order.getCurrentStatusLocalDateTime().isAfter(nextOrderToPick.getCurrentStatusLocalDateTime())) {
                         /* Replace new order with older order */
                         nextOrderToPick = order;
                     }
