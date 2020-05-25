@@ -33,7 +33,14 @@ public class CustomerOrderPickingEndpoint {
     @GetMapping("/addCustomerOrderStatusSend/{orderId}")
     public void setPickedOrderStatus(@PathVariable Long orderId) {
         CustomerOrder order = cor.findById(orderId).get();
-        order.addStatusToMap(CustomerOrder.status.SEND);
+        order.addStatusToMap(CustomerOrder.status.SHIPPED_TO_CUSTOMER);
+        cos.updateCustomerOrder(order);
+    }
+
+    @GetMapping("/addCustomerOrderStatusIncomming/{orderId}")
+    public void setPickedOrderStatusIncomming(@PathVariable Long orderId) {
+        CustomerOrder order = cor.findById(orderId).get();
+        order.addStatusToMap(CustomerOrder.status.PRE_PURCHASE);
         cos.updateCustomerOrder(order);
     }
 
