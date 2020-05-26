@@ -94,14 +94,20 @@ export class CurrentPickingOrderComponent implements OnInit {
     console.log(currentLine.amountPicked);
     var btnConfirm = document.getElementById('rowId' + rowIndex);
     if (currentLine.amountOrdered == currentLine.amountPicked) {
-      btnConfirm.className = 'btn btn-sm col-11 btn-primary';
+      btnConfirm.className = 'btn btn-sm w-100 btn-primary';
+      btnConfirm.innerHTML = 'Confirm';
       (<HTMLInputElement>btnConfirm).disabled = false;
     } else {
-      btnConfirm.className = 'btn btn-sm col-11 btn-outline-secondary';
+      if (currentLine.amountOrdered > currentLine.amountPicked) {
+        btnConfirm.innerHTML = 'Incomplete';
+      } else if (currentLine.amountOrdered < currentLine.amountPicked) {
+        btnConfirm.innerHTML = 'Overcomplete';
+      }
+
+      btnConfirm.className = 'btn btn-sm w-100 btn-outline-secondary';
       (<HTMLInputElement>btnConfirm).disabled = true;
     }
   }
-
   setDisabled() {
     return true;
   }
@@ -127,7 +133,7 @@ export class CurrentPickingOrderComponent implements OnInit {
       (<HTMLInputElement>btnConfirm).disabled = true;
 
       /* CHANGE BUTTON CLASSES */
-      btnConfirm.className = 'btn btn-sm  col-11 btn-outline-success';
+      btnConfirm.className = 'btn btn-sm  w-100 btn-outline-success';
       btnConfirm.innerHTML = '√ Confirmed';
 
       btnMinOne.className = 'btn btn-sm col-2 mr-2 btn-outline-warning';

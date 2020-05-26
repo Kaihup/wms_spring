@@ -56,7 +56,7 @@ function showBoxes() {
 			document.getElementById("boxesTable").innerHTML = boxesTable;
 		}
 	};
-	xhr.open("GET", "http://localhost:8082/allboxes", true);
+	xhr.open("GET", baseUrl + "/allboxes", true);
 	xhr.send();
 }
 
@@ -87,7 +87,7 @@ function productDropdown() {
 			document.getElementById("ipproduct").innerHTML = productDropdown;
 		}
 	};
-	xhr.open("GET", "http://localhost:8082/allproducts", true);
+	xhr.open("GET", baseUrl + "/allproducts", true);
 	xhr.send();
 }
 
@@ -119,7 +119,7 @@ function postBox() {
 		console.log("The Box is saved");
 		showBoxes();
 	};
-	xhr.open("POST", "http://localhost:8082/newbox/" + productp, true);
+	xhr.open("POST", baseUrl + "/newbox/" + productp, true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send(objJSON);
 	document.getElementById("boxesTable");

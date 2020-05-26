@@ -88,8 +88,10 @@
 
             <td>{{orderLine.amountPicked}}</td>
             <td>
-                <button id="rowId{{i}}" [disabled]='true' type="button" class="btn btn-sm col-11 btn-outline-secondary"
-                    (click)='confirmRow(i)'>Confirm</button>
+                <div class="fixedWidth">
+                    <button id="rowId{{i}}" [disabled]='true' type="button"
+                        class="btn btn-sm w-100 btn-outline-secondary" (click)='confirmRow(i)'>Incomplete</button>
+                </div>
                 <!-- <p [class.font-weight-bold]=this.activate>bolded</p> -->
             </td>
         </tr>
