@@ -1,6 +1,5 @@
 package nl.group.wms.controller;
 
-import nl.group.wms.domein.Customer;
 import nl.group.wms.domein.CustomerOrder;
 import nl.group.wms.domein.CustomerOrderLine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,24 +68,24 @@ public class CustomerOrderService {
         /* Op basis van productId is het product met de bijbehorende prijs op te vragen.
          Zo weet je zeker dat je de goede prijs hebt */
         int unitPrice = pr.findById(productId).get().getPrice();
-        int amount = customerOrderLine.getAmount();
+        int amount = customerOrderLine.getAmountOrdered();
 
         int totalPrice = amount * unitPrice;
         customerOrderLine.setPrice(totalPrice);
         olr.save(customerOrderLine);
-        customerOrderLine.getProduct().decreaseStock(customerOrderLine.getAmount());
+        customerOrderLine.getProduct().decreaseStock(customerOrderLine.getAmountOrdered());
         return customerOrderLine.getId();
     }
 
     public void updateCustomerOrderLine(int amountIncrease, long customerOrderLineId) {
         CustomerOrderLine customerOrderLine = olr.findById(customerOrderLineId).get();
-        int currentAmount = customerOrderLine.getAmount();
+        int currentAmount = customerOrderLine.getAmountOrdered();
         if (amountIncrease > currentAmount) {
-            customerOrderLine.setAmount(currentAmount);
-            customerOrderLine.setPrice(customerOrderLine.getAmount() * customerOrderLine.getProduct().getPrice());
+            customerOrderLine.setAmountOrdered(currentAmount);
+            customerOrderLine.setPrice(customerOrderLine.getAmountOrdered() * customerOrderLine.getProduct().getPrice());
         } else {
-            customerOrderLine.setAmount(currentAmount + amountIncrease);
-            customerOrderLine.setPrice(customerOrderLine.getAmount() * customerOrderLine.getProduct().getPrice());
+            customerOrderLine.setAmountOrdered(currentAmount + amountIncrease);
+            customerOrderLine.setPrice(customerOrderLine.getAmountOrdered() * customerOrderLine.getProduct().getPrice());
         }
     }
 
@@ -104,11 +103,11 @@ public class CustomerOrderService {
 
     public void removeProductItems(int amountRemoved, long customerOrderLineId) {
         CustomerOrderLine customerOrderLine = olr.findById(customerOrderLineId).get();
-        int currentAmount = customerOrderLine.getAmount();
+        int currentAmount = customerOrderLine.getAmountOrdered();
         if (amountRemoved > currentAmount) {
-            customerOrderLine.setAmount(0);
+            customerOrderLine.setAmountOrdered(0);
         } else {
-            customerOrderLine.setAmount(currentAmount - amountRemoved);
+            customerOrderLine.setAmountOrdered(currentAmount - amountRemoved);
         }
     }
 

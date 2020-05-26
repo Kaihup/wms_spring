@@ -8,7 +8,8 @@ public class CustomerOrderLine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private int amount;
+    private int amountOrdered;
+    private int amountPicked;
     private int price;
     @ManyToOne
     private Product product;
@@ -47,19 +48,27 @@ public class CustomerOrderLine {
         this.price = price;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getAmountOrdered() {
+        return amountOrdered;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setAmountOrdered(int amountOrdered) {
+        this.amountOrdered = amountOrdered;
+    }
+
+    public int getAmountPicked() {
+        return amountPicked;
+    }
+
+    public void setAmountPicked(int amountPicked) {
+        this.amountPicked = amountPicked;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("\n----line id: " + id);
-        sb.append("\n\t\tamount: " + amount);
+        sb.append("\n\t\tamount: " + amountOrdered);
         sb.append("\n\t\tprice: " + price);
         sb.append("\n\t\tproductId: " + product.getName());
         sb.append("\n\t\tcustomerOrderId: " + customerOrder.getId());
