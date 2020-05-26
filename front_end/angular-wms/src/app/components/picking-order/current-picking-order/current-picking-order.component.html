@@ -74,18 +74,22 @@
             <td class="font-weight-bold">{{orderLine.product.name}}</td>
             <td>{{orderLine.amountOrdered}}</td>
             <td>
-
-                <button type="button" class="btn btn-sm btn-warning col-2 mr-2" (click)='pickItems(-1, i)'>-1</button>
-                <button type="button" class="btn btn-sm btn-warning col-2 mr-2" (click)='pickItems(-5, i)'>-5</button>
-                <button type="button" class="btn btn-sm btn-secondary col-2 mr-2" (click)='pickItems(5, i)'>+5</button>
-                <button type="button" class="btn btn-sm btn-secondary col-2 mr-2" (click)='pickItems(1, i)'>+1</button>
-
+                <div class="addBtn{{i}}">
+                    <button id="btn{{i}}-min-one" type="button" class=" btn btn-sm btn-warning col-2 mr-2"
+                        (click)='pickItems(-1, i)'>-1</button>
+                    <button id="btn{{i}}-min-multi" type="button" class=" btn btn-sm btn-warning col-2 mr-2"
+                        (click)='pickItems(-5, i)'>-5</button>
+                    <button id="btn{{i}}-plus-one" type="button" class=" btn btn-sm btn-secondary col-2 mr-2"
+                        (click)='pickItems(5, i)'>+5</button>
+                    <button id="btn{{i}}-plus-multi" type="button" class=" btn btn-sm btn-secondary col-2 mr-2"
+                        (click)='pickItems(1, i)'>+1</button>
+                </div>
             </td>
+
             <td>{{orderLine.amountPicked}}</td>
             <td>
-                <button type="button" class="btn btn-sm btn-outline-secondary"
-                    [ngClass]="{'btn-primary': this.activate, 'btn-outline-secondary': !this.activate}">Confirm
-                    {{i}}//{{orderLine.amountPicked}}</button>
+                <button id="rowId{{i}}" [disabled]='true' type="button" class="btn btn-sm col-11 btn-outline-secondary"
+                    (click)='confirmRow(i)'>Confirm</button>
                 <!-- <p [class.font-weight-bold]=this.activate>bolded</p> -->
             </td>
         </tr>
@@ -133,9 +137,8 @@
 <div class="row">
     <div class="col-12">
         <div>
-            <button type="button" class="btn btn-outline-success mb-3 col-12" onclick="" id="send-order-btn">Send order
-                to
-                customer</button>
+            <button id="btn-ship-order" type="button" [disabled]='true' class="btn btn-outline-secondary mb-3 col-12"
+                (click)='shipOrder'>Complete picking before shipping</button>
         </div>
     </div>
 </div>
