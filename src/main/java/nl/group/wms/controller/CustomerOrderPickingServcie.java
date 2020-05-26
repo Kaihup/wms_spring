@@ -45,7 +45,7 @@ public class CustomerOrderPickingServcie {
                 }
 
                 /* Print stuff about order to console for development purpose */
-                System.out.println(Utils.ic(Utils.ANSI_BLUE, "Next order to pick " +
+                System.out.println(Utils.ic(Utils.ANSI_GREEN, "Next order to pick " +
                         "\n\tOrder ID: " + nextOrderToPick.getId() +
                         "\n\tCurrent status: " + nextOrderToPick.getCurrentStatus() +
                         "\n\tLocalDateTime status: " + nextOrderToPick.getCurrentStatusLocalDateTime() +
