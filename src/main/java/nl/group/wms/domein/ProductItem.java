@@ -51,4 +51,13 @@ public class ProductItem {
     public void setBox(Box box) {
         this.box = box;
     }
+
+	public Enum getCurrentStatus() {
+		return currentStatus;
+	}
+
+	public void setCurrentStatus(Enum currentStatus) {
+		this.currentStatus = currentStatus;
+	}
+    
 }
