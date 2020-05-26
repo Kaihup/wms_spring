@@ -1,7 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Inject,
+} from '@angular/core';
 import { OrderLine } from './OrderLine';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { DOCUMENT } from '@angular/common';
+import { Button } from 'protractor';
 
 @Component({
   selector: 'app-current-picking-order',
@@ -10,6 +18,8 @@ import { HttpClient } from '@angular/common/http';
 })
 // @Injectable()
 export class CurrentPickingOrderComponent implements OnInit {
+  /* DEV */
+
   /* ORDER LINES */
   orderLinesTable: string;
   orderLines: Observable<OrderLine[]>;
@@ -32,9 +42,10 @@ export class CurrentPickingOrderComponent implements OnInit {
   customerAdress: string;
   customerZipCode: string;
 
-  activate: boolean;
+  rowsConfirmed: number = 0;
 
-  constructor(private http: HttpClient) {}
+  activate: boolean;
+  constructor(private http: HttpClient, @Inject(DOCUMENT) document) {}
 
   ngOnInit(): void {
     this.getOrderLines();
@@ -70,22 +81,81 @@ export class CurrentPickingOrderComponent implements OnInit {
     return result;
   }
 
-  pickItems(amountPicked, lineIndex) {
-    var currentLine = this.orderLineArray[lineIndex];
+  pickItems(amountPicked, rowIndex) {
+    var currentLine = this.orderLineArray[rowIndex];
     var currentAmountPicked = currentLine.amountPicked + amountPicked;
     if (currentAmountPicked >= 0) {
       currentLine.amountPicked = currentAmountPicked;
     } else {
       currentLine.amountPicked = 0;
     }
+
     console.log(currentLine.amountOrdered);
     console.log(currentLine.amountPicked);
-
+    var btnConfirm = document.getElementById('rowId' + rowIndex);
     if (currentLine.amountOrdered == currentLine.amountPicked) {
-      this.activate = true;
+      btnConfirm.className = 'btn btn-sm col-11 btn-primary';
+      (<HTMLInputElement>btnConfirm).disabled = false;
     } else {
-      this.activate = false;
+      btnConfirm.className = 'btn btn-sm col-11 btn-outline-secondary';
+      (<HTMLInputElement>btnConfirm).disabled = true;
     }
+  }
+
+  setDisabled() {
+    return true;
+  }
+  confirmRow(rowIndex) {
+    var currentLine = this.orderLineArray[rowIndex];
+    if (currentLine.amountOrdered != currentLine.amountPicked) {
+      console.log('should not be possible to confirm row');
+    } else {
+      var btnConfirm = document.getElementById('rowId' + rowIndex);
+      var btnMinOne = document.getElementById('btn' + rowIndex + '-min-one');
+      var btnMinMulti = document.getElementById(
+        'btn' + rowIndex + '-min-multi'
+      );
+      var btnPlusMulti = document.getElementById(
+        'btn' + rowIndex + '-plus-multi'
+      );
+      var btnPlusOne = document.getElementById('btn' + rowIndex + '-plus-one');
+      /* DISABLE ALL BUTTONS ON ROW */
+      (<HTMLInputElement>btnMinOne).disabled = true;
+      (<HTMLInputElement>btnMinMulti).disabled = true;
+      (<HTMLInputElement>btnPlusMulti).disabled = true;
+      (<HTMLInputElement>btnPlusOne).disabled = true;
+      (<HTMLInputElement>btnConfirm).disabled = true;
+
+      /* CHANGE BUTTON CLASSES */
+      btnConfirm.className = 'btn btn-sm  col-11 btn-outline-success';
+      btnConfirm.innerHTML = '√ Confirmed';
+
+      btnMinOne.className = 'btn btn-sm col-2 mr-2 btn-outline-warning';
+      btnMinMulti.className = 'btn btn-sm col-2 mr-2 btn-outline-warning';
+      btnPlusMulti.className = 'btn btn-sm col-2 mr-2 btn-outline-secondary';
+      btnPlusOne.className = 'btn btn-sm col-2 mr-2 btn-outline-secondary';
+
+      this.rowsConfirmed += 1;
+      console.log('√ confirmed row ' + rowIndex);
+      this.confirmPickingComplete();
+    }
+  }
+
+  confirmPickingComplete() {
+    console.log(this.rowsConfirmed);
+    console.log(this.orderLineArray.length);
+    /* Check if all orderLines are confirmed */
+    if (this.rowsConfirmed == this.orderLineArray.length) {
+      var btnShipOrder = document.getElementById('btn-ship-order');
+      (<HTMLInputElement>btnShipOrder).disabled = false;
+      btnShipOrder.innerHTML = 'Ship order';
+      btnShipOrder.className = 'btn btn-success mb-3 col-12';
+      console.log('picking completed for all rows');
+    }
+  }
+
+  shipOrder() {
+    console.log('ship order function');
   }
 
   getOrderLines() {
