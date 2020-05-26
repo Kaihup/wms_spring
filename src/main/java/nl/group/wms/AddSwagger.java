@@ -24,8 +24,8 @@ public class AddSwagger {
 				.apis(RequestHandlerSelectors.basePackage("nl.group.wms"))
 				.build()
 				.apiInfo(new ApiInfo("Warehouse Management System", "Project n.a.v. het traineeship tot Java programmeur", 
-						"1.0", "termsOfServiceuUrl", new Contact("Naam", "url", "e-mail"), 
-						"licensie", "licensieUrl", Collections.emptyList()));
+						"1.0", null, null, 
+						null, null, Collections.emptyList()));
 		
 	}
 }

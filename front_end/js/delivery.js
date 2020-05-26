@@ -17,13 +17,16 @@ function showDeliveries() {
 					"<th scope='col' onclick=sortTable(2)>Status</th>" +
 					"<th scope='col' onclick=sortTable(3)>Delivery date</th>" +
 					"<th scope='col' onclick=sortTable(4)>License plate</th>" +
-					"<th scope='col'>Details</th>" +
+					"<th scope='col'>Action</th>" +
 					"</tr>" +
 					"</thead><tbody>";
 
 				for (var x = 0; x < deliveryRows.length; x++) {
 					//if(deliveryRows[x].currentStatus == "COMPLETE") continue;
-					var showOrStore = (deliveryRows[x].currentStatus == "COMPLETE") ? "Store" : "Show";
+					var showOrStore =
+						deliveryRows[x].currentStatus == "COMPLETE"
+							? "Store items"
+							: "Show details";
 					deliveryTable +=
 						"<tr id=" +
 						deliveryRows[x].id +
@@ -45,7 +48,9 @@ function showDeliveries() {
 						"<td>" +
 						'<button type="button" class="btn btn-outline-secondary" onclick=changeWindow(' +
 						deliveryRows[x].id +
-						")>"+ showOrStore +"</button>" +
+						")>" +
+						showOrStore +
+						"</button>" +
 						"</td>" +
 						"</tr>";
 				}
@@ -54,7 +59,7 @@ function showDeliveries() {
 			document.getElementById("deliveryTable").innerHTML = deliveryTable;
 		}
 	};
-	xhr.open("GET", "http://localhost:8082/allBODeliveries", true);
+	xhr.open("GET", baseUrl + "/allBODeliveries", true);
 	xhr.send();
 }
 
@@ -69,7 +74,7 @@ function markDeliveryArrived() {
 		var xhr = new XMLHttpRequest();
 		xhr.open(
 			"POST",
-			"http://localhost:8082/setDeliveryArrived/" + delId + "/" + licensePlate,
+			baseUrl + "/setDeliveryArrived/" + delId + "/" + licensePlate,
 			true
 		);
 		xhr.setRequestHeader("Content-Type", "application/json");
@@ -86,45 +91,90 @@ function markDeliveryArrived() {
 	}
 }
 
-function changeWindow(deliveryId){
-    sessionStorage.setItem("showDeliveryId", deliveryId);
-    navigateShow('pages/delivery-details.html', pageDetails);
+function changeWindow(deliveryId) {
+	sessionStorage.setItem("showDeliveryId", deliveryId);
+	navigateShow("pages/delivery-details.html", pageDetails);
 }
 
 function sortTable(n) {
-	var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-	table = document.getElementById("deliveryTable").getElementsByTagName("TABLE")[0];
+	var table,
+		rows,
+		switching,
+		i,
+		x,
+		y,
+		shouldSwitch,
+		dir,
+		switchcount = 0;
+	table = document
+		.getElementById("deliveryTable")
+		.getElementsByTagName("TABLE")[0];
 	console.log(table);
 	switching = true;
 	dir = "asc";
 	while (switching) {
-	  switching = false;
-	  rows = table.rows;
-	  for (i = 1; i < (rows.length - 1); i++) {
-		shouldSwitch = false;
-		x = rows[i].getElementsByTagName("TD")[n];
-		y = rows[i + 1].getElementsByTagName("TD")[n];
-		if (dir == "asc") {
-		  if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-			shouldSwitch = true;
-			break;
-		  }
-		} else if (dir == "desc") {
-		  if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-			shouldSwitch = true;
-			break;
-		  }
+		switching = false;
+		rows = table.rows;
+		for (i = 1; i < rows.length - 1; i++) {
+			shouldSwitch = false;
+			x = rows[i].getElementsByTagName("TD")[n];
+			y = rows[i + 1].getElementsByTagName("TD")[n];
+			if (dir == "asc") {
+				if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+					shouldSwitch = true;
+					break;
+				}
+			} else if (dir == "desc") {
+				if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+					shouldSwitch = true;
+					break;
+				}
+			}
 		}
-	  }
-	  if (shouldSwitch) {
-		rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-		switching = true;
-		switchcount ++;
-	  } else {
-		if (switchcount == 0 && dir == "asc") {
-		  dir = "desc";
-		  switching = true;
+		if (shouldSwitch) {
+			rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+			switching = true;
+			switchcount++;
+		} else {
+			if (switchcount == 0 && dir == "asc") {
+				dir = "desc";
+				switching = true;
+			}
 		}
-	  }
 	}
-  }
+}
+
+function filterTable() {
+	var input, filter, table, tr, td, i, txtValue, columnr;
+	input = document.getElementById("ipfilter");
+	filter = input.value.toUpperCase();
+	var ipselection = document.getElementById("columNames").value;
+	console.log(ipselection);
+	columnr =
+		ipselection == "Backorder ID"
+			? 0
+			: ipselection == "Delivery ID"
+			? 1
+			: ipselection == "Status"
+			? 2
+			: ipselection == "Delivery date"
+			? 3
+			: 4;
+	table = document
+		.getElementById("deliveryTable")
+		.getElementsByTagName("TABLE")[0];
+	tr = table.getElementsByTagName("tr");
+
+	// Loop through all table rows, and hide those who don't match the search query
+	for (i = 0; i < tr.length; i++) {
+		td = tr[i].getElementsByTagName("td")[columnr];
+		if (td) {
+			txtValue = td.textContent || td.innerText;
+			if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				tr[i].style.display = "";
+			} else {
+				tr[i].style.display = "none";
+			}
+		}
+	}
+}

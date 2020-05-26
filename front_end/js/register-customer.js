@@ -14,52 +14,51 @@ function registerCustomer() {
 	var repeatpasswordp = document.getElementById("iprepeatpassword").value;
 
 	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState == 4){
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState == 4) {
 			var listOfCustomers = JSON.parse(this.responseText);
-			for(const value of listOfCustomers){
-				if (value.email == document.getElementById("ipemail").value){
+			for (const value of listOfCustomers) {
+				if (value.email == document.getElementById("ipemail").value) {
 					document.getElementById("ipemail").value = "";
 					alert("E-mail already taken");
 					return;
 				}
 			}
 
-			if (repeatpasswordp != passwordp){
+			if (repeatpasswordp != passwordp) {
 				document.getElementById("ippassword").value = "";
 				document.getElementById("iprepeatpassword").value = "";
 				alert("Passwords are not the same!");
 				return;
 			}
-				var theObject = {};
-				theObject.firstName = firstnamep;
-				theObject.lastName = lastnamep;
-				theObject.streetAddress = streetaddressp;
-				theObject.streetAddresstwo = streetaddresstwop
-				theObject.city = cityp;
-				theObject.state = statep;
-				theObject.zipCode = zipcodep;
-				theObject.country = countryp;
-				theObject.phoneNumber = phonenumberp;
-				theObject.mobilePhoneNumber = mobilephonenumberp;
-				theObject.email = emailp;
-				theObject.password = passwordp;
-				
-				var objJSON = JSON.stringify(theObject);
-					addNewCustomer(objJSON);
-			
+			var theObject = {};
+			theObject.firstName = firstnamep;
+			theObject.lastName = lastnamep;
+			theObject.streetAddress = streetaddressp;
+			theObject.streetAddresstwo = streetaddresstwop;
+			theObject.city = cityp;
+			theObject.state = statep;
+			theObject.zipCode = zipcodep;
+			theObject.country = countryp;
+			theObject.phoneNumber = phonenumberp;
+			theObject.mobilePhoneNumber = mobilephonenumberp;
+			theObject.email = emailp;
+			theObject.password = passwordp;
+
+			var objJSON = JSON.stringify(theObject);
+			addNewCustomer(objJSON);
 		}
-	}
-	xhr.open("GET", "http://localhost:8082/getcustomers", true);
+	};
+	xhr.open("GET", baseUrl + "/getcustomers", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send();
 }
 
-function addNewCustomer(objJSON){
+function addNewCustomer(objJSON) {
 	var xhr = new XMLHttpRequest();
-	xhr.open("POST", "http://localhost:8082/newcustomer", true);
+	xhr.open("POST", baseUrl + "/newcustomer", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send(objJSON);
 	alert("Register Succesfull!");
-	navigate('pages/login.html');
+	navigate("pages/login.html");
 }
