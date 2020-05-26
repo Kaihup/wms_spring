@@ -31,6 +31,11 @@ public class CustomerOrderEndpoint {
         return cos.newCustomerOrderLine(customerOrderLine);
     }
 
+//    @PostMapping("/newCustomerOrderLine")
+//    public long newOrderLine(@RequestBody long customerOrderId, @RequestBody long productId) {
+//        return cos.newCustomerOrderLine(customerOrderLine);
+//    }
+
     @PostMapping("/updateCustomerOrderLine/{amountIncrease}/{customerOrderLineId}")
     public void updateOrderLine(@PathVariable int amountIncrease, @PathVariable long customerOrderLineId){
         cos.updateCustomerOrderLine(amountIncrease, customerOrderLineId);
