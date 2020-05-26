@@ -2,6 +2,7 @@ package nl.group.wms.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import nl.group.wms.domein.BackOrder;
 import nl.group.wms.domein.BackOrderDelivery;
+import nl.group.wms.domein.BackOrderDeliveryStorage;
 import nl.group.wms.domein.BackOrderLine;
+import nl.group.wms.domein.Box;
 import nl.group.wms.domein.Product;
 import nl.group.wms.domein.ProductItem;
 
@@ -33,6 +36,9 @@ public class PlaceBackOrderService {
 	
 	@Autowired
 	ProductRepository pr;
+	
+	@Autowired
+    BoxService bs;
 	
 	public void updateBackOrderLine(BackOrderLine updatedLine) {
 		BackOrderLine line = bol.findById(updatedLine.getId()).get();
@@ -141,5 +147,7 @@ public class PlaceBackOrderService {
 	public void deleteDelivery(long deliveryId) {
 		bod.deleteById(deliveryId); 
 	}
+	
+	
 	
 }

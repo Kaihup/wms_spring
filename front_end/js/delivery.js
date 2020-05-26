@@ -17,13 +17,13 @@ function showDeliveries() {
 					"<th scope='col' onclick=sortTable(2)>Status</th>" +
 					"<th scope='col' onclick=sortTable(3)>Delivery date</th>" +
 					"<th scope='col' onclick=sortTable(4)>License plate</th>" +
-					"<th scope='col'>Details</th>" +
+					"<th scope='col'>Action</th>" +
 					"</tr>" +
 					"</thead><tbody>";
 
 				for (var x = 0; x < deliveryRows.length; x++) {
 					//if(deliveryRows[x].currentStatus == "COMPLETE") continue;
-					var showOrStore = (deliveryRows[x].currentStatus == "COMPLETE") ? "Store" : "Show";
+					var showOrStore = (deliveryRows[x].currentStatus == "COMPLETE") ? "Store items" : "Show details";
 					deliveryTable +=
 						"<tr id=" +
 						deliveryRows[x].id +
@@ -128,3 +128,32 @@ function sortTable(n) {
 	  }
 	}
   }
+
+  function filterTable() {
+	var input, filter, table, tr, td, i, txtValue, columnr;
+	input = document.getElementById("ipfilter");
+	filter = input.value.toUpperCase();
+	var ipselection = document.getElementById("columNames").value;
+	console.log(ipselection);
+	columnr = (ipselection == "Backorder ID") ? 0 :
+		(ipselection == "Delivery ID") ? 1 :
+		(ipselection == "Status") ? 2 :
+		(ipselection == "Delivery date") ? 3 : 4;
+	table = document.getElementById("deliveryTable").getElementsByTagName("TABLE")[0];
+	tr = table.getElementsByTagName("tr");
+  
+	// Loop through all table rows, and hide those who don't match the search query
+	for (i = 0; i < tr.length; i++) {
+	  td = tr[i].getElementsByTagName("td")[columnr];
+	  if (td) {
+		txtValue = td.textContent || td.innerText;
+		if (txtValue.toUpperCase().indexOf(filter) > -1) {
+		  tr[i].style.display = "";
+		} else {
+		  tr[i].style.display = "none";
+		}
+	  }
+	}
+  }
+
+ 

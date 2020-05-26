@@ -15,11 +15,12 @@ public class ProductItem {
     private Product product;
     @ManyToOne
     private Box box;
-
     private HashMap<LocalDateTime, Enum<status>> statusMap = new HashMap<>();
+    private Enum currentStatus;
 
     public void addStatusToMap(Enum status){
         statusMap.put(LocalDateTime.now(),status);
+        currentStatus = status;
     }
 
     public long getId() {
