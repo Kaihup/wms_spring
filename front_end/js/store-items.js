@@ -1,4 +1,4 @@
-function pageStoreItems(){
+/*function pageStoreItems(){
     //console.log("JAJA");
     var deliveryId = sessionStorage.getItem("showDeliveryId");
     console.log(deliveryId);
@@ -51,7 +51,7 @@ function pageStoreItems(){
                                 "<td id=ipToStore"+x+y+">"+ storeAmount +"</td>" +
                                 "<td><input type=\"number\" class=\"form-control\" " +
                                     "id=ipActuallyStored"+x+y+" oninput=confirmButtonCheck("+x+","+y+")></td>" +
-                                "<td >"+ box.id +"</td>" +
+                                "<td id=ipBoxID"+x+y+">"+ box.id +"</td>" +
                                 "<td><button type=\"button\" class=\"btn btn-outline-warning\"" +
                                     " id=ipConfirmStorage"+x+y+" onclick=confirmStorage("+x+","+y+")>Confirm</button></td></tr>";
                             
@@ -64,31 +64,84 @@ function pageStoreItems(){
         }
     }
     xhr.send();    
+}*/
+
+function pageStoreItems(){
+    //console.log("JAJA");
+    var deliveryId = sessionStorage.getItem("showDeliveryId");
+    console.log(deliveryId);
+    document.getElementById("showDId").innerHTML = deliveryId;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://localhost:8082/getStorageLines/"+deliveryId, true);
+	xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function(){
+        if (this.readyState == 4) {
+            //console.log(this.responseText);
+            var object = JSON.parse(this.responseText);
+            console.log(object);
+            document.getElementById("showBOId").innerHTML = object[0].delivery.lines[0].backOrder.id;
+            document.getElementById("showDDate").innerHTML = object[0].delivery.deliveryDate;
+            document.getElementById("showDeviating").innerHTML = object[0].delivery.deviating;
+            document.getElementById("showStatus").innerHTML = object[0].delivery.currentStatus;
+            var storeItemsTable = "<table class='table img-table table-striped'><thead>" +
+                "<tr><th scope='col'>Product name</th>" +
+                "<th scope='col'>Amount received</th>" +
+                "<th scope='col'>Amount to store</th>" +
+                "<th scope='col'>Actually stored</th>" +
+                "<th scope='col'>Store in Box no.</th>" +
+                "<th scope='col'>Confirmation</th></tr>" +
+                "</thead><tbody>";
+            var line = 1;
+            for (var x=0; x<object.length;x++){
+                var showName = (x > 0) ? (object[x].product.id == object[x-1].product.id) ?
+                    "" : object[x].product.name : object[x].product.name;
+                var showAmount = object[x].delivery.lines[0].amountReceived;
+                if (x > 0) {
+                    if (object[x].product.id == object[x-1].product.id){
+                        showAmount = "";
+                    } else {
+                        showAmount = object[x].delivery.lines[line].amountReceived;
+                        line++;
+                    }
+                }  
+                var id = object.id;
+                storeItemsTable += "<tr><td>"+showName+"</td>" +
+                    "<td >"+ showAmount +"</td>" +
+                    "<td id=ipToStore"+id+">"+ object[x].amountToStore +"</td>" +
+                    "<td><input type=\"number\" class=\"form-control\" value="+ object[x].actuallyStored +
+                        " id=ipActuallyStored"+id+" oninput=confirmButtonCheck("+id+")></td>" +
+                    "<td id=ipBoxID"+id+">"+ object[x].box.id +"</td>" +
+                    "<td><button type=\"button\" class=\"btn btn-outline-warning\"" +
+                        " id=ipConfirmStorage"+id+" onclick=confirmStorage("+id+","+ object[x].id +")>Confirm</button></td></tr>";               
+            }
+            document.getElementById("storeItemsTable").innerHTML = storeItemsTable;
+        }          
+    }
+    xhr.send();    
 }
 
-function confirmStorage(x,y) {
-    var a = document.getElementById("ipActuallyStored"+x+y).value;
-    var b = document.getElementById("ipToStore"+x+y).innerHTML;
+function confirmStorage(id, storageLineId) {
+    var a = document.getElementById("ipActuallyStored"+id).value;
+    var b = document.getElementById("ipToStore"+id).innerHTML;
     if (a != b) {
-        alert("The actually stored amount does not equal the amount to store. Are you sure?");
+        alert("The actually stored amount does not equal the amount to store. Are you sure you counted right?");
         return;
     }
-    document.getElementById("ipActuallyStored"+x+y).disabled = true;
-    document.getElementById("ipConfirmStorage"+x+y).innerHTML = "Confirmed";
-    document.getElementById("ipConfirmStorage"+x+y).disabled = true;
-    var table = document.getElementById("storeItemsTable").innerHTML
-    for (var z = 1; z < table.rows.length; z++){
+    document.getElementById("ipActuallyStored"+id).disabled = true;
+    document.getElementById("ipConfirmStorage"+id).innerHTML = "Confirmed";
+    document.getElementById("ipConfirmStorage"+id).disabled = true;
+    //set storage line to confirmed --> add actually stored --> productitem status to IN_STORAGE
         
     }
 
 }
 
-function confirmButtonCheck(x,y){
-    var a = document.getElementById("ipActuallyStored"+x+y).value;
-    var b = document.getElementById("ipToStore"+x+y).innerHTML;
+function confirmButtonCheck(id){
+    var a = document.getElementById("ipActuallyStored"+id).value;
+    var b = document.getElementById("ipToStore"+id).innerHTML;
     if (a == b) {
-        document.getElementById("ipConfirmStorage"+x+y).className = "btn btn-outline-success";
+        document.getElementById("ipConfirmStorage"+id).className = "btn btn-outline-success";
     } else {
-        document.getElementById("ipConfirmStorage"+x+y).className = "btn btn-outline-warning";
+        document.getElementById("ipConfirmStorage"+id).className = "btn btn-outline-warning";
     }
 }

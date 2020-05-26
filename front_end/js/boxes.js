@@ -3,9 +3,9 @@ function showBoxes() {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
 		if (this.readyState == 4) {
-			console.log(this.responseText);
+			//console.log(this.responseText);
 			var boxesRow = JSON.parse(this.responseText);
-			console.log(boxesRow);
+			//console.log(boxesRow);
 			var boxesTable = "";
 			if (!boxesRow.length) {
 				boxesTable +=
@@ -33,7 +33,7 @@ function showBoxes() {
 						"</td><td>" +
 						boxesRow[x].product.name +
 						"</td><td>" +
-						// Items in box
+						boxesRow[x].currentItems +
 						"</td><td>" +
 						boxesRow[x].maxProductItems +
 						"</td><td>" +

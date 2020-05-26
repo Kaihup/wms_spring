@@ -2,6 +2,7 @@ package nl.group.wms.api;
 
 import nl.group.wms.Utils;
 import nl.group.wms.controller.BoxService;
+import nl.group.wms.domein.BackOrderDeliveryStorage;
 import nl.group.wms.domein.Box;
 
 import java.util.List;
@@ -40,9 +41,19 @@ public class BoxEndPoint {
 //        ps.deleteProduct(2);
 //    }
     
-    @GetMapping("findEmptySpots/{productId}/{amountToStore}")
+    @GetMapping("/findEmptySpots/{productId}/{amountToStore}")
     public List<Box> findEmptySpots(@PathVariable long productId, @PathVariable int amountToStore){
     	return bs.findEmptySpots(productId, amountToStore);	
+    }
+    
+    @PostMapping("/createStorageLines/{deliveryId}")
+    public void createStorageLines(@PathVariable long deliveryId) {
+    	bs.createStorageLines(deliveryId);
+    }
+    
+    @GetMapping("/getStorageLines/{deliveryId}")
+    public List<BackOrderDeliveryStorage> getStorageLines(@PathVariable long deliveryId){
+    	return bs.getStorageLines(deliveryId);
     }
 
 

@@ -127,13 +127,25 @@ function resolveIssue(id, lines, BOLID){
 }
 
 function deliveryCompleted(){
+    document.getElementById("ipcheckComplete").disabled = true;
+    document.getElementById("ipcheckComplete").className = "btn btn-outline-secondary mb-3";
+    document.getElementById("ipcheckComplete").innerHTML = "Processing"; 
     var deliveryId = sessionStorage.getItem("showDeliveryId");
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "http://localhost:8082/completeDelivery/"+ deliveryId, true);
     xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = function(){
-        if (this.readyState == 4)
-        navigateShow("pages/delivery.html", showDeliveries);
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            var xhr5 = new XMLHttpRequest();
+            xhr5.open("POST", "http://localhost:8082/createStorageLines/"+ deliveryId, true);
+            xhr5.setRequestHeader("Content-Type", "application/json");
+            xhr5.onreadystatechange = function() {
+                if (this.readyState == 4){
+                    navigateShow("pages/delivery.html", showDeliveries);
+                }
+            }
+            xhr5.send();    
+        }
     }
     xhr.send();
     

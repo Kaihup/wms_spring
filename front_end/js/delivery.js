@@ -17,13 +17,13 @@ function showDeliveries() {
 					"<th scope='col' onclick=sortTable(2)>Status</th>" +
 					"<th scope='col' onclick=sortTable(3)>Delivery date</th>" +
 					"<th scope='col' onclick=sortTable(4)>License plate</th>" +
-					"<th scope='col'>Details</th>" +
+					"<th scope='col'>Action</th>" +
 					"</tr>" +
 					"</thead><tbody>";
 
 				for (var x = 0; x < deliveryRows.length; x++) {
 					//if(deliveryRows[x].currentStatus == "COMPLETE") continue;
-					var showOrStore = (deliveryRows[x].currentStatus == "COMPLETE") ? "Store" : "Show";
+					var showOrStore = (deliveryRows[x].currentStatus == "COMPLETE") ? "Store items" : "Show details";
 					deliveryTable +=
 						"<tr id=" +
 						deliveryRows[x].id +
