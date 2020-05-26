@@ -130,9 +130,9 @@ function confirmStorage(id, storageLineId) {
     document.getElementById("ipActuallyStored"+id).disabled = true;
     document.getElementById("ipConfirmStorage"+id).innerHTML = "Confirmed";
     document.getElementById("ipConfirmStorage"+id).disabled = true;
-    //set storage line to confirmed --> add actually stored --> productitem status to IN_STORAGE
+    //set storage line to confirmed --> add actually stored --> productitems status to IN_STORAGE
         
-    }
+    
 
 }
 
