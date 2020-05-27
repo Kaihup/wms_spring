@@ -16,6 +16,7 @@ import { CurrentPickingOrderComponent } from './components/picking-order/current
 import { FooterComponent } from './components/core-structure/footer/footer.component';
 import { HeaderComponent } from './components/core-structure/header/header.component';
 import { UserLoginComponent } from './components/user-login/user-login.component';
+import { OrderReviewComponent } from './components/order-review/order-review.component';
 
 /* ngx Bootstrap modules */
 
@@ -28,6 +29,7 @@ import { UserLoginComponent } from './components/user-login/user-login.component
     AllPickingOrdersComponent,
     CurrentPickingOrderComponent,
     UserLoginComponent,
+    OrderReviewComponent,
   ], // Eigen werk
   imports: [
     AppBootstrapModule,
