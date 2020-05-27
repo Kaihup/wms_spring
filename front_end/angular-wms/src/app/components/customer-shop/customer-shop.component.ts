@@ -173,6 +173,7 @@ export class CustomerShopComponent implements OnInit {
     else{
       this.http.post('http://localhost:8082/purchaseOrder/',this.customerOrderId).subscribe(
         () => console.log("Order is purchased"));
+        window.location.assign('http://localhost:4200/order-review/'); 
     }
   }
 }

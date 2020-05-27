@@ -147,7 +147,24 @@ public class CustomerOrderService {
                 pr.save(product);
             }
         }
-
-
     }
+
+    public String getAllCustomerOrdersLinesString(long customerOrderId) {
+        Iterable<CustomerOrderLine> customerOrderLines = olr.findAll();
+        StringBuilder customerOrderString = new StringBuilder("");
+        for (CustomerOrderLine customerOrderLine : customerOrderLines){
+            if(customerOrderLine.getCustomerOrder().getId() == customerOrderId){
+                customerOrderString.append(customerOrderLine.getProduct().getName());
+                customerOrderString.append(", ");
+                customerOrderString.append(customerOrderLine.getAmountOrdered());
+                customerOrderString.append(", ");
+                customerOrderString.append(customerOrderLine.getProduct().getPrice());
+                customerOrderString.append(", ");
+                customerOrderString.append(customerOrderLine.getPrice());
+                customerOrderString.append(", ");
+            }
+        }
+        return customerOrderString.toString();
+    }
+
 }

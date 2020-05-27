@@ -65,6 +65,14 @@ public class CustomerOrderEndpoint {
         cos.purchaseOrder(customerOrderId);
     }
 
+    //This is for one customer
+    @GetMapping("/getAllCustomerOrdersLinesString/{customerOrderId}")
+    public String getAllCustomerOrdersLinesString(@PathVariable long customerOrderId) {
+        String customerOrdersString = cos.getAllCustomerOrdersLinesString(customerOrderId);
+        System.out.println(customerOrdersString);
+        return customerOrdersString;
+    }
+
 }
 
 
