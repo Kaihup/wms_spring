@@ -1,71 +1,3 @@
-/*function pageStoreItems(){
-    //console.log("JAJA");
-    var deliveryId = sessionStorage.getItem("showDeliveryId");
-    console.log(deliveryId);
-    document.getElementById("showDId").innerHTML = deliveryId;
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://localhost:8082/getBODelivery/"+deliveryId, true);
-	xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = function(){
-        if (this.readyState == 4) {
-            //console.log(this.responseText);
-            var object = JSON.parse(this.responseText);
-            console.log(object);
-            document.getElementById("showBOId").innerHTML = object.lines[0].backOrder.id;
-            document.getElementById("showDDate").innerHTML = object.deliveryDate;
-            document.getElementById("showDeviating").innerHTML = object.deviating;
-            document.getElementById("showStatus").innerHTML = object.currentStatus;
-            var storeItemsTable = "<table class='table img-table table-striped'><thead>" +
-                "<tr><th scope='col'>Product name</th>" +
-                "<th scope='col'>Amount ordered</th>" +
-                "<th scope='col'>Amount to store</th>" +
-                "<th scope='col'>Actually stored</th>" +
-                "<th scope='col'>Store in Box no.</th>" +
-                "<th scope='col'>Confirmation</th></tr>" +
-                "</thead><tbody>";
-            for (var x=0; x<object.lines.length;x++){
-                var amountToStore = object.lines[x].amountReceived;
-                //console.log(object.lines[x]);
-                //console.log(object.lines[x]);
-                //console.log(object.lines[x]);
-                var xhr1 = new XMLHttpRequest();
-                xhr1.open("GET", "http://localhost:8082/findEmptySpots/"+ object.lines[x].product.id +
-                    "/"+ object.lines[x].amountReceived, false);
-                xhr1.setRequestHeader("Content-Type", "application/json");
-                xhr1.onreadystatechange = function() {
-                    if (this.readyState == 4) {
-                        var boxes = JSON.parse(this.responseText);
-                        for(var y=0; y < boxes.length; y++){
-                            console.log(boxes);
-                            var box = boxes[y];
-                            var availableAmount = box.maxProductItems - box.currentItems;
-                            var storeAmount = (amountToStore >= availableAmount) ? 
-                                availableAmount : amountToStore;
-                            amountToStore -= storeAmount;
-                            console.log(object);
-                            console.log(x);
-                            var showName = (y==0) ? object.lines[x].product.name : "";
-                            var showAmount = (y==0) ? object.lines[x].amountReceived : "";
-                            storeItemsTable += "<tr><td>"+showName+"</td>" +
-                                "<td >"+ showAmount +"</td>" +
-                                "<td id=ipToStore"+x+y+">"+ storeAmount +"</td>" +
-                                "<td><input type=\"number\" class=\"form-control\" " +
-                                    "id=ipActuallyStored"+x+y+" oninput=confirmButtonCheck("+x+","+y+")></td>" +
-                                "<td id=ipBoxID"+x+y+">"+ box.id +"</td>" +
-                                "<td><button type=\"button\" class=\"btn btn-outline-warning\"" +
-                                    " id=ipConfirmStorage"+x+y+" onclick=confirmStorage("+x+","+y+")>Confirm</button></td></tr>";
-                            
-                        }
-                        document.getElementById("storeItemsTable").innerHTML = storeItemsTable;
-                    }
-                }
-                xhr1.send();                
-            }
-        }
-    }
-    xhr.send();    
-}*/
-
 function pageStoreItems() {
 	//console.log("JAJA");
 	var deliveryId = sessionStorage.getItem("showDeliveryId");
@@ -77,7 +9,7 @@ function pageStoreItems() {
 	xhr.onreadystatechange = function () {
 		if (this.readyState == 4) {
 			//console.log(this.responseText);
-			var object = JSON.parse(this.responseText);
+			var object = JSON.parse(this.responseText); //storageLines
 			console.log(object);
 			document.getElementById("showBOId").innerHTML =
 				object[0].delivery.lines[0].backOrder.id;
@@ -113,7 +45,12 @@ function pageStoreItems() {
 						line++;
 					}
 				}
-				var id = object.id;
+				var ed="", disable="", buttonClass="warning";
+				if (object[x].storageConfirmed){
+					ed = "ed";
+					disable = "disabled";
+					buttonClass = "success";
+				}
 				storeItemsTable +=
 					"<tr><td>" +
 					showName +
@@ -122,50 +59,78 @@ function pageStoreItems() {
 					showAmount +
 					"</td>" +
 					"<td id=ipToStore" +
-					id +
+					x +
 					">" +
 					object[x].amountToStore +
 					"</td>" +
 					'<td><input type="number" class="form-control" value=' +
 					object[x].actuallyStored +
-					" id=ipActuallyStored" +
-					id +
+					" "+disable+" id=ipActuallyStored" +
+					x +
 					" oninput=confirmButtonCheck(" +
-					id +
+					x +
 					")></td>" +
 					"<td id=ipBoxID" +
-					id +
+					x +
 					">" +
 					object[x].box.id +
 					"</td>" +
-					'<td><button type="button" class="btn btn-outline-warning"' +
-					" id=ipConfirmStorage" +
-					id +
-					" onclick=confirmStorage(" +
-					id +
+					'<td><button type="button" ' +
+					" "+disable+" id=ipConfirmStorage" +
+					x +
+					" onclick=confirmStorageLine(" +
+					x +
 					"," +
 					object[x].id +
-					")>Confirm</button></td></tr>";
+					") class=\"btn btn-outline-"+buttonClass+"\">Confirm"+ed+"</button></td></tr>";
 			}
 			document.getElementById("storeItemsTable").innerHTML = storeItemsTable;
+			var lines = document.getElementById("storeItemsTable").getElementsByTagName("TABLE")[0].rows;
+			var counter = 0; 
+			console.log(lines[1].cells);
+			for (var x = 1; x < lines.length; x++) {
+				var confirmation = lines[x].cells[5].innerText;
+				if (confirmation != "Confirmed") counter++;
+			}
+			console.log("counter: "+counter);
+			if (counter == 0) { 
+				document.getElementById("ipsetStored").disabled = false;
+				document.getElementById("ipsetStored").className = "btn btn-outline-success mb-3";
+			}
 		}
 	};
 	xhr.send();
 }
 
-function confirmStorage(id, storageLineId) {
+function confirmStorageLine(id, storageLineId) {
 	var a = document.getElementById("ipActuallyStored" + id).value;
 	var b = document.getElementById("ipToStore" + id).innerHTML;
-	if (a != b) {
-		alert(
-			"The actually stored amount does not equal the amount to store. Are you sure you counted right?"
-		);
+	if (a > b) {
+		alert("The actually stored amount is higher than the amount to store. Please only store the amount that's requested.");
 		return;
+	} else if (a < b){
+		var msg = "The actually stored amount is lower than the amount to store. Are you sure you counted right?";
+		if (!confirm(msg)) return;
 	}
 	document.getElementById("ipActuallyStored" + id).disabled = true;
 	document.getElementById("ipConfirmStorage" + id).innerHTML = "Confirmed";
 	document.getElementById("ipConfirmStorage" + id).disabled = true;
 	//set storage line to confirmed --> add actually stored --> productitems status to IN_STORAGE
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", baseUrl + "/confirmStorageLine/" + storageLineId + "/" + a, true);
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
+	var lines = document.getElementById("storeItemsTable").getElementsByTagName("TABLE")[0].rows;
+	var counter = 0; 
+	for (var x = 1; x < lines.length; x++) {
+		var confirmation = lines[x].cells[5].innerText;
+		if (confirmation != "Confirmed") counter++;
+	}
+	console.log("counter: "+counter);
+	if (counter == 0) {
+		document.getElementById("ipsetStored").disabled = false;
+		document.getElementById("ipsetStored").className = "btn btn-outline-success mb-3";
+	}
 }
 
 function confirmButtonCheck(id) {
@@ -178,4 +143,20 @@ function confirmButtonCheck(id) {
 		document.getElementById("ipConfirmStorage" + id).className =
 			"btn btn-outline-warning";
 	}
+}
+
+function setStored(){
+	document.getElementById("ipsetStored").disabled = true;
+	document.getElementById("ipsetStored").className =
+		"btn btn-outline-secondary mb-3";
+	document.getElementById("ipsetStored").innerHTML = "Processing...";
+	var deliveryId = sessionStorage.getItem("showDeliveryId");
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", baseUrl + "/setDeliveryStored/" + deliveryId, true);
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.onreadystatechange = function () {
+		if (this.readyState == 4)
+			navigateShow("pages/delivery.html", showDeliveries);
+	};
+	xhr.send();
 }

@@ -127,6 +127,12 @@ public class PlaceBackOrderService {
 		bol.save(line);
 	}
 	
+	public void setDeliveryStored(long deliveryId) {
+		BackOrderDelivery delivery = bod.findById(deliveryId).get();
+		delivery.addStatusToMap(BackOrderDelivery.status.STORED);
+		bod.save(delivery);
+	}
+	
 	public void completeDelivery(long deliveryId) {
 		BackOrderDelivery delivery = bod.findById(deliveryId).get();
 		delivery.addStatusToMap(BackOrderDelivery.status.COMPLETE);

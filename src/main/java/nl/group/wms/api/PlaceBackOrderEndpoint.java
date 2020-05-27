@@ -76,6 +76,10 @@ public class PlaceBackOrderEndpoint {
 	public void completeDelivery(@PathVariable long id) {
 		pbs.completeDelivery(id);
 	}
+	@PostMapping("/setDeliveryStored/{id}")
+	public void setDeliveryStored(@PathVariable long id) {
+		pbs.setDeliveryStored(id);
+	}
 	@PostMapping("/deleteDelivery/{id}")
 	public void deleteDelivery(@PathVariable long id) {
 		pbs.deleteDelivery(id);
