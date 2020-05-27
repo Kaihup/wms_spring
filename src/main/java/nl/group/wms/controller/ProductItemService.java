@@ -43,7 +43,7 @@ public class ProductItemService {
     public void newProductItem(ProductItem productItem) {
         productItem.addStatusToMap(ProductItem.status.CHECKED_IN);
         productItemRep.save(productItem);
-        productRep.findById(productItem.getProduct().getId()).get().increaseStock(1);
+        //productRep.findById(productItem.getProduct().getId()).get().increaseStock(1);
     }
 
 

@@ -19,7 +19,7 @@ public class Box {
     private int height;
     private int maxProductItems;
     private int maxWeight;
-    private int currentItems; //zowel CHECKED_IN als IN_STORAGE als RESERVED
+    private int currentItems; //ongebruikt
     
     private int currentItemsCheckedIn;
     private int currentItemsInStorage;

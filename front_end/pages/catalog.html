@@ -33,17 +33,17 @@
         <div class="col-3">
             <input type="number" class="form-control" placeholder="Price" id="ipprice">
         </div>
-        <div class="col-3">
-            <input type="number" class="form-control" placeholder="Length" id="iplength">
+        <div class="col-6">
+            <input type="number" class="form-control" placeholder="EAN Code" id="ipeanCode">
         </div>
-        <div class="col-3">
+        <!-- <div class="col-3">
             <input type="number" class="form-control" placeholder="Width" id="ipwidth">
-        </div>
+        </div> -->
     </div>
 
-    <div class="form-row mb-3">
+    <!-- <div class="form-row mb-3">
         <div class="col-3">
-            <input type="number" class="form-control" placeholder="EAN Code" id="ipeanCode">
+            <input type="number" class="form-control" placeholder="Length" id="iplength">
         </div>
         <div class="col-3">
             <input type="number" class="form-control" placeholder="Height" id="ipheight">
@@ -51,9 +51,7 @@
         <div class="col-3">
             <input type="number" class="form-control" placeholder="Weight" id="ipweight">
         </div>
-
-
-    </div>
+    </div> -->
 
     <div class="form-row mb-3">
         <div class="col-9">
@@ -73,7 +71,27 @@
     <input type="hidden" id="fileDataIdhidden">
 </div>
 
-<h3 class="mt-4">Product catalog</h3>
+<div class="form-row">
+    <div class="col-5">
+        <h3 class="mt-4">Product catalog</h3>
+    </div>
+    <!-- search balk -->
+    <div class="col">
+        <div class="input-group mt-4">
+            <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" 
+                placeholder="Search..." id="ipcatalogfilter" oninput="filterCatalog()">
+            <div class="input-group-append">
+                <select class="custom-select" name="columNames" id="catalogcolumNames" onchange="filterCatalog()">
+                    <option value="Name">Name</option>
+                    <option value="Price">Price</option>
+                    <option value="eanCode">EAN Code</option>
+                    <option value="Description">Description</option>
+                </select>
+            </div>
+        </div> 
+    </div> 
+</div>
+<p class="font-italic font-weight-lighter">Click headers to sort table</p>
 <div id="catalogTable"></div>
 
 <div>
@@ -89,4 +107,4 @@
         </tr>
     </thead>
 </table>
-<button type="button" class="btn btn-outline-success mb-3" onclick="sendbackorder()">Send backorder</button>
+<button type="button" id="ipsendbo" class="btn btn-outline-success mb-3" onclick="sendbackorder()">Send backorder</button>

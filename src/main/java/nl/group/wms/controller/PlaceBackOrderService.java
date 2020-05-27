@@ -146,7 +146,7 @@ public class PlaceBackOrderService {
 				item.addStatusToMap(ProductItem.status.CHECKED_IN);
 				pir.save(item);
 			}
-			product.increaseStock(line.getAmountReceived());
+			//product.increaseStock(line.getAmountReceived());
 		}
 	}
 	

@@ -12,11 +12,11 @@ function showDeliveries() {
 			} else {
 				deliveryTable +=
 					"<table class='table table-striped'><thead>" +
-					"<tr><th scope='col' onclick=sortTable(0)>BackOrder ID</th>" +
-					"<th scope='col' onclick=sortTable(1)>BackOrderDelivery ID</th>" +
-					"<th scope='col' onclick=sortTable(2)>Status</th>" +
-					"<th scope='col' onclick=sortTable(3)>Delivery date</th>" +
-					"<th scope='col' onclick=sortTable(4)>License plate</th>" +
+					"<tr><th scope='col' onclick=sortTable(0,true)>BackOrder ID</th>" +
+					"<th scope='col' onclick=sortTable(1,true)>BackOrderDelivery ID</th>" +
+					"<th scope='col' onclick=sortTable(2,false)>Status</th>" +
+					"<th scope='col' onclick=sortTable(3,false)>Delivery date</th>" +
+					"<th scope='col' onclick=sortTable(4,false)>License plate</th>" +
 					"<th scope='col'>Action</th>" +
 					"</tr>" +
 					"</thead><tbody>";
@@ -96,7 +96,7 @@ function changeWindow(deliveryId) {
 	navigateShow("pages/delivery-details.html", pageDetails);
 }
 
-function sortTable(n) {
+function sortTable(n, numbers) {
 	var table,
 		rows,
 		switching,
@@ -109,7 +109,7 @@ function sortTable(n) {
 	table = document
 		.getElementById("deliveryTable")
 		.getElementsByTagName("TABLE")[0];
-	console.log(table);
+	//console.log(table);
 	switching = true;
 	dir = "asc";
 	while (switching) {
@@ -120,14 +120,28 @@ function sortTable(n) {
 			x = rows[i].getElementsByTagName("TD")[n];
 			y = rows[i + 1].getElementsByTagName("TD")[n];
 			if (dir == "asc") {
-				if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-					shouldSwitch = true;
-					break;
+				if (numbers) {
+					if (parseInt(x.innerHTML) > parseInt(y.innerHTML)) {
+						shouldSwitch = true;
+						break;
+					}
+				} else {
+					if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+						shouldSwitch = true;
+						break;
+					}
 				}
 			} else if (dir == "desc") {
-				if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-					shouldSwitch = true;
-					break;
+				if (numbers) {
+					if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {
+						shouldSwitch = true;
+						break;
+					}
+				} else {
+					if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+						shouldSwitch = true;
+						break;
+					}
 				}
 			}
 		}
