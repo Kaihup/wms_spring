@@ -16,4 +16,5 @@ public interface BoxRepository extends CrudRepository<Box, Long> {
             nativeQuery = true)
     public List<Box> findByProduct(@Param("product") long productId);
 
+
 }

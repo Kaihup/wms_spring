@@ -138,13 +138,18 @@ export class AllPickingOrdersComponent implements OnInit {
 
       this.rowsConfirmed += 1;
       console.log('√ confirmed row ' + rowIndex);
+      console.log('customerOrderLine id: ' + currentLine.id);
+      console.log(currentLine.amountPicked);
+      console.log(currentLine.product.id);
+      // set status to ready for shipping
+
       this.confirmPickingComplete();
     }
   }
 
   confirmPickingComplete() {
-    console.log(this.rowsConfirmed);
-    console.log(this.pickingLineArray.length);
+    //console.log(this.rowsConfirmed);
+    //console.log(this.pickingLineArray.length);
     /* Check if all orderLines are confirmed */
     if (this.rowsConfirmed == this.pickingLineArray.length) {
       var btnShipOrder = document.getElementById('btn-ship-order');

@@ -89,6 +89,10 @@ public class CustomerOrderService {
         }
     }
 
+    public CustomerOrderLine getOrderLine(long customerOrderLineId) {
+        return olr.findById(customerOrderLineId).get();
+    }
+
     public int getTotalPrice(long customerOrderId) {
         Iterable<CustomerOrderLine> customerOrderLines = olr.findAll();
         int totalPrice = 0;

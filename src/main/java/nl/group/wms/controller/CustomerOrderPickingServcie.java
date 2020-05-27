@@ -1,9 +1,7 @@
 package nl.group.wms.controller;
 
 import nl.group.wms.Utils;
-import nl.group.wms.domein.CustomerOrder;
-import nl.group.wms.domein.CustomerOrderLine;
-import nl.group.wms.domein.CustomerOrderPickingLine;
+import nl.group.wms.domein.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +18,9 @@ public class CustomerOrderPickingServcie {
 
     @Autowired
     CustomerOrderLineRepository olr;
+
+    @Autowired
+    ProductItemRepository pir;
 
     @Autowired
     CustomerOrderService cos;
@@ -129,68 +130,54 @@ public class CustomerOrderPickingServcie {
         return entrys > 0;
     }
 
-    /* BACKUP NIET VERWIJDEREN */
-//    public Iterable<CustomerOrderLine> getNextCustomerOrderToPick() {
-//
-//        Iterable<CustomerOrder> customerOrders = cos.getAllCustomerOrders();
-//
-//        /* Check if there are orders */
-//        if (customerOrders.iterator().hasNext()) {
-//
-//            /* Fill ArrayList with pickable orders */
-//            ArrayList<CustomerOrder> ordersReadyForPicking = new ArrayList<>();
-//            for (CustomerOrder order : customerOrders) {
-//                if (order.getCurrentStatus().equals(CustomerOrder.status.READY_FOR_PICKING)) {
-//                    ordersReadyForPicking.add(order);
-//                }
-//            }
-//
-//            /* Check for the oldes pickable order */
-//            if (ordersReadyForPicking.size() > 0) {
-//                CustomerOrder nextOrderToPick = ordersReadyForPicking.get(0);
-//                for (CustomerOrder order : ordersReadyForPicking) {
-//                    if (order.getCurrentStatusLocalDateTime().isAfter(nextOrderToPick.getCurrentStatusLocalDateTime())) {
-//                        /* Replace new order with older order */
-//                        nextOrderToPick = order;
-//                    }
-//                }
-//
-//                /* Print stuff about order to console for development purpose */
-//                System.out.println(Utils.ic(Utils.ANSI_GREEN, "Next order to pick " +
-//                        "\n\tOrder ID: " + nextOrderToPick.getId() +
-//                        "\n\tCurrent status: " + nextOrderToPick.getCurrentStatus() +
-//                        "\n\tLocalDateTime status: " + nextOrderToPick.getCurrentStatusLocalDateTime() +
-//                        "\n\tOrderLines: " + getCustomerOrderLinesById(nextOrderToPick.getId())));
-//
-//                /* Return orderLines for oldest pickable order */
-//                long orderId = nextOrderToPick.getId();
-//                return getCustomerOrderLinesById(orderId);
-//            }
-//        }
-//
-//        /* When here, there are no pickable orders in the database ... :( */
-//        System.out.println(Utils.ic(Utils.ANSI_RED, "NO ORDERS WITH STATUS READY_FOR_PICKING"));
-//        return null;
-//
-//    }
-
 
     public Iterable<CustomerOrderLine> getCustomerOrderLinesById(long customerOrderId) {
         Iterable<CustomerOrderLine> orderLines = olr.findByCustomerOrderId(customerOrderId);
         return orderLines;
     }
 
-//    public Iterable<CustomerOrderPickingLine> generatePickingLines(long customerOrderId) {
-//        Iterable<CustomerOrderLine> orderLines = olr.findByCustomerOrderId(customerOrderId);
-//        for (CustomerOrderLine orderLIne : orderLines) {
-//            long productId = orderLIne.getProduct().getId();
-//            List<Box> boxes = bs.getBoxesWithProduct(productId);
-//
-//        }
-//
-//
-//    }
 
+    /* CONFIRM PICKING */
+    // lijst met boxen van besteld product
+    // aantal bestelde items
+    public void orderLineIsPicked(long customerOrderLineId) {
+        // get customerOrderLine
+        CustomerOrderLine customerOrderLine = cos.getOrderLine(customerOrderLineId);
+        // get product
+        // get amount ordered
+        long productId = customerOrderLine.getProduct().getId();
+        long amountOrdered = customerOrderLine.getAmountOrdered();
+        // print to console
+        System.out.println("Product naam " + customerOrderLine.getProduct().getName());
+        System.out.println("Product id : " + productId);
+        System.out.println("Amount ordered : " + amountOrdered);
+        // get list of boxes wher product is stored
+        Iterable<Box> boxes = bs.getAllBoxesWithProduct(productId);
+        //
+        for (Box box : boxes) {
+            // get list with items in box
+            Iterable<ProductItem> productItems = pir.findProductItemByBox(box);
+            for (int i = 0; i <= amountOrdered; i++) {
+                if (productItems.iterator().hasNext()) {
+                    ProductItem item = productItems.iterator().next();
+                    System.out.println(item.getId());
+                    item.addStatusToMap(ProductItem.status.READY_FOR_TRANSIT);
+                    System.out.println(item.getCurrentStatus());
+
+                }
+            }
+
+        }
+
+    }
+
+
+
+
+
+
+
+    /* PRINT METHODS */
 
     public void printPickingLineInfo(Iterable<CustomerOrderPickingLine> pickingLines) {
         for (CustomerOrderPickingLine line : pickingLines) {
@@ -208,7 +195,6 @@ public class CustomerOrderPickingServcie {
                 "\n\tLocalDateTime status: " + nextOrderToPick.getCurrentStatusLocalDateTime() +
                 "\n\tOrderLines: " + getCustomerOrderLinesById(nextOrderToPick.getId())));
     }
-
 
 }
 
