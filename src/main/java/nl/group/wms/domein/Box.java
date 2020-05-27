@@ -1,6 +1,10 @@
 package nl.group.wms.domein;
 
+import java.util.List;
+
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Box {
@@ -16,9 +20,45 @@ public class Box {
     private int maxProductItems;
     private int maxWeight;
     private int currentItems; //zowel CHECKED_IN als IN_STORAGE als RESERVED
-
-
-    public void increaseCurrentItems(int amount) {
+    
+    private int currentItemsCheckedIn;
+    private int currentItemsInStorage;
+    private int currentItemsReserved;
+    
+    
+    @JsonIgnore
+    @OneToMany(mappedBy="box")
+    private List<ProductItem> items;
+    
+    @PostLoad
+    private void updateItems() {
+    	int checkedIn = 0, inStorage = 0, reserved = 0;
+    	for(ProductItem item: items) {
+    		if (item.getCurrentStatus() == ProductItem.status.CHECKED_IN) {
+    			checkedIn++;
+    		} else if (item.getCurrentStatus() == ProductItem.status.IN_STORAGE) {
+    			inStorage++;
+    		} else if (item.getCurrentStatus() == ProductItem.status.RESERVED) {
+    			reserved++;
+    		}
+    	}
+    	this.currentItemsCheckedIn = checkedIn;
+    	this.currentItemsInStorage = inStorage;
+    	this.currentItemsReserved = reserved;
+    }
+    
+	public int getCurrentItemsCheckedIn() {
+		return currentItemsCheckedIn;
+	}
+	public int getCurrentItemsInStorage() {
+		return currentItemsInStorage;
+	}
+	public int getCurrentItemsReserved() {
+		return currentItemsReserved;
+	}
+	
+	
+	public void increaseCurrentItems(int amount) {
     	if(amount > 0) this.currentItems += amount;
 	}
     public void decreaseCurrentItems(int amount) {

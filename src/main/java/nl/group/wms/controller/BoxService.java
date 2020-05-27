@@ -140,6 +140,11 @@ public class BoxService {
                         storageLine.getProduct(), storageLine.getBox());
                 pir.delete(item);
             }
+            if (deviation > 1) { //rare bug dat de laatste in een loop niet verwijderd wordt (snelle oplossing)
+            	ProductItem item = pir.findFirstByCurrentStatusAndProductAndBox(ProductItem.status.CHECKED_IN,
+                        storageLine.getProduct(), storageLine.getBox());
+                pir.delete(item);
+            }
             Box box = storageLine.getBox();
             box.decreaseCurrentItems(deviation);
             br.save(box);
