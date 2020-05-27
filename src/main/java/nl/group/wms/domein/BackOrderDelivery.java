@@ -26,7 +26,7 @@ public class BackOrderDelivery {
 	private LocalDate deliveryDate;
 	private String licensePlateDeliverer;
 	private boolean deviating;
-	public enum status {EXPECTED,ARRIVED,NEEDS_RESOLVING,COMPLETE};
+	public enum status {EXPECTED,ARRIVED,NEEDS_RESOLVING,COMPLETE,STORED};
 	@Column(columnDefinition = "LONGBLOB")
 	private HashMap<LocalDateTime, Enum<status>> statusMap = new HashMap<>(); 
 	private Enum currentStatus;
