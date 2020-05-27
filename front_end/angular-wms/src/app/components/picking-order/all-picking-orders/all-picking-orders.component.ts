@@ -157,6 +157,7 @@ export class AllPickingOrdersComponent implements OnInit {
 
   shipOrder() {
     console.log('ship order function');
+    // Remove productItems
   }
   // currenInOrder(product: Product) {
   //   return product.amount;
