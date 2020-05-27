@@ -9,7 +9,8 @@ function sendData() {
 					value.password == document.getElementById("ippassword").value
 				) {
 					alert("Login succesfull");
-					navigate("pages/test.html");
+					//navigate("pages/test.html");
+					window.location.assign('http://localhost:4200/customer-shop/');
 					return;
 				}
 			}
