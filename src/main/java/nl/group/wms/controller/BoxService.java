@@ -4,6 +4,7 @@ import nl.group.wms.domein.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,7 +77,7 @@ public class BoxService {
         List<Box> boxes = br.findByProduct(productId);
         List<Box> availableBoxes = new ArrayList<Box>();
         for (Box box : boxes) {
-            int currentAmount = box.getCurrentItems();
+            int currentAmount = (box.getCurrentItemsCheckedIn() + box.getCurrentItemsInStorage() + box.getCurrentItemsReserved());
             int maxAmount = box.getMaxProductItems();
             if (currentAmount == maxAmount) {
                 continue;
@@ -97,7 +98,7 @@ public class BoxService {
             int amountToStore = line.getAmountReceived();
             List<Box> boxes = findEmptySpots(productId, amountToStore);
             for (Box box : boxes) {
-                int emptyStorage = (box.getMaxProductItems() - box.getCurrentItems());
+                int emptyStorage = (box.getMaxProductItems() - (box.getCurrentItemsCheckedIn() + box.getCurrentItemsInStorage() + box.getCurrentItemsReserved()));
                 int storeAmount = (amountToStore >= emptyStorage) ? emptyStorage : amountToStore;
                 for (int x = 0; x < storeAmount; x++) {
                     ProductItem item = pir.findFirstByCurrentStatusAndProductAndBox(ProductItem.status.CHECKED_IN, line.getProduct(), null);
@@ -110,8 +111,6 @@ public class BoxService {
                 storageLine.setDelivery(delivery);
                 storageLine.setProduct(line.getProduct());
                 bodsr.save(storageLine);
-                box.increaseCurrentItems(storeAmount);
-                br.save(box);
                 amountToStore -= storeAmount;
             }
         }
@@ -140,16 +139,22 @@ public class BoxService {
                         storageLine.getProduct(), storageLine.getBox());
                 pir.delete(item);
             }
-            if (deviation > 1) { //rare bug dat de laatste in een loop niet verwijderd wordt (snelle oplossing)
+            if (deviation > 1) { //rare bug dat de laatste in de loop niet verwijderd wordt (snelle oplossing)
             	ProductItem item = pir.findFirstByCurrentStatusAndProductAndBox(ProductItem.status.CHECKED_IN,
                         storageLine.getProduct(), storageLine.getBox());
                 pir.delete(item);
             }
-            Box box = storageLine.getBox();
-            box.decreaseCurrentItems(deviation);
-            br.save(box);
         }
 
+    }
+    
+    public void deleteBox(long id) {
+        Box box = br.findById(id).get();
+        List<ProductItem> items = pir.findByBox(box);
+        for (ProductItem item: items) {
+        	pir.delete(item);
+        }
+        br.delete(box);
     }
 
 

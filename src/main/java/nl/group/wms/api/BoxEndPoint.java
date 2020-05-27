@@ -86,6 +86,11 @@ public class BoxEndPoint {
     public void confirmStorageLine(@PathVariable long storageLineId, @PathVariable int actuallyStored) {
     	bs.confirmStorageLine(storageLineId, actuallyStored);
     }
+    
+    @DeleteMapping("/deleteBox/{id}")
+    public void deleteBox(@PathVariable long id) {
+        bs.deleteBox(id);
+    }
 
 
 }

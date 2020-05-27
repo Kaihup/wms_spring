@@ -13,16 +13,14 @@ function showProducts() {
 			} else {
 				catalogTable +=
 					"<table class='table img-table table-striped'><thead>" +
-					"<tr><th scope='col'>Image</th>" +
-					"<th scope='col'>Name</th>" +
-					"<th scope='col'>In Stock</th>" +
-					"<th scope='col'>Price</th>" +
-					"<th scope='col'>EAN code</th>" +
-					"<th scope='col'>Description</th>" +
-					"<th scope='col'>Length</th>" +
-					"<th scope='col'>Width</th>" +
-					"<th scope='col'>Height</th>" +
-					"<th scope='col'>Weight</th>" +
+					"<tr><th scope='col' onclick=sortCatalog(0,false)>Image</th>" +
+					"<th scope='col' onclick=sortCatalog(1,false)>Name</th>" +
+					"<th scope='col' onclick=sortCatalog(2,true)>Price</th>" +
+					"<th scope='col' onclick=sortCatalog(3,true)>EAN code</th>" +
+					"<th scope='col' onclick=sortCatalog(4,false)>Description</th>" +
+					"<th scope='col' onclick=sortCatalog(5,true)>Items CHECKED_IN</th>" +
+					"<th scope='col' onclick=sortCatalog(6,true)>Items IN_STORAGE</th>" +
+					"<th scope='col' onclick=sortCatalog(7,true)>Items RESERVED</th>" +
 					"<th scope='col'>Backorder</th>" +
 					"<th scope='col'>Edit</th>" +
 					"<th scope='col'>Delete</th></tr>" +
@@ -41,21 +39,17 @@ function showProducts() {
 						"</td><td class='font-weight-bold'>" +
 						productsRow[x].name +
 						"</td><td>" +
-						productsRow[x].inStock +
-						"</td><td>" +
 						productsRow[x].price +
 						"</td><td>" +
 						productsRow[x].eanCode +
 						"</td><td>" +
 						productsRow[x].description +
 						"</td><td>" +
-						productsRow[x].length +
+						productsRow[x].currentItemsCheckedIn +
 						"</td><td>" +
-						productsRow[x].width +
+						productsRow[x].currentItemsInStorage +
 						"</td><td>" +
-						productsRow[x].height +
-						"</td><td>" +
-						productsRow[x].weight +
+						productsRow[x].currentItemsReserved +
 						"</td><td>" +
 						'<input type="checkbox" onchange="checkbackorderline(\'' +
 						productsRow[x].id +
@@ -77,6 +71,7 @@ function showProducts() {
 				catalogTable += "</tbody></table>";
 			}
 			document.getElementById("catalogTable").innerHTML = catalogTable;
+			document.getElementById("ipsendbo").disabled = true;
 		}
 	};
 	xhr.open("GET", baseUrl + "/allproducts", true);
@@ -195,10 +190,10 @@ function postProduct(fileId) {
 	theObject.price = document.getElementById("ipprice").value;
 	theObject.eanCode = document.getElementById("ipeanCode").value;
 	theObject.description = document.getElementById("ipdescription").value;
-	theObject.length = document.getElementById("iplength").value;
-	theObject.width = document.getElementById("ipwidth").value;
-	theObject.height = document.getElementById("ipheight").value;
-	theObject.weight = document.getElementById("ipweight").value;
+	//theObject.length = document.getElementById("iplength").value;
+	//theObject.width = document.getElementById("ipwidth").value;
+	//theObject.height = document.getElementById("ipheight").value;
+	//theObject.weight = document.getElementById("ipweight").value;
 	if (fileId) {
 		theObject.fileData = { id: fileId };
 	} else {
@@ -226,10 +221,10 @@ function postProduct(fileId) {
 	document.getElementById("ipprice").value = "";
 	document.getElementById("ipeanCode").value = "";
 	document.getElementById("ipdescription").value = "";
-	document.getElementById("iplength").value = "";
-	document.getElementById("ipwidth").value = "";
-	document.getElementById("ipheight").value = "";
-	document.getElementById("ipweight").value = "";
+	//document.getElementById("iplength").value = "";
+	//document.getElementById("ipwidth").value = "";
+	//document.getElementById("ipheight").value = "";
+	//document.getElementById("ipweight").value = "";
 
 	// document.getElementById("ipfile").files[0].name = null;
 	document.getElementById("ipfile").value = "";
@@ -269,10 +264,10 @@ function editProduct(id) {
 			document.getElementById("ipname").value = product.name;
 			document.getElementById("ipprice").value = product.price;
 			document.getElementById("ipeanCode").value = product.eanCode;
-			document.getElementById("iplength").value = product.length;
-			document.getElementById("ipwidth").value = product.width;
-			document.getElementById("ipheight").value = product.height;
-			document.getElementById("ipweight").value = product.weight;
+			//document.getElementById("iplength").value = product.length;
+			//document.getElementById("ipwidth").value = product.width;
+			//document.getElementById("ipheight").value = product.height;
+			//document.getElementById("ipweight").value = product.weight;
 			document.getElementById("ipdescription").value = product.description;
 			document.getElementById("ipaddoredit").innerHTML = "Update product";
 			var changebutton = document.getElementById("ipaddoredit");
@@ -309,6 +304,10 @@ function checkbackorderline(id, naam, check) {
 	} else {
 		table.deleteRow(document.getElementById(rid).rowIndex);
 	}
+	console.log(table.rows);
+	if (table.rows.length == 1) {
+		document.getElementById("ipsendbo").disabled = true;
+	} else document.getElementById("ipsendbo").disabled = false;
 }
 
 function sendbackorder() {
@@ -440,4 +439,82 @@ function createDeliveryArray(nrOfLines, deliveryMembers) {
 	console.log("deliveryarray: ");
 	console.log(array);
 	return array;
+}
+
+function filterCatalog() {
+	var input, filter, table, tr, td, i, txtValue, columnr;
+	input = document.getElementById("ipcatalogfilter");
+	filter = input.value.toUpperCase();
+	var ipselection = document.getElementById("catalogcolumNames").value;
+	console.log(ipselection);
+	columnr = (ipselection == "Name") ? 1 :
+		(ipselection == "Price") ? 2 : 
+		(ipselection == "eanCode") ? 3 : 4;
+	table = document.getElementById("catalogTable").getElementsByTagName("TABLE")[0];
+	tr = table.getElementsByTagName("tr");
+
+	// Loop through all table rows, and hide those who don't match the search query
+	for (i = 0; i < tr.length; i++) {
+		td = tr[i].getElementsByTagName("td")[columnr];
+		if (td) {
+			txtValue = td.textContent || td.innerText;
+			if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				tr[i].style.display = "";
+			} else {
+				tr[i].style.display = "none";
+			}
+		}
+	}
+}
+
+function sortCatalog(n, numbers) {
+	var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+	table = document.getElementById("catalogTable").getElementsByTagName("TABLE")[0];
+	//console.log(table);
+	switching = true;
+	dir = "asc";
+	while (switching) {
+		switching = false;
+		rows = table.rows;
+		for (i = 1; i < rows.length - 1; i++) {
+			shouldSwitch = false;
+			x = rows[i].getElementsByTagName("TD")[n];
+			y = rows[i + 1].getElementsByTagName("TD")[n];
+			if (dir == "asc") {
+				if (numbers) {
+					if (parseInt(x.innerHTML) > parseInt(y.innerHTML)) {
+						shouldSwitch = true;
+						break;
+					}
+				} else {
+					if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+						shouldSwitch = true;
+						break;
+					}
+				}
+			} else if (dir == "desc") {
+				if (numbers) {
+					if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {
+						shouldSwitch = true;
+						break;
+					}
+				} else {
+					if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+						shouldSwitch = true;
+						break;
+					}
+				}
+			}
+		}
+		if (shouldSwitch) {
+			rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+			switching = true;
+			switchcount++;
+		} else {
+			if (switchcount == 0 && dir == "asc") {
+				dir = "desc";
+				switching = true;
+			}
+		}
+	}
 }
