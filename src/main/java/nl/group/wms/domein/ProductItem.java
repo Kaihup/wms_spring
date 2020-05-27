@@ -15,6 +15,7 @@ public class ProductItem {
     private Product product;
     @ManyToOne
     private Box box;
+    @Column(columnDefinition = "LONGBLOB")
     private HashMap<LocalDateTime, Enum<status>> statusMap = new HashMap<>();
     private Enum currentStatus;
 
