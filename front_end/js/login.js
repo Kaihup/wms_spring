@@ -9,7 +9,7 @@ function sendData() {
 					value.password == document.getElementById("ippassword").value
 				) {
 					alert("Login succesfull");
-					navigate("pages/test.html")
+					navigate("pages/test.html");
 					return;
 				}
 			}
@@ -19,6 +19,6 @@ function sendData() {
 		}
 	};
 
-	xhr.open("GET", "http://localhost:8082/getcustomers", true);
+	xhr.open("GET", baseUrl + "/getcustomers", true);
 	xhr.send();
 }

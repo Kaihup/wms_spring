@@ -81,7 +81,7 @@ function showProducts() {
 			document.getElementById("catalogTable").innerHTML = catalogTable;
 		}
 	};
-	xhr.open("GET", "http://localhost:8082/allproducts", true);
+	xhr.open("GET", baseUrl + "/allproducts", true);
 	xhr.send();
 }
 
@@ -106,7 +106,7 @@ function postProduct() {
 		};
 
 		var objJSON = JSON.stringify(theObject);
-		xhr.open("POST", "http://localhost:8082/editproduct", true);
+		xhr.open("POST", baseUrl + "/editproduct", true);
 		xhr.setRequestHeader("Content-Type", "application/json");
 		xhr.send(objJSON);
 	} else {
@@ -134,7 +134,7 @@ function postProduct() {
 		xhr.onreadystatechange = function () {
 			showProducts(); //Andere function ook gebruiken voor hierboven.
 		};
-		xhr.open("POST", "http://localhost:8082/newproduct", true);
+		xhr.open("POST", baseUrl + "/newproduct", true);
 		xhr.setRequestHeader("Content-Type", "application/json");
 		xhr.send(objJSON);
 	}
@@ -153,7 +153,7 @@ function deleteProduct(id) {
 	var youSure = confirm("Are you sure you want to delete this product?");
 	if (youSure == true) {
 		var xhr = new XMLHttpRequest();
-		xhr.open("POST", "http://localhost:8082/deleteproduct", true);
+		xhr.open("POST", baseUrl + "/deleteproduct", true);
 		xhr.setRequestHeader("Content-Type", "application/json");
 		xhr.send(id);
 	}
@@ -179,7 +179,7 @@ function editProduct(id) {
 			document.getElementById("idhidden").value = id;
 		}
 	};
-	xhr.open("POST", "http://localhost:8082/getproduct", true);
+	xhr.open("POST", baseUrl + "/getproduct", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send(id);
 }
@@ -203,13 +203,13 @@ function checkbackorderline(id, naam, check) {
 function sendbackorder() {
 	var table = document.getElementById("backorderTable");
 	var xhr = new XMLHttpRequest();
-	xhr.open("POST", "http://localhost:8082/newBackOrder", true);
+	xhr.open("POST", baseUrl + "/newBackOrder", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send("{}");
 	xhr.onreadystatechange = function () {
 		if (this.readyState == 4) {
 			var xhr2 = new XMLHttpRequest();
-			xhr2.open("GET", "http://localhost:8082/getLatestBackOrderId", true);
+			xhr2.open("GET", baseUrl + "/getLatestBackOrderId", true);
 			xhr2.send();
 			xhr2.onreadystatechange = function () {
 				if (this.readyState == 4) {
@@ -232,7 +232,7 @@ function sendbackorder() {
 						var objJSON = JSON.stringify(theObject);
 						console.log(objJSON);
 						var xhr3 = new XMLHttpRequest();
-						xhr3.open("POST", "http://localhost:8082/newBackOrderLine", true);
+						xhr3.open("POST", baseUrl + "/newBackOrderLine", true);
 						xhr3.setRequestHeader("Content-Type", "application/json");
 						xhr3.send(objJSON);
 						document.getElementById("backorderTable").deleteRow(x);
