@@ -103,8 +103,9 @@ public class Product {
     }
 
     public void decreaseStock(int amount){
-        if (amount < 0){
+        if (amount > 0){
             this.inStock -= amount;
+            System.out.println("amount decreased: " + amount);
         }
     }
 

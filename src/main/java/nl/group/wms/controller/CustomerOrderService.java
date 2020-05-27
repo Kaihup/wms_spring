@@ -2,6 +2,7 @@ package nl.group.wms.controller;
 
 import nl.group.wms.domein.CustomerOrder;
 import nl.group.wms.domein.CustomerOrderLine;
+import nl.group.wms.domein.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +26,11 @@ public class CustomerOrderService {
     @Autowired
     ProductRepository pr;
 
-    public long addNewCustomerOrder(long customerOrderId) {
+    public long addNewCustomerOrder(long customerId) {
         CustomerOrder customerOrder = new CustomerOrder();
-        customerOrder.setCustomer(cr.findById(customerOrderId).get());
+        customerOrder.setCustomer(cr.findById(customerId).get());
         customerOrder.addStatusToMap(CustomerOrder.status.PRE_PURCHASE);
+        System.out.println("A new customer order is placed");
         cor.save(customerOrder);
         return customerOrder.getId();
     }
@@ -60,20 +62,36 @@ public class CustomerOrderService {
     }
 
 
-    public long newCustomerOrderLine(CustomerOrderLine customerOrderLine) {
-         /* Omdat niet zeker is of de prijs aan de voorkant wordt meegenomen is,
-         het veiliger om met productId te werken. */
-        Long productId = customerOrderLine.getProduct().getId();
+//    public long newCustomerOrderLine(CustomerOrderLine customerOrderLine) {
+//         /* Omdat niet zeker is of de prijs aan de voorkant wordt meegenomen is,
+//         het veiliger om met productId te werken. */
+//        Long productId = customerOrderLine.getProduct().getId();
+//
+//        /* Op basis van productId is het product met de bijbehorende prijs op te vragen.
+//         Zo weet je zeker dat je de goede prijs hebt */
+//        int unitPrice = pr.findById(productId).get().getPrice();
+//        int amount = customerOrderLine.getAmountOrdered();
+//
+//        int totalPrice = amount * unitPrice;
+//        customerOrderLine.setPrice(totalPrice);
+//        olr.save(customerOrderLine);
+//        customerOrderLine.getProduct().decreaseStock(customerOrderLine.getAmountOrdered());
+//        return customerOrderLine.getId();
+//    }
 
-        /* Op basis van productId is het product met de bijbehorende prijs op te vragen.
-         Zo weet je zeker dat je de goede prijs hebt */
-        int unitPrice = pr.findById(productId).get().getPrice();
-        int amount = customerOrderLine.getAmountOrdered();
-
+    public long newCustomerOrderLine(long customerOrderId, long productId, int amount) {
+        Product product = pr.findById(productId).get();
+        int unitPrice = product.getPrice();
         int totalPrice = amount * unitPrice;
+
+        CustomerOrderLine customerOrderLine = new CustomerOrderLine();
         customerOrderLine.setPrice(totalPrice);
+        customerOrderLine.setAmountOrdered(amount);
+        customerOrderLine.setProduct(product);
+        CustomerOrder customerOrder = cor.findById(customerOrderId).get();
+        customerOrderLine.setCustomerOrder(customerOrder);
+
         olr.save(customerOrderLine);
-        customerOrderLine.getProduct().decreaseStock(customerOrderLine.getAmountOrdered());
         return customerOrderLine.getId();
     }
 
@@ -85,6 +103,18 @@ public class CustomerOrderService {
             customerOrderLine.setPrice(customerOrderLine.getAmountOrdered() * customerOrderLine.getProduct().getPrice());
         } else {
             customerOrderLine.setAmountOrdered(currentAmount + amountIncrease);
+            customerOrderLine.setPrice(customerOrderLine.getAmountOrdered() * customerOrderLine.getProduct().getPrice());
+        }
+    }
+
+    public void removeProductItems(int amountRemoved, long customerOrderLineId) {
+        CustomerOrderLine customerOrderLine = olr.findById(customerOrderLineId).get();
+        int currentAmount = customerOrderLine.getAmountOrdered();
+        if (amountRemoved > currentAmount) {
+            customerOrderLine.setAmountOrdered(0);
+            customerOrderLine.setPrice(customerOrderLine.getAmountOrdered() * customerOrderLine.getProduct().getPrice());
+        } else {
+            customerOrderLine.setAmountOrdered(currentAmount - amountRemoved);
             customerOrderLine.setPrice(customerOrderLine.getAmountOrdered() * customerOrderLine.getProduct().getPrice());
         }
     }
@@ -101,18 +131,23 @@ public class CustomerOrderService {
         return totalPrice;
     }
 
-    public void removeProductItems(int amountRemoved, long customerOrderLineId) {
-        CustomerOrderLine customerOrderLine = olr.findById(customerOrderLineId).get();
-        int currentAmount = customerOrderLine.getAmountOrdered();
-        if (amountRemoved > currentAmount) {
-            customerOrderLine.setAmountOrdered(0);
-        } else {
-            customerOrderLine.setAmountOrdered(currentAmount - amountRemoved);
-        }
-    }
+
 
     public void purchaseOrder(long customerOrderId) {
         CustomerOrder customerOrder = cor.findById(customerOrderId).get();
         customerOrder.addStatusToMap(CustomerOrder.status.READY_FOR_PICKING);
+
+        List<CustomerOrderLine> customerOrderLines1 = new ArrayList<>();
+        Iterable<CustomerOrderLine> customerOrderLines = olr.findAll();
+        for (CustomerOrderLine customerOrderLine : customerOrderLines){
+            if(customerOrderLine.getCustomerOrder().getId() == customerOrderId){
+                customerOrderLines1.add(customerOrderLine);
+                Product product = customerOrderLine.getProduct();
+                product.decreaseStock(customerOrderLine.getAmountOrdered());
+                pr.save(product);
+            }
+        }
+
+
     }
 }
