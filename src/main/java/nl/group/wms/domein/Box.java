@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.Formula;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -22,6 +20,7 @@ public class Box {
     private int maxProductItems;
     private int maxWeight;
     private int currentItems; //zowel CHECKED_IN als IN_STORAGE als RESERVED
+    
     private int currentItemsCheckedIn;
     private int currentItemsInStorage;
     private int currentItemsReserved;
@@ -51,20 +50,11 @@ public class Box {
 	public int getCurrentItemsCheckedIn() {
 		return currentItemsCheckedIn;
 	}
-	public void setCurrentItemsCheckedIn(int currentItemsCheckedIn) {
-		this.currentItemsCheckedIn = currentItemsCheckedIn;
-	}
 	public int getCurrentItemsInStorage() {
 		return currentItemsInStorage;
 	}
-	public void setCurrentItemsInStorage(int currentItemsInStorage) {
-		this.currentItemsInStorage = currentItemsInStorage;
-	}
 	public int getCurrentItemsReserved() {
 		return currentItemsReserved;
-	}
-	public void setCurrentItemsReserved(int currentItemsReserved) {
-		this.currentItemsReserved = currentItemsReserved;
 	}
 	
 	
