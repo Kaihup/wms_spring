@@ -16,7 +16,8 @@ function showBoxes() {
 					"<table class='table table-striped'><thead>" +
 					"<tr><th scope='col'> Box </th>" +
 					"<th scope='col'>Product</th>" +
-					"<th scope='col'>Current items in box</th>" +
+					"<th scope='col'>Current items CHECKED_IN</th>" +
+					"<th scope='col'>Current items IN_STORAGE</th>" +
 					"<th scope='col'>Max items</th>" +
 					"<th scope='col'>Lenght</th>" +
 					"<th scope='col'>Width</th>" +
@@ -33,7 +34,9 @@ function showBoxes() {
 						"</td><td>" +
 						boxesRow[x].product.name +
 						"</td><td>" +
-						boxesRow[x].currentItems +
+						boxesRow[x].currentItemsCheckedIn +
+						"</td><td>" +
+						boxesRow[x].currentItemsInStorage +
 						"</td><td>" +
 						boxesRow[x].maxProductItems +
 						"</td><td>" +
