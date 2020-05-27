@@ -15,10 +15,15 @@ public class Box {
     private int height;
     private int maxProductItems;
     private int maxWeight;
-    private int currentItems; //zowel fysiek als toegewezen om in op te bergen
+    private int currentItems; //zowel CHECKED_IN als IN_STORAGE als RESERVED
 
 
-    
+    public void increaseCurrentItems(int amount) {
+    	if(amount > 0) this.currentItems += amount;
+	}
+    public void decreaseCurrentItems(int amount) {
+		if (amount > 0) this.currentItems -= amount;
+	}
     public int getCurrentItems() {
 		return currentItems;
 	}

@@ -81,6 +81,11 @@ public class BoxEndPoint {
     public List<BackOrderDeliveryStorage> getStorageLines(@PathVariable long deliveryId) {
         return bs.getStorageLines(deliveryId);
     }
+    
+    @PostMapping("/confirmStorageLine/{storageLineId}/{actuallyStored}")
+    public void confirmStorageLine(@PathVariable long storageLineId, @PathVariable int actuallyStored) {
+    	bs.confirmStorageLine(storageLineId, actuallyStored);
+    }
 
 
 }

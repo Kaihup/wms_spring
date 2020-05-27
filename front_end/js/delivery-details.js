@@ -198,7 +198,7 @@ function deliveryCompleted() {
 	document.getElementById("ipcheckComplete").disabled = true;
 	document.getElementById("ipcheckComplete").className =
 		"btn btn-outline-secondary mb-3";
-	document.getElementById("ipcheckComplete").innerHTML = "Processing";
+	document.getElementById("ipcheckComplete").innerHTML = "Processing...";
 	var deliveryId = sessionStorage.getItem("showDeliveryId");
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", baseUrl + "/completeDelivery/" + deliveryId, true);

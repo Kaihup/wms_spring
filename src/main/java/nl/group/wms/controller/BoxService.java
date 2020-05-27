@@ -110,6 +110,8 @@ public class BoxService {
                 storageLine.setDelivery(delivery);
                 storageLine.setProduct(line.getProduct());
                 bodsr.save(storageLine);
+                box.increaseCurrentItems(storeAmount);
+                br.save(box);
                 amountToStore -= storeAmount;
             }
         }
@@ -117,6 +119,33 @@ public class BoxService {
 
     public List<BackOrderDeliveryStorage> getStorageLines(long deliveryId) {
         return bodsr.findByBackOrderDelivery(deliveryId);
+
     }
+
+    public void confirmStorageLine(long storageLineId, int actuallyStored) {
+        BackOrderDeliveryStorage storageLine = bodsr.findById(storageLineId).get();
+        storageLine.setStorageConfirmed(true);
+        storageLine.setActuallyStored(actuallyStored);
+        bodsr.save(storageLine);
+        for (int x = 0; x < actuallyStored; x++) {
+            ProductItem item = pir.findFirstByCurrentStatusAndProductAndBox(ProductItem.status.CHECKED_IN,
+                    storageLine.getProduct(), storageLine.getBox());
+            item.addStatusToMap(ProductItem.status.IN_STORAGE);
+            pir.save(item);
+        }
+        if (storageLine.getAmountToStore() > actuallyStored) {
+            int deviation = (storageLine.getAmountToStore() - actuallyStored);
+            for (int y = 0; y < deviation; y++) {
+                ProductItem item = pir.findFirstByCurrentStatusAndProductAndBox(ProductItem.status.CHECKED_IN,
+                        storageLine.getProduct(), storageLine.getBox());
+                pir.delete(item);
+            }
+            Box box = storageLine.getBox();
+            box.decreaseCurrentItems(deviation);
+            br.save(box);
+        }
+
+    }
+
 
 }
