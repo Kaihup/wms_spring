@@ -4,7 +4,7 @@ import nl.group.wms.controller.CustomerOrderPickingServcie;
 import nl.group.wms.controller.CustomerOrderRepository;
 import nl.group.wms.controller.CustomerOrderService;
 import nl.group.wms.domein.CustomerOrder;
-import nl.group.wms.domein.CustomerOrderLine;
+import nl.group.wms.domein.CustomerOrderPickingLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,12 +23,26 @@ public class CustomerOrderPickingEndpoint {
     @Autowired
     CustomerOrderService cos;
 
+    /* NEW */
+    @GetMapping("/customerOrderPickingLineExistsBy/{customerOrderLineId}")
+    public boolean checkIfPickingLineExistsBy(@PathVariable long customerOrderLineId) {
+        return cops.customerOrderPickingLineExistsBy(customerOrderLineId);
+    }
+
     //This is for one customer
     @GetMapping("/getNextCustomerOrderToPick")
-    public Iterable<CustomerOrderLine> getNextCustomerOrderToPick() {
-        Iterable<CustomerOrderLine> orderLines = cops.getNextCustomerOrderToPick();
+    public Iterable<CustomerOrderPickingLine> getNextCustomerOrderToPick() {
+        Iterable<CustomerOrderPickingLine> orderLines = cops.getNextCustomerOrderToPick();
         return orderLines;
     }
+
+    /* BACKUP NIET VERWIJDEREN */
+//    //This is for one customer
+//    @GetMapping("/getNextCustomerOrderToPick")
+//    public Iterable<CustomerOrderLine> getNextCustomerOrderToPick() {
+//        Iterable<CustomerOrderLine> orderLines = cops.getNextCustomerOrderToPick();
+//        return orderLines;
+//    }
 
     @GetMapping("/addCustomerOrderStatusSend/{orderId}")
     public void setPickedOrderStatus(@PathVariable Long orderId) {

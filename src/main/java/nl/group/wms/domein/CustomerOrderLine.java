@@ -16,6 +16,7 @@ public class CustomerOrderLine {
     @ManyToOne
     private CustomerOrder customerOrder;
 
+
     public CustomerOrder getCustomerOrder() {
         return customerOrder;
     }
