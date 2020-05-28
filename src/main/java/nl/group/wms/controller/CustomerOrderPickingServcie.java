@@ -17,6 +17,9 @@ public class CustomerOrderPickingServcie {
     CustomerOrderPickingLineRepository coplr;
 
     @Autowired
+    CustomerOrderRepository cor;
+
+    @Autowired
     CustomerOrderLineRepository olr;
 
     @Autowired
@@ -93,7 +96,7 @@ public class CustomerOrderPickingServcie {
 
             /* Update existing pickingLine entry */
             if (customerOrderPickingLineExistsBy(customerOrderLineId)) {
-                List<CustomerOrderPickingLine> existingPickingLines = coplr.findCustomerOrderPickingBy(customerOrderLineId);
+                List<CustomerOrderPickingLine> existingPickingLines = coplr.findCustomerOrderPickingLineBy(customerOrderLineId);
                 if (existingPickingLines.iterator().hasNext()) {
                     pickingLine = existingPickingLines.iterator().next();
                     pickingLine.setBoxQuantityMap(boxMap);
@@ -200,6 +203,9 @@ public class CustomerOrderPickingServcie {
      * Used for looops in {@link #orderLineIsPicked(long)}
      */
     public void processOrderLine(List<ProductItem> productItems, int listIndex) {
+        System.out.println("COCO");
+        System.out.println(productItems.get(listIndex));
+
         ProductItem item = productItems.get(listIndex);
         item.addStatusToMap(ProductItem.status.READY_FOR_TRANSIT);
 
@@ -211,8 +217,50 @@ public class CustomerOrderPickingServcie {
     }
 
 
-    /* PRINT METHODS */
+    /**
+     * Send order to customer by CustomerOrderId <-- get method
+     * Order gets status SHIPPED_TO_CUSTOMER <-- set status to shiped
+     * All CustomerOrderLines in order stay in system.
+     * All CustomerOrderPickingLInes are removed from the database
+     */
+    public void shipCustomerOrder(long customerOrderId) {
+        CustomerOrder order = cor.findById(customerOrderId).get();
+        if (order == null) {
+            System.out.println(Utils.ic(Utils.ANSI_RED, "WARNING: ORDER TO SHIP DOES NOT EXIST"));
+        } else {
+            /* Add status to order */
+            order.addStatusToMap(CustomerOrder.status.SHIPPED_TO_CUSTOMER);
 
+            /* Delete picking lines that are linked to order line*/
+            List<CustomerOrderLine> customerOrderLines = cos.getAllCustomerOrderLines(customerOrderId);
+            for (CustomerOrderLine entry : customerOrderLines) {
+                List<CustomerOrderPickingLine> pickingLines = coplr.findCustomerOrderPickingLineBy(entry.getId());
+                if (pickingLines.size() > 0) {
+                    for (CustomerOrderPickingLine pickingLine : pickingLines) {
+                        System.out.println(Utils.ic(Utils.ANSI_RED, "Deleting CustomerOrderPickingLine with id: " + pickingLine.getId()));
+                        coplr.delete(pickingLine);
+                    }
+                }
+            }
+
+            /* Ship all items by changing status to CHECKED_OUT*/
+            shipItems();
+            System.out.println(Utils.ic(Utils.ANSI_GREEN, "Shipping order completed for order: " + order.getId()));
+        }
+    }
+
+    public void shipItems() {
+        Iterable<ProductItem> productItems = pir.findAll();
+        for (ProductItem item : productItems) {
+            if (item.getCurrentStatus() == ProductItem.status.READY_FOR_TRANSIT) {
+                item.addStatusToMap(ProductItem.status.CHECKED_OUT);
+                System.out.println(Utils.ic(Utils.ANSI_BLUE, "Item with id: " + item.getId()
+                        + " is now shipped. Current status: " + item.getCurrentStatus()));
+            }
+        }
+    }
+
+    /* PRINT METHODS */
     public void printPickingLineInfo(Iterable<CustomerOrderPickingLine> pickingLines) {
         for (CustomerOrderPickingLine line : pickingLines) {
             System.out.println("Keys: Boxnumbers");
