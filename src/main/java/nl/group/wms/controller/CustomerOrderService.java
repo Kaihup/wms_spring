@@ -4,6 +4,8 @@ import nl.group.wms.domein.CustomerOrder;
 import nl.group.wms.domein.CustomerOrderLine;
 import nl.group.wms.domein.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,9 @@ public class CustomerOrderService {
 
     @Autowired
     ProductRepository pr;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     public long addNewCustomerOrder(long customerId) {
         CustomerOrder customerOrder = new CustomerOrder();
@@ -180,23 +185,23 @@ public class CustomerOrderService {
     }
 
     void sendEmailOrder(long customerOrderId) {
-//        List<CustomerOrderLine> customerOrderLines= olr.findByCustomerOrderId(customerOrderId);
-//        Customer customer = cor.findById(customerOrderId).get().getCustomer();
-//        SimpleMailMessage msg = new SimpleMailMessage();
-//        msg.setTo(customer.getEmail());
-//        msg.setSubject("Thank you for your purchase!");
-//        StringBuilder message = new StringBuilder("");
-//        message.append("Dear: " + customer.getFirstName() + customer.getLastName());
-//        message.append("\n");
-//        message.append("Thank you for your purchase. Below you find your order details.");
-//        for (CustomerOrderLine customerOrderLine: customerOrderLines){
-//            message.append("You have ordered: " + customerOrderLine.getProduct().getName() + "times"
-//                    + customerOrderLine.getAmountOrdered() + " for " + customerOrderLine.getPrice() + ".\n");
-//        }
-//        message.append("\n");
-//        message.append("Once again, thank your for your purchase!");
-//        msg.setText(message);
-//        javaMailSender.send(msg);
+        List<CustomerOrderLine> customerOrderLines= olr.findByCustomerOrderId(customerOrderId);
+        Customer customer = cor.findById(customerOrderId).get().getCustomer();
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(customer.getEmail());
+        msg.setSubject("Thank you for your purchase!");
+        StringBuilder message = new StringBuilder("");
+        message.append("Dear: " + customer.getFirstName() + customer.getLastName());
+        message.append("\n");
+        message.append("Thank you for your purchase. Below you find your order details.");
+        for (CustomerOrderLine customerOrderLine: customerOrderLines){
+            message.append("You have ordered: " + customerOrderLine.getProduct().getName() + "times"
+                    + customerOrderLine.getAmountOrdered() + " for " + customerOrderLine.getPrice() + ".\n");
+        }
+        message.append("\n");
+        message.append("Once again, thank your for your purchase!");
+        msg.setText(message.toString());
+        javaMailSender.send(msg);
     }
 
 }
