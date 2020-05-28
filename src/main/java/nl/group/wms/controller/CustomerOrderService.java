@@ -104,13 +104,13 @@ public class CustomerOrderService {
     public void updateCustomerOrderLine(int amountIncrease, long customerOrderLineId) {
         CustomerOrderLine customerOrderLine = olr.findById(customerOrderLineId).get();
         int currentAmount = customerOrderLine.getAmountOrdered();
-        if (amountIncrease > currentAmount) {
-            customerOrderLine.setAmountOrdered(currentAmount);
-            customerOrderLine.setPrice(customerOrderLine.getAmountOrdered() * customerOrderLine.getProduct().getPrice());
+//        if (amountIncrease > currentAmount) {
+        if (customerOrderLine.getProduct().getCurrentItemsInStorage() < currentAmount + amountIncrease){
+            customerOrderLine.setAmountOrdered(customerOrderLine.getProduct().getCurrentItemsInStorage());
         } else {
             customerOrderLine.setAmountOrdered(currentAmount + amountIncrease);
-            customerOrderLine.setPrice(customerOrderLine.getAmountOrdered() * customerOrderLine.getProduct().getPrice());
         }
+        customerOrderLine.setPrice(customerOrderLine.getAmountOrdered() * customerOrderLine.getProduct().getPrice());
     }
 
 
@@ -155,6 +155,7 @@ public class CustomerOrderService {
                 customerOrderLines1.add(customerOrderLine);
                 Product product = customerOrderLine.getProduct();
                 product.decreaseStock(customerOrderLine.getAmountOrdered());
+                //product.setEanCode();
                 pr.save(product);
             }
         }

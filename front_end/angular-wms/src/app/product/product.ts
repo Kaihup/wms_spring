@@ -6,6 +6,6 @@ export class Product{
     amountremoved: number;
     amount: number;
     customerOrderLineId: number;
-    inStock: number;
+    currentItemsInStorage: number;
     inStockLeft: number;
 }
