@@ -3,8 +3,8 @@ package nl.group.wms.controller;
 import nl.group.wms.domein.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-//import org.springframework.mail.SimpleMailMessage;
-//import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +21,8 @@ public class CustomerService {
     @Autowired
     CustomerOrderRepository cor;
 
-//    @Autowired
-//    private JavaMailSender javaMailSender;
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     public void findCustomerByLastName(String lastName) {
         List<Customer> customers = cr.findByLastName(lastName);
@@ -56,11 +56,11 @@ public class CustomerService {
 //    }
 
     void sendEmail(Customer customer) {
-//        SimpleMailMessage msg = new SimpleMailMessage();
-//        msg.setTo(customer.getEmail());
-//        msg.setSubject("Welcome to our WMS, " + customer.getFirstName() + " " + customer.getLastName());
-//        msg.setText("You can find hundreds of products in our warehouse!");
-//        javaMailSender.send(msg);
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(customer.getEmail());
+        msg.setSubject("Welcome to our WMS, " + customer.getFirstName() + " " + customer.getLastName());
+        msg.setText("You can find hundreds of products in our warehouse!");
+        javaMailSender.send(msg);
     }
 
 }

@@ -49,7 +49,7 @@ function pageStoreItems() {
 				if (object[x].storageConfirmed){
 					ed = "ed";
 					disable = "disabled";
-					buttonClass = "success";
+					buttonClass = "secondary";
 				}
 				storeItemsTable +=
 					"<tr><td>" +
@@ -115,6 +115,7 @@ function confirmStorageLine(id, storageLineId) {
 	document.getElementById("ipActuallyStored" + id).disabled = true;
 	document.getElementById("ipConfirmStorage" + id).innerHTML = "Confirmed";
 	document.getElementById("ipConfirmStorage" + id).disabled = true;
+	document.getElementById("ipConfirmStorage" + id).className = "btn btn-outline-secondary mb-3";
 	//set storage line to confirmed --> add actually stored --> productitems status to IN_STORAGE
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", baseUrl + "/confirmStorageLine/" + storageLineId + "/" + a, true);
