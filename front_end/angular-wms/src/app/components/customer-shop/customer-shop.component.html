@@ -28,13 +28,13 @@
                 <input type="number" min="0" max="{{product.inStockLeft}}" style="width: 70px" [(ngModel)]=product.amountadded>
             </td>
             <td>
-                <button type="button" class="btn btn-outline-secondary" (click)="customerOrderLine(product, i); calculateTotalPrice();">Add to</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="customerOrderLine(product, i)">Add to</button>
             </td>
             <td>
                 <input type="number" min="0" max="{{product.amount}}"  style="width: 70px" [(ngModel)]=product.amountremoved>
             </td>
             <td>
-                <button id="rowId{{i}}" [disabled]='true' type="button" class="btn btn-outline-secondary" (click)="customerOrderLine(product, i); calculateTotalPrice();">Remove</button>
+                <button id="rowId{{i}}" [disabled]='true' type="button" class="btn btn-outline-secondary" (click)="customerOrderLine(product, i)">Remove</button>
             </td>
             <td style="text-align:center">
                 {{currenInOrder(product)}}
