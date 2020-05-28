@@ -9,6 +9,8 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public interface ProductItemRepository extends CrudRepository<ProductItem, Long> {
 
@@ -17,5 +19,7 @@ public interface ProductItemRepository extends CrudRepository<ProductItem, Long>
     Long countByBoxId(Long boxId);
     
     List<ProductItem> findByBox(Box box);
+
+    List<ProductItem> findProductItemByBox(Box box);
 
 }

@@ -66,6 +66,7 @@ public class BoxService {
         return result;
     }
 
+
     public void newBox(Box box, Long productId) {
 
         box.setProduct(pr.findById(productId).get());

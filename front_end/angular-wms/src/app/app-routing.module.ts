@@ -8,7 +8,7 @@ import { OrderReviewComponent } from './components/order-review/order-review.com
 
 const routes: Routes = [
   { path: 'all-picking-orders', component: AllPickingOrdersComponent },
-  { path: 'current-picking-order', component: CurrentPickingOrderComponent },
+  // { path: 'current-picking-order', component: CurrentPickingOrderComponent },
   { path: 'customer-shop', component: CustomerShopComponent },
   { path: 'user-login', component: UserLoginComponent },
   { path: 'order-review', component: OrderReviewComponent },
