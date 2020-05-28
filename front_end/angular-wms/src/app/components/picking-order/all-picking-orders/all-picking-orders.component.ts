@@ -1,3 +1,10 @@
+import {
+  Directive,
+  Output,
+  EventEmitter,
+  Input,
+  SimpleChange,
+} from '@angular/core';
 import { Component, OnInit, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PickingLine } from './PickingLine';
@@ -5,7 +12,6 @@ import { HttpClient } from '@angular/common/http';
 import { DOCUMENT } from '@angular/common';
 import { Order } from './Order';
 import { Customer } from './Customer';
-import { OrderLine } from './OrderLine';
 
 @Component({
   selector: 'app-all-picking-orders',
@@ -21,7 +27,9 @@ export class AllPickingOrdersComponent implements OnInit {
 
   rowsConfirmed: number = 0;
 
-  constructor(private http: HttpClient, @Inject(DOCUMENT) document) {}
+  private baseUrl = 'http://localhost:8082';
+  @Output() onCreate: EventEmitter<any> = new EventEmitter<any>();
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.order = new Order();
@@ -63,6 +71,23 @@ export class AllPickingOrdersComponent implements OnInit {
       // () => console.log(this.pickingLineArray)
       // () => console.log('observable complete')
     );
+  }
+
+  // disableLines(pickingLineArray) {
+  //   var rowIndex = 0;
+  //   pickingLineArray.forEach((element) => {
+  //     rowIndex++;
+  //     var confirmed = element.customerOrderLine.pickingConfirmed;
+  //     if (confirmed == true) {
+  //       var btnConfirm = document.getElementById('rowId' + rowIndex);
+  //       btnConfirm.className = 'btn btn-sm  w-100 btn-outline-success';
+  //     }
+  //     console.log(confirmed);
+  //   });
+  // }
+
+  disableRow() {
+    console.log('coco');
   }
 
   calculateTotalItems(pickingLineArray) {
@@ -139,12 +164,24 @@ export class AllPickingOrdersComponent implements OnInit {
       this.rowsConfirmed += 1;
       console.log('√ confirmed row ' + rowIndex);
       console.log('customerOrderLine id: ' + currentLine.id);
+      this.updateOrderLine(currentLine.id);
       console.log(currentLine.amountPicked);
       console.log(currentLine.product.id);
       // set status to ready for shipping
 
       this.confirmPickingComplete();
     }
+  }
+
+  updateOrderLine(id: number) {
+    var aVar = this.http.get<any>(`${this.baseUrl}/orderLineIsPicked/${id}`);
+    aVar.subscribe(
+      () => aVar,
+      (err) => console.error(err),
+      // () => this.setOrderDetails(this.pickingLineArray)
+      // () => console.log(this.pickingLineArray)
+      () => console.log('observable complete')
+    );
   }
 
   confirmPickingComplete() {

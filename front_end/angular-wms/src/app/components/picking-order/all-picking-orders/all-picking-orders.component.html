@@ -71,7 +71,11 @@
         </tr>
     </thead>
     <tbody *ngFor='let pickingLine of pickingLineArray; index as i;'>
-        <tr>
+
+        <!--   <div [ngClass]="(pickingLine.customerOrderLine.pickingConfirmed)?'text-success':'text-danger'">TEST</div>
+        <div *ngIf="pickingLine.customerOrderLine.pickingConfirmed">COCO</div> -->
+
+        <tr *ngIf='pickingLine.customerOrderLine.pickingConfirmed; else unconfirmedRow'>
             <td class="font-weight-bold">{{pickingLine.customerOrderLine.product.name}}</td>
             <td>
                 <div class="float-left btn btn-sm btn-outline-primary align-middle text-center mr-2 disabled"
@@ -80,22 +84,16 @@
                 </div>
             </td>
             <td>{{pickingLine.customerOrderLine.amountOrdered}}</td>
-
-
-
-
-
-
             <td>
                 <div class="addBtn{{i}}">
-                    <button id="btn{{i}}-min-one" type="button" class=" btn btn-sm btn-warning col-2 mr-2"
-                        (click)='pickItems(-1, pickingLine, i)'>-1</button>
-                    <button id="btn{{i}}-min-multi" type="button" class=" btn btn-sm btn-warning col-2 mr-2"
-                        (click)='pickItems(-5, pickingLine, i)'>-5</button>
-                    <button id="btn{{i}}-plus-one" type="button" class=" btn btn-sm btn-secondary col-2 mr-2"
-                        (click)='pickItems(5, pickingLine, i)'>+5</button>
-                    <button id="btn{{i}}-plus-multi" type="button" class=" btn btn-sm btn-secondary col-2 mr-2"
-                        (click)='pickItems(1, pickingLine, i)'>+1</button>
+                    <button id="btn{{i}}-min-one" type="button" class=" btn btn-sm btn-outline-warning col-2 mr-2"
+                        disabled>-1</button>
+                    <button id="btn{{i}}-min-multi" type="button" class=" btn btn-sm btn-outline-warning col-2 mr-2"
+                        disabled>-5</button>
+                    <button id="btn{{i}}-plus-one" type="button" class=" btn btn-sm btn-outline-secondary col-2 mr-2"
+                        disabled>+5</button>
+                    <button id="btn{{i}}-plus-multi" type="button" class=" btn btn-sm btn-outline-secondary col-2 mr-2"
+                        disabled>+1</button>
                 </div>
             </td>
 
@@ -103,13 +101,48 @@
             <td>
                 <div class="fixedWidth">
                     <button id="rowId{{i}}" [disabled]='true' type="button"
-                        class="btn btn-sm w-100 btn-outline-secondary"
-                        (click)='confirmRow(pickingLine, i)'>Incomplete</button>
+                        class="btn btn-sm w-100 btn-outline-success">√ Cinfirmed</button>
                 </div>
                 <!-- <p [class.font-weight-bold]=this.activate>bolded</p> -->
             </td>
-
         </tr>
+
+        <ng-template #unconfirmedRow>
+            <tr>
+                <td class="font-weight-bold">{{pickingLine.customerOrderLine.product.name}}</td>
+                <td>
+                    <div class="float-left btn btn-sm btn-outline-primary align-middle text-center mr-2 disabled"
+                        *ngFor='let entry of pickingLine.boxQuantityMap | keyvalue'>
+                        B{{entry.key}}<br>{{entry.value}} items
+                    </div>
+                </td>
+                <td>{{pickingLine.customerOrderLine.amountOrdered}}</td>
+                <td>
+                    <div class="addBtn{{i}}">
+                        <button id="btn{{i}}-min-one" type="button" class=" btn btn-sm btn-warning col-2 mr-2"
+                            (click)='pickItems(-1, pickingLine, i)'>-1</button>
+                        <button id="btn{{i}}-min-multi" type="button" class=" btn btn-sm btn-warning col-2 mr-2"
+                            (click)='pickItems(-5, pickingLine, i)'>-5</button>
+                        <button id="btn{{i}}-plus-one" type="button" class=" btn btn-sm btn-secondary col-2 mr-2"
+                            (click)='pickItems(5, pickingLine, i)'>+5</button>
+                        <button id="btn{{i}}-plus-multi" type="button" class=" btn btn-sm btn-secondary col-2 mr-2"
+                            (click)='pickItems(1, pickingLine, i)'>+1</button>
+                    </div>
+                </td>
+
+                <td>{{pickingLine.customerOrderLine.amountPicked}}</td>
+                <td>
+                    <div class="fixedWidth">
+                        <button id="rowId{{i}}" [disabled]='true' type="button"
+                            class="btn btn-sm w-100 btn-outline-secondary"
+                            (click)='confirmRow(pickingLine, i)'>Incomplete</button>
+                    </div>
+                    <!-- <p [class.font-weight-bold]=this.activate>bolded</p> -->
+                </td>
+            </tr>
+        </ng-template>
+
+
     </tbody>
 </table>
 

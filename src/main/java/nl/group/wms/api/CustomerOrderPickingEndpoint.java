@@ -4,12 +4,10 @@ import nl.group.wms.controller.CustomerOrderPickingServcie;
 import nl.group.wms.controller.CustomerOrderRepository;
 import nl.group.wms.controller.CustomerOrderService;
 import nl.group.wms.domein.CustomerOrder;
+import nl.group.wms.domein.CustomerOrderLine;
 import nl.group.wms.domein.CustomerOrderPickingLine;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -72,9 +70,19 @@ public class CustomerOrderPickingEndpoint {
         order.getCurrentStatus();
     }
 
-    @PostMapping("/orderLineIsPicked/{customerOrderLineId}")
+    @GetMapping("/orderLineIsPicked/{customerOrderLineId}")
     public void orderLineIsPicked(@PathVariable long customerOrderLineId) {
         cops.orderLineIsPicked(customerOrderLineId);
+    }
+
+    @PostMapping("/postTest")
+    public void putTest(@RequestBody CustomerOrderLine line) {
+        System.out.println(line.toString());
+    }
+
+    @GetMapping("/getTest/{id}")
+    public void getTest(@PathVariable long id) {
+        System.out.println(id);
     }
 
 }

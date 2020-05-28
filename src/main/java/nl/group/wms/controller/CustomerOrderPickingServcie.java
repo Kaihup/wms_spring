@@ -138,43 +138,77 @@ public class CustomerOrderPickingServcie {
 
 
     /* CONFIRM PICKING */
-    // lijst met boxen van besteld product
-    // aantal bestelde items
+
+    /**
+     * When all productItems in a customerOrderLine are picked, a picking employee presses confirms this.
+     * After confirming the line, this method is called.
+     * All productItems on this line get status READY_FOR_TRANSIT.
+     * Items are picked from one box till it's empty, before picking from the next box.
+     */
     public void orderLineIsPicked(long customerOrderLineId) {
-        // get customerOrderLine
+        /* get customerOrderLine */
         CustomerOrderLine customerOrderLine = cos.getOrderLine(customerOrderLineId);
-        // get product
-        // get amount ordered
+        /* get product */
+        /* get amount ordered */
         long productId = customerOrderLine.getProduct().getId();
         long amountOrdered = customerOrderLine.getAmountOrdered();
-        // print to console
+        /* print to console */
         System.out.println("Product naam " + customerOrderLine.getProduct().getName());
         System.out.println("Product id : " + productId);
         System.out.println("Amount ordered : " + amountOrdered);
-        // get list of boxes wher product is stored
+        /* get list of boxes wher product is stored */
         Iterable<Box> boxes = bs.getAllBoxesWithProduct(productId);
         //
+        int index = 0;
         for (Box box : boxes) {
-            // get list with items in box
-            Iterable<ProductItem> productItems = pir.findProductItemByBox(box);
-            for (int i = 0; i <= amountOrdered; i++) {
-                if (productItems.iterator().hasNext()) {
-                    ProductItem item = productItems.iterator().next();
-                    System.out.println(item.getId());
-                    item.addStatusToMap(ProductItem.status.READY_FOR_TRANSIT);
-                    System.out.println(item.getCurrentStatus());
+            /* get list with items in box */
+            List<ProductItem> productItems = pir.findProductItemByBox(box);
+            System.out.println("box id: " + box.getId());
+            System.out.println("size iterator (items in box): " + productItems.size());
+
+            if (productItems.size() > 0) { // box heeft items
+                System.out.println("///" + amountOrdered);
+                System.out.println("///" + productItems.size());
+                if (amountOrdered >= productItems.size()) { // orderLine bevat >= of meer  items dan in de box zitten. Neem alle items uit de box
+                    for (int i = 0; i < productItems.size(); i++) {
+                        System.out.println("IN LOOP ONE");
+                        index++;
+                        processOrderLine(productItems, index);
+                        amountOrdered--;
+                    }
+                } else { // orderLine bevat < items dan in de box zitten
+                    long loop = amountOrdered;
+                    for (int i = 0; i < loop; i++) {
+                        System.out.println("IN LOOP TWO");
+                        index++;
+                        processOrderLine(productItems, index);
+                        amountOrdered--;
+                    }
 
                 }
+            } else {
+                // doe niks, box heeft geen items
             }
-
         }
-
+        //TODO CHECK OF LAATSTE DRIE LINES WERKEN
+        customerOrderLine.setAmountPicked(customerOrderLine.getAmountOrdered());
+        customerOrderLine.setPickingConfirmed(true);
+        olr.save(customerOrderLine);
     }
 
+    /**
+     * Used for looops in {@link #orderLineIsPicked(long)}
+     */
+    public void processOrderLine(List<ProductItem> productItems, int listIndex) {
+        ProductItem item = productItems.get(listIndex);
+        item.addStatusToMap(ProductItem.status.READY_FOR_TRANSIT);
 
+        printItemInfo(item);
 
-
-
+        item.setBox(null);
+        /* Save item */
+        pir.save(item); //TODO  AANZETTEN NA TESTEN
+    }
 
 
     /* PRINT METHODS */
@@ -196,5 +230,12 @@ public class CustomerOrderPickingServcie {
                 "\n\tOrderLines: " + getCustomerOrderLinesById(nextOrderToPick.getId())));
     }
 
+    public void printItemInfo(ProductItem item) {
+        System.out.println(item.getCurrentStatus());
+
+        System.out.println("item id : " + item.getId());
+        System.out.println("before nulling box    = " + item.getBox());
+        System.out.println("before nulling box id = " + item.getBox().getId());
+    }
 }
 

@@ -7,7 +7,7 @@ import { UserLoginComponent } from './components/user-login/user-login.component
 
 const routes: Routes = [
   { path: 'all-picking-orders', component: AllPickingOrdersComponent },
-  { path: 'current-picking-order', component: CurrentPickingOrderComponent },
+  // { path: 'current-picking-order', component: CurrentPickingOrderComponent },
   { path: 'customer-shop', component: CustomerShopComponent },
   { path: 'user-login', component: UserLoginComponent },
 ]; // sets up routes constant where you define your routes
