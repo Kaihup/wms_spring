@@ -8,7 +8,9 @@ function showDeliveries() {
 			var deliveryTable = "";
 			if (!deliveryRows.length) {
 				deliveryTable +=
-					"<p>The delivery overview is empty. There are no deliveries to show<br>";
+					"<p>The delivery overview is empty. There are no deliveries to show.<br>";
+				document.getElementById("searchBarDelivery").hidden = true;
+				document.getElementById("sortTextDelivery").hidden = true;
 			} else {
 				deliveryTable +=
 					"<table class='table table-striped'><thead>" +
@@ -24,9 +26,10 @@ function showDeliveries() {
 				for (var x = 0; x < deliveryRows.length; x++) {
 					//if(deliveryRows[x].currentStatus == "COMPLETE") continue;
 					var showOrStore =
-						deliveryRows[x].currentStatus == "COMPLETE"
+						(deliveryRows[x].currentStatus == "COMPLETE")
 							? "Store items"
-							: "Show details";
+							: (deliveryRows[x].currentStatus == "ARRIVED" || 
+							deliveryRows[x].currentStatus == "NEEDS_RESOLVING") ? "Count items" : "Show details";
 					deliveryTable +=
 						"<tr id=" +
 						deliveryRows[x].id +

@@ -27,7 +27,7 @@ function pageDetails() {
 				"<th scope='col'>Deviation handling</th></tr>" +
 				"</thead><tbody>";
 			for (var x = 0; x < object.lines.length; x++) {
-				var disable = object.lines[x].deliveryConfirmed ? "disabled" : "";
+				var disable = (object.lines[x].deliveryConfirmed || object.currentStatus == "EXPECTED") ? "disabled" : "";
 				var ed = object.lines[x].deliveryConfirmed ? "ed" : "";
 				var amountToShow =
 					object.lines[x].amountReceived < 0
