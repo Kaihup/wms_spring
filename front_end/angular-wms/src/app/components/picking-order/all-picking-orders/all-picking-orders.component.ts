@@ -58,11 +58,13 @@ export class AllPickingOrdersComponent implements OnInit {
     this.customer.address = customer.streetAddress;
     this.customer.zipCode = customer.zipCode;
     this.customer.email = customer.email;
+
+    this.confirmPickingCompleteOnPageLoad(pickingLineArray);
   }
 
   getPickingLines() {
     this.pickingLines = this.http.get<PickingLine[]>(
-      'http://localhost:8082/getNextCustomerOrderToPick'
+      `${this.baseUrl}/getNextCustomerOrderToPick`
     );
     this.pickingLines.subscribe(
       (pickingLineArray) => (this.pickingLineArray = pickingLineArray),
@@ -165,11 +167,9 @@ export class AllPickingOrdersComponent implements OnInit {
       console.log('√ confirmed row ' + rowIndex);
       console.log('customerOrderLine id: ' + currentLine.id);
       this.updateOrderLine(currentLine.id);
+      this.confirmPickingComplete();
       console.log(currentLine.amountPicked);
       console.log(currentLine.product.id);
-      // set status to ready for shipping
-
-      this.confirmPickingComplete();
     }
   }
 
@@ -197,9 +197,30 @@ export class AllPickingOrdersComponent implements OnInit {
     }
   }
 
+  confirmPickingCompleteOnPageLoad(pickingLineArray) {
+    pickingLineArray.forEach((element) => {
+      if (element.customerOrderLine.pickingConfirmed == true) {
+        this.rowsConfirmed++;
+      }
+    });
+    this.confirmPickingComplete();
+  }
+
   shipOrder() {
     console.log('ship order function');
-    // Remove productItems
+    console.log('orderId = ' + this.order.id);
+    this.callShipping(this.order.id);
+  }
+
+  callShipping(id) {
+    var aVar = this.http.get<any>(`${this.baseUrl}/shipOrder/${id}`);
+    aVar.subscribe(
+      () => aVar,
+      (err) => console.error(err),
+      // () => this.setOrderDetails(this.pickingLineArray)
+      // () => console.log(this.pickingLineArray)
+      () => console.log('observable complete, order is send')
+    );
   }
   // currenInOrder(product: Product) {
   //   return product.amount;

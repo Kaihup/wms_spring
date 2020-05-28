@@ -91,8 +91,6 @@ public class CustomerOrderEndpoint {
 }
 
 
-
-
 //    @PostMapping("/updateCustomerOrderLine")
 //    public void updateOrderLine(@RequestBody int amountIncrease, @RequestBody long customerOrderLineId){
 //        cos.updateCustomerOrderLine(amountIncrease, customerOrderLineId);
