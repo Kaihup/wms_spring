@@ -1,5 +1,6 @@
 package nl.group.wms.controller;
 
+import nl.group.wms.domein.Customer;
 import nl.group.wms.domein.CustomerOrder;
 import nl.group.wms.domein.CustomerOrderLine;
 import nl.group.wms.domein.Product;
@@ -154,22 +155,49 @@ public class CustomerOrderService {
         }
     }
 
-    public String getAllCustomerOrdersLinesString(long customerOrderId) {
-        Iterable<CustomerOrderLine> customerOrderLines = olr.findAll();
-        StringBuilder customerOrderString = new StringBuilder("");
-        for (CustomerOrderLine customerOrderLine : customerOrderLines) {
-            if (customerOrderLine.getCustomerOrder().getId() == customerOrderId) {
-                customerOrderString.append(customerOrderLine.getProduct().getName());
-                customerOrderString.append(", ");
-                customerOrderString.append(customerOrderLine.getAmountOrdered());
-                customerOrderString.append(", ");
-                customerOrderString.append(customerOrderLine.getProduct().getPrice());
-                customerOrderString.append(", ");
-                customerOrderString.append(customerOrderLine.getPrice());
-                customerOrderString.append(", ");
-            }
-        }
-        return customerOrderString.toString();
+//    public String getAllCustomerOrdersLinesString(long customerOrderId) {
+//        Iterable<CustomerOrderLine> customerOrderLines = olr.findAll();
+//        StringBuilder customerOrderString = new StringBuilder("");
+//        for (CustomerOrderLine customerOrderLine : customerOrderLines) {
+//            if (customerOrderLine.getCustomerOrder().getId() == customerOrderId) {
+//                customerOrderString.append(customerOrderLine.getProduct().getName());
+//                customerOrderString.append(", ");
+//                customerOrderString.append(customerOrderLine.getAmountOrdered());
+//                customerOrderString.append(", ");
+//                customerOrderString.append(customerOrderLine.getProduct().getPrice());
+//                customerOrderString.append(", ");
+//                customerOrderString.append(customerOrderLine.getPrice());
+//                customerOrderString.append(", ");
+//            }
+//        }
+//        return customerOrderString.toString();
+//    }
+
+    public List<CustomerOrderLine> getAllCustomerOrderLines(long customerOrderId) {
+//        Iterable<CustomerOrderLine> customerOrderLines = olr.findAll();
+        List<CustomerOrderLine> customerOrderLines= olr.findByCustomerOrderId(customerOrderId);
+        sendEmailOrder(customerOrderId);
+        return customerOrderLines;
+    }
+
+    void sendEmailOrder(long customerOrderId) {
+//        List<CustomerOrderLine> customerOrderLines= olr.findByCustomerOrderId(customerOrderId);
+//        Customer customer = cor.findById(customerOrderId).get().getCustomer();
+//        SimpleMailMessage msg = new SimpleMailMessage();
+//        msg.setTo(customer.getEmail());
+//        msg.setSubject("Thank you for your purchase!");
+//        StringBuilder message = new StringBuilder("");
+//        message.append("Dear: " + customer.getFirstName() + customer.getLastName());
+//        message.append("\n");
+//        message.append("Thank you for your purchase. Below you find your order details.");
+//        for (CustomerOrderLine customerOrderLine: customerOrderLines){
+//            message.append("You have ordered: " + customerOrderLine.getProduct().getName() + "times"
+//                    + customerOrderLine.getAmountOrdered() + " for " + customerOrderLine.getPrice() + ".\n");
+//        }
+//        message.append("\n");
+//        message.append("Once again, thank your for your purchase!");
+//        msg.setText(message);
+//        javaMailSender.send(msg);
     }
 
 }
