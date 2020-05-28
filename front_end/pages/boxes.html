@@ -62,7 +62,7 @@
         <h3 class="mt-4">Boxes Overview</h3>
     </div>
     <!-- search balk -->
-    <div class="col">
+    <div class="col" id="searchBarBox">
         <div class="input-group mt-4">
             <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" 
                 placeholder="Search..." id="ipboxfilter" oninput="filterBoxTable()">
@@ -76,5 +76,6 @@
         </div> 
     </div> 
 </div>
-<p class="font-italic font-weight-lighter">Click headers to sort table</p>
+<p class="font-italic font-weight-lighter" id="sortTextBox">Click headers to sort table</p>
 <div id=boxesTable></div>
+<!-- style="max-height:400px; overflow-y:auto;" -->

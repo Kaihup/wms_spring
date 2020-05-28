@@ -19,7 +19,7 @@ public interface CustomerOrderPickingLineRepository extends CrudRepository<Custo
 
     @Query(value = "select * from customer_order_picking_line p where p.customer_order_line_id=:coli",
             nativeQuery = true)
-    public List<CustomerOrderPickingLine> findCustomerOrderPickingBy(@Param("coli") long customerOrderLineId);
+    public List<CustomerOrderPickingLine> findCustomerOrderPickingLineBy(@Param("coli") long customerOrderLineId);
 
 
 }

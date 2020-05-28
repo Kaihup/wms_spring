@@ -10,6 +10,8 @@ function showProducts() {
 				catalogTable +=
 					"<p>The catalog is empty. There are no products to show<br>" +
 					"Add new products to the form on top of this page</p>";
+					document.getElementById("searchBarCatalog").hidden = true;
+					document.getElementById("sortTextCatalog").hidden = true;
 			} else {
 				catalogTable +=
 					"<table class='table img-table table-striped'><thead>" +

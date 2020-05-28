@@ -10,10 +10,12 @@ function showBoxes() {
 			if (!boxesRow.length) {
 				boxesTable +=
 					"<p>There are no boxes to show.<br>" +
-					"Add new boxes to the form on top of this page.</p>";
+					"Add new boxes with the form on top of this page.</p>";
+					document.getElementById("searchBarBox").hidden = true;
+					document.getElementById("sortTextBox").hidden = true;
 			} else {
 				boxesTable +=
-					"<table class='table table-striped'><thead>" +
+					"<table class='table table-striped scrollbar'><thead>" +
 					"<tr><th scope='col' onclick=sortBoxTable(0,true)>Box ID</th>" +
 					"<th scope='col' onclick=sortBoxTable(1,false)>Product</th>" +
 					"<th scope='col' onclick=sortBoxTable(2,true)>Max items</th>" +
