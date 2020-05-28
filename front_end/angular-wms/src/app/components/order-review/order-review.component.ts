@@ -15,7 +15,7 @@ export class OrderReviewComponent implements OnInit {
   constructor(private http: HttpClient) { }
   customerOrders: Observable<CustomerOrder[]>;
   customerOrderList: CustomerOrder[] = [];
-  customerOrderId: number = 305;
+  customerOrderId = localStorage.getItem("orderID");
   totalPrice;
 
   ngOnInit(): void {

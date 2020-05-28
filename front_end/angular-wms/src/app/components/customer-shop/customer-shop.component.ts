@@ -15,6 +15,7 @@ export class CustomerShopComponent implements OnInit {
   price: number;
   products: Observable<Product[]>;
   productList: Product[] = [];
+  CustomerId = 1;//localStorage.getItem("customerLoginId");
   customerOrderId;
   customerOrderLineId;
   totalPrice;
@@ -25,6 +26,7 @@ export class CustomerShopComponent implements OnInit {
     this.showProductsAvailable();
     this.newCustomerOrder()
     this.calculateTotalPrice();
+    setTimeout(() => {localStorage.setItem("orderID",this.customerOrderId)},200);
   }
 
   showProductsToBuy() {
@@ -45,8 +47,16 @@ export class CustomerShopComponent implements OnInit {
       (<HTMLInputElement>btnConfirm).disabled = true;
     }
     setTimeout(() => {this.calculateTotalPrice();},200);
+    
   }
 
+  checkMaximum(product: Product){
+    if (product.amount > product.inStock){
+      alert("The maximum amount you can order from this product is " + product.inStock + "!");
+      product.amount = product.inStock;
+    }
+  }
+  
   newCustomerOrderLine(product: Product, rowIndex: number){
     var btnConfirm = document.getElementById('rowId' + rowIndex);
     (<HTMLInputElement>btnConfirm).disabled = false;
@@ -54,7 +64,8 @@ export class CustomerShopComponent implements OnInit {
     product.amount = 0;
     product.amount = product.amountadded;
     product.amountadded = 0;
-    
+    this.checkMaximum(product);
+  
       this.http.get('http://localhost:8082/newCustomerOrderLine/' + 
       this.customerOrderId + "/" + product.id + "/" + product.amount).subscribe(
       (customerOrderLineId: number) => {
@@ -66,13 +77,20 @@ export class CustomerShopComponent implements OnInit {
 
   updateCustomerOrderLine(product: Product){
     if(product.amountadded > 0){
+      product.amount += product.amountadded;
+      var amounttotaltemp = product.amount;
+      this.checkMaximum(product);
+      product.amountadded -= (amounttotaltemp - product.inStock);
       this.http.post("http://localhost:8082/updateCustomerOrderLine/" + 
       product.amountadded + "/" + product.customerOrderLineId,{}).subscribe(
         ()=>console.log("product updated")
       );
-      product.amount += product.amountadded;
     }
     else if(product.amountremoved > 0){
+      if (product.amountremoved - product.amount > 0){
+        product.amountremoved = product.amount;
+        alert("You can only remove " + product.amountremoved + " product items");
+      }
       this.http.post("http://localhost:8082/removeProductItems/" + 
       product.amountremoved + "/" + product.customerOrderLineId,{}).subscribe(
         ()=>console.log("product removed")
@@ -102,7 +120,7 @@ export class CustomerShopComponent implements OnInit {
   }
 
   newCustomerOrder() {
-    this.http.post('http://localhost:8082/addNewCustomerOrder', 1).subscribe(
+    this.http.post('http://localhost:8082/addNewCustomerOrder', this.CustomerId).subscribe(
       (customerOrderId) => {
         (this.customerOrderId = customerOrderId),
           console.log(customerOrderId + ' is making an order');
