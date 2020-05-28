@@ -1,6 +1,5 @@
 package nl.group.wms.controller;
 
-import nl.group.wms.domein.Customer;
 import nl.group.wms.domein.CustomerOrder;
 import nl.group.wms.domein.CustomerOrderLine;
 import nl.group.wms.domein.Product;
@@ -174,8 +173,7 @@ public class CustomerOrderService {
 //    }
 
     public List<CustomerOrderLine> getAllCustomerOrderLines(long customerOrderId) {
-//        Iterable<CustomerOrderLine> customerOrderLines = olr.findAll();
-        List<CustomerOrderLine> customerOrderLines= olr.findByCustomerOrderId(customerOrderId);
+        List<CustomerOrderLine> customerOrderLines = olr.findByCustomerOrderId(customerOrderId);
         sendEmailOrder(customerOrderId);
         return customerOrderLines;
     }

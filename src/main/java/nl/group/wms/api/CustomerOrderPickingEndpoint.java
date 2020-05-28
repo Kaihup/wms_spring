@@ -1,5 +1,6 @@
 package nl.group.wms.api;
 
+import nl.group.wms.Utils;
 import nl.group.wms.controller.CustomerOrderPickingServcie;
 import nl.group.wms.controller.CustomerOrderRepository;
 import nl.group.wms.controller.CustomerOrderService;
@@ -22,7 +23,6 @@ public class CustomerOrderPickingEndpoint {
     @Autowired
     CustomerOrderService cos;
 
-    /* NEW */
     @GetMapping("/customerOrderPickingLineExistsBy/{customerOrderLineId}")
     public boolean checkIfPickingLineExistsBy(@PathVariable long customerOrderLineId) {
         return cops.customerOrderPickingLineExistsBy(customerOrderLineId);
@@ -35,13 +35,12 @@ public class CustomerOrderPickingEndpoint {
         return orderLines;
     }
 
-    /* BACKUP NIET VERWIJDEREN */
-//    //This is for one customer
-//    @GetMapping("/getNextCustomerOrderToPick")
-//    public Iterable<CustomerOrderLine> getNextCustomerOrderToPick() {
-//        Iterable<CustomerOrderLine> orderLines = cops.getNextCustomerOrderToPick();
-//        return orderLines;
-//    }
+    @GetMapping("/shipOrder/{customerOrderId")
+    public void shipCustomerOrder(long customerOrderId) {
+        System.out.println(Utils.ic(Utils.ANSI_BLUE, "Shipping order with id: " + customerOrderId));
+        cops.shipCustomerOrder(customerOrderId);
+    }
+
 
     @GetMapping("/addCustomerOrderStatusSend/{orderId}")
     public void setPickedOrderStatus(@PathVariable Long orderId) {

@@ -64,7 +64,7 @@ export class AllPickingOrdersComponent implements OnInit {
 
   getPickingLines() {
     this.pickingLines = this.http.get<PickingLine[]>(
-      'http://localhost:8082/getNextCustomerOrderToPick'
+      `${this.baseUrl}/getNextCustomerOrderToPick`
     );
     this.pickingLines.subscribe(
       (pickingLineArray) => (this.pickingLineArray = pickingLineArray),
@@ -208,7 +208,19 @@ export class AllPickingOrdersComponent implements OnInit {
 
   shipOrder() {
     console.log('ship order function');
-    // Remove productItems
+    console.log('orderId = ' + this.order.id);
+    this.callShipping(this.order.id);
+  }
+
+  callShipping(id) {
+    var aVar = this.http.get<any>(`${this.baseUrl}/shipOrder/${id}`);
+    aVar.subscribe(
+      () => aVar,
+      (err) => console.error(err),
+      // () => this.setOrderDetails(this.pickingLineArray)
+      // () => console.log(this.pickingLineArray)
+      () => console.log('observable complete, order is send')
+    );
   }
   // currenInOrder(product: Product) {
   //   return product.amount;
