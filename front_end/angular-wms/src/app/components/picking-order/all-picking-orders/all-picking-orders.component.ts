@@ -207,21 +207,22 @@ export class AllPickingOrdersComponent implements OnInit {
   }
 
   shipOrder() {
-    console.log('ship order function');
-    console.log('orderId = ' + this.order.id);
-    this.callShipping(this.order.id);
-  }
-
-  callShipping(id) {
-    var aVar = this.http.get<any>(`${this.baseUrl}/shipOrder/${id}`);
+    var aVar = this.http.get<PickingLine[]>(`${this.baseUrl}/getTest/${1}`);
     aVar.subscribe(
-      () => aVar,
+      (aVar) => aVar,
       (err) => console.error(err),
       // () => this.setOrderDetails(this.pickingLineArray)
       // () => console.log(this.pickingLineArray)
-      () => console.log('observable complete, order is send')
+      () => console.log('observable complete')
     );
+
+    // console.log('ship order function');
+    // console.log('orderId = ' + this.order.id);
+    // this.http
+    //   .post(`${this.baseUrl}/shipOrder/${this.order.id}`, {})
+    //   .subscribe(() => console.log('order shipped'));
   }
+
   // currenInOrder(product: Product) {
   //   return product.amount;
   // }
