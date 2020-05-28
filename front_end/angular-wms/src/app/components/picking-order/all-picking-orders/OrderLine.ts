@@ -3,6 +3,7 @@ export class OrderLine {
   amountOrdered: number;
   amountPicked: number;
   price: number;
+  pickingConfirmed: boolean;
   customerOrder: object;
   customer: object;
   product: object;

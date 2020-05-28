@@ -11,6 +11,7 @@ public class CustomerOrderLine {
     private int amountOrdered;
     private int amountPicked;
     private int price;
+    boolean pickingConfirmed;
     @ManyToOne
     private Product product;
     @ManyToOne
@@ -47,6 +48,14 @@ public class CustomerOrderLine {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public boolean isPickingConfirmed() {
+        return pickingConfirmed;
+    }
+
+    public void setPickingConfirmed(boolean pickingConfirmed) {
+        this.pickingConfirmed = pickingConfirmed;
     }
 
     public int getAmountOrdered() {

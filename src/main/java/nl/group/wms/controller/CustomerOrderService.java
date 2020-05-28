@@ -107,6 +107,11 @@ public class CustomerOrderService {
         }
     }
 
+
+    public CustomerOrderLine getOrderLine(long customerOrderLineId) {
+        return olr.findById(customerOrderLineId).get();
+    }
+
     public void removeProductItems(int amountRemoved, long customerOrderLineId) {
         CustomerOrderLine customerOrderLine = olr.findById(customerOrderLineId).get();
         int currentAmount = customerOrderLine.getAmountOrdered();
@@ -117,6 +122,7 @@ public class CustomerOrderService {
             customerOrderLine.setAmountOrdered(currentAmount - amountRemoved);
             customerOrderLine.setPrice(customerOrderLine.getAmountOrdered() * customerOrderLine.getProduct().getPrice());
         }
+
     }
 
     public int getTotalPrice(long customerOrderId) {
@@ -132,15 +138,14 @@ public class CustomerOrderService {
     }
 
 
-
     public void purchaseOrder(long customerOrderId) {
         CustomerOrder customerOrder = cor.findById(customerOrderId).get();
         customerOrder.addStatusToMap(CustomerOrder.status.READY_FOR_PICKING);
 
         List<CustomerOrderLine> customerOrderLines1 = new ArrayList<>();
         Iterable<CustomerOrderLine> customerOrderLines = olr.findAll();
-        for (CustomerOrderLine customerOrderLine : customerOrderLines){
-            if(customerOrderLine.getCustomerOrder().getId() == customerOrderId){
+        for (CustomerOrderLine customerOrderLine : customerOrderLines) {
+            if (customerOrderLine.getCustomerOrder().getId() == customerOrderId) {
                 customerOrderLines1.add(customerOrderLine);
                 Product product = customerOrderLine.getProduct();
                 product.decreaseStock(customerOrderLine.getAmountOrdered());
@@ -152,8 +157,8 @@ public class CustomerOrderService {
     public String getAllCustomerOrdersLinesString(long customerOrderId) {
         Iterable<CustomerOrderLine> customerOrderLines = olr.findAll();
         StringBuilder customerOrderString = new StringBuilder("");
-        for (CustomerOrderLine customerOrderLine : customerOrderLines){
-            if(customerOrderLine.getCustomerOrder().getId() == customerOrderId){
+        for (CustomerOrderLine customerOrderLine : customerOrderLines) {
+            if (customerOrderLine.getCustomerOrder().getId() == customerOrderId) {
                 customerOrderString.append(customerOrderLine.getProduct().getName());
                 customerOrderString.append(", ");
                 customerOrderString.append(customerOrderLine.getAmountOrdered());
