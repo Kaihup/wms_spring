@@ -13,7 +13,7 @@ function showBoxes() {
 					"Add new boxes to the form on top of this page.</p>";
 			} else {
 				boxesTable +=
-					"<table class='table table-striped'><thead>" +
+					"<table class='table table-striped scrollbar'><thead>" +
 					"<tr><th scope='col' onclick=sortBoxTable(0,true)>Box ID</th>" +
 					"<th scope='col' onclick=sortBoxTable(1,false)>Product</th>" +
 					"<th scope='col' onclick=sortBoxTable(2,true)>Max items</th>" +
