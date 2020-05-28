@@ -58,6 +58,8 @@ export class AllPickingOrdersComponent implements OnInit {
     this.customer.address = customer.streetAddress;
     this.customer.zipCode = customer.zipCode;
     this.customer.email = customer.email;
+
+    this.confirmPickingCompleteOnPageLoad(pickingLineArray);
   }
 
   getPickingLines() {
@@ -165,11 +167,9 @@ export class AllPickingOrdersComponent implements OnInit {
       console.log('√ confirmed row ' + rowIndex);
       console.log('customerOrderLine id: ' + currentLine.id);
       this.updateOrderLine(currentLine.id);
+      this.confirmPickingComplete();
       console.log(currentLine.amountPicked);
       console.log(currentLine.product.id);
-      // set status to ready for shipping
-
-      this.confirmPickingComplete();
     }
   }
 
@@ -195,6 +195,15 @@ export class AllPickingOrdersComponent implements OnInit {
       btnShipOrder.className = 'btn btn-success mb-3 col-12';
       console.log('picking completed for all rows');
     }
+  }
+
+  confirmPickingCompleteOnPageLoad(pickingLineArray) {
+    pickingLineArray.forEach((element) => {
+      if (element.customerOrderLine.pickingConfirmed == true) {
+        this.rowsConfirmed++;
+      }
+    });
+    this.confirmPickingComplete();
   }
 
   shipOrder() {
