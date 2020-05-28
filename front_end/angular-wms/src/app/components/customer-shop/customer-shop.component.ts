@@ -34,19 +34,17 @@ export class CustomerShopComponent implements OnInit {
   customerOrderLine(product: Product, rowIndex: number){
     if (product.amount == 0 || product.amount == undefined){
       this.newCustomerOrderLine(product, rowIndex);
-      this.calculateTotalPrice();
     }
     else{
       this.updateCustomerOrderLine(product);
       product.amountadded = 0;
       product.amountremoved = 0;
-      this.calculateTotalPrice();
     }
     if (product.amount == 0){
       var btnConfirm = document.getElementById('rowId' + rowIndex);
       (<HTMLInputElement>btnConfirm).disabled = true;
     }
-    this.calculateTotalPrice();
+    setTimeout(() => {this.calculateTotalPrice();},200);
   }
 
   newCustomerOrderLine(product: Product, rowIndex: number){
@@ -84,7 +82,6 @@ export class CustomerShopComponent implements OnInit {
   }
 
   showProductsAvailable() {
-    console.log('show2');
     this.products = this.http.get<Product[]>(
       'http://localhost:8082/allproducts'
     );
@@ -146,9 +143,10 @@ export class CustomerShopComponent implements OnInit {
     console.log(this.customerOrderId);
     if(this.customerOrderId != undefined){
       this.http.get('http://localhost:8082/getTotalPrice/' + 
-      this.customerOrderId).subscribe((totalPrice: number) => {
+      this.customerOrderId).subscribe((totalPrice) => {
       (this.totalPrice = totalPrice), console.log(totalPrice);});
-      console.log("current price: " + this.totalPrice);
+      setTimeout(() => {if(this.totalPrice == 0){
+        this.totalPrice = "000";}},50); 
     }
     else{
       this.totalPrice = "000";

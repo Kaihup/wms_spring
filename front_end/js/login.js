@@ -8,8 +8,9 @@ function sendData() {
 					value.email == document.getElementById("ipemail").value &&
 					value.password == document.getElementById("ippassword").value
 				) {
-					alert("Login succesfull");
+					alert("Login successful");
 					//navigate("pages/test.html");
+					sessionStorage.setItem("customerLoginId",value.Id);
 					window.location.assign('http://localhost:4200/customer-shop/');
 					return;
 				}
