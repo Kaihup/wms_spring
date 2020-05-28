@@ -200,6 +200,9 @@ public class CustomerOrderPickingServcie {
      * Used for looops in {@link #orderLineIsPicked(long)}
      */
     public void processOrderLine(List<ProductItem> productItems, int listIndex) {
+        System.out.println("COCO");
+        System.out.println(productItems.get(listIndex));
+
         ProductItem item = productItems.get(listIndex);
         item.addStatusToMap(ProductItem.status.READY_FOR_TRANSIT);
 
