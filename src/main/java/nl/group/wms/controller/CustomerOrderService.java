@@ -33,7 +33,6 @@ public class CustomerOrderService {
         System.out.println("A new customer order is placed");
         cor.save(customerOrder);
         return customerOrder.getId();
-        git ch
     }
 
     public List<CustomerOrder> getAllCustomerOrdersByCustomerId(long customerId) {

@@ -35,7 +35,7 @@ public class CustomerOrderPickingEndpoint {
         return orderLines;
     }
 
-    @GetMapping("/shipOrder/{customerOrderId")
+    @GetMapping("/shipOrder/{customerOrderId}")
     public void shipCustomerOrder(long customerOrderId) {
         System.out.println(Utils.ic(Utils.ANSI_BLUE, "Shipping order with id: " + customerOrderId));
         cops.shipCustomerOrder(customerOrderId);

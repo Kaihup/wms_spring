@@ -207,7 +207,8 @@ export class AllPickingOrdersComponent implements OnInit {
   }
 
   shipOrder() {
-    var aVar = this.http.get<PickingLine[]>(`${this.baseUrl}/getTest/${1}`);
+    var id: number = this.order.id;
+    var aVar = this.http.get<any>(`${this.baseUrl}/shipOrder/${id}`);
     aVar.subscribe(
       (aVar) => aVar,
       (err) => console.error(err),
