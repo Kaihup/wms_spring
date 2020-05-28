@@ -65,3 +65,21 @@ footer {
 	height: 105px;
 	vertical-align: middle;
 }
+
+
+
+/* scrollbar */
+/* .scrollbar tbody {
+    height: 400px;
+    overflow-y: auto;
+	width: 100%;
+	display: block;
+}
+.scrollbar thead, tbody, tr {
+	display: table;
+	width: 100%;
+	table-layout:fixed;
+}
+.scrollbar thead {
+    width: calc( 100% - 1em ) 
+}  */
