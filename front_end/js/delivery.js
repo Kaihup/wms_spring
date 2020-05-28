@@ -66,11 +66,17 @@ function showDeliveries() {
 function markDeliveryArrived() {
 	var delId = document.getElementById("ipbodid").value;
 	var licensePlate = document.getElementById("iplicense").value;
+	if (delId == "" || licensePlate == "") { 
+		alert("Please fill in both fields.");
+		return;
+	}
 	var row = document.getElementById("" + delId + "");
 	if (row == null) {
 		alert("This delivery can't be marked as arrived.");
-	} else if (row.cells[2].innerHTML == "EXPECTED") {
-		console.log("YESS");
+		return;
+	} 
+	if (row.cells[2].innerHTML == "EXPECTED") {
+		//console.log("YESS");
 		var xhr = new XMLHttpRequest();
 		xhr.open(
 			"POST",
