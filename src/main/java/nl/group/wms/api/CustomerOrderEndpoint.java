@@ -15,8 +15,8 @@ public class CustomerOrderEndpoint {
     CustomerOrderService cos;
 
     @PostMapping("/addNewCustomerOrder")
-    public long addNewOrder(@RequestBody long customerOrderId) {
-        return cos.addNewCustomerOrder(customerOrderId);
+    public long addNewOrder(@RequestBody long customerId) {
+        return cos.addNewCustomerOrder(customerId);
     }
 
     //This is for one customer
@@ -26,40 +26,59 @@ public class CustomerOrderEndpoint {
         return customerOrders;
     }
 
+
     @GetMapping("/getOrderLine/{customerOrderLineId")
     public CustomerOrderLine getOrderLine(long customerOrderLineId) {
         return cos.getOrderLine(customerOrderLineId);
     }
 
-    @PostMapping("/newCustomerOrderLine")
-    public long newOrderLine(@RequestBody CustomerOrderLine customerOrderLine) {
-        return cos.newCustomerOrderLine(customerOrderLine);
-    }
-
 //    @PostMapping("/newCustomerOrderLine")
-//    public long newOrderLine(@RequestBody long customerOrderId, @RequestBody long productId) {
+//    public long newOrderLine(@RequestBody CustomerOrderLine customerOrderLine) {
 //        return cos.newCustomerOrderLine(customerOrderLine);
 //    }
+
+//    @PostMapping("/newCustomerOrderLine")
+//    public long newOrderLine(@RequestBody long customerOrderId, @RequestBody long productId,
+//                             @RequestBody int amount) {
+//        return cos.newCustomerOrderLine(customerOrderId, productId, amount);
+//    }
+
+    @GetMapping("/newCustomerOrderLine/{customerOrderId}/{productId}/{amount}")
+    public long newOrderLine(@PathVariable long customerOrderId, @PathVariable long productId,
+                             @PathVariable int amount) {
+        System.out.println("Ik kom hier");
+        return cos.newCustomerOrderLine(customerOrderId, productId, amount);
+    }
 
     @PostMapping("/updateCustomerOrderLine/{amountIncrease}/{customerOrderLineId}")
     public void updateOrderLine(@PathVariable int amountIncrease, @PathVariable long customerOrderLineId) {
         cos.updateCustomerOrderLine(amountIncrease, customerOrderLineId);
     }
 
-    @PostMapping("/removeProductItems")
-    public void removeProductItems(@RequestBody int amountRemoved, @RequestBody long customerOrderLineId) {
+
+    @PostMapping("/removeProductItems/{amountRemoved}/{customerOrderLineId}")
+    public void removeProductItems(@PathVariable int amountRemoved, @PathVariable long customerOrderLineId) {
+
         cos.removeProductItems(amountRemoved, customerOrderLineId);
     }
 
     //This if for one customer
-    @PostMapping("/getTotalPrice")
-    public int getTotalPrice(@RequestBody long customerOrderId) {
+    @GetMapping("/getTotalPrice/{customerOrderId}")
+    public int getTotalPrice(@PathVariable long customerOrderId) {
         return cos.getTotalPrice(customerOrderId);
     }
 
     @PostMapping("/purchaseOrder")
     public void purchaseOrder(@RequestBody long customerOrderId) {
         cos.purchaseOrder(customerOrderId);
+    }
+
+    //This is for one customer
+    @GetMapping("/getAllCustomerOrdersLinesString/{customerOrderId}")
+    public String getAllCustomerOrdersLinesString(@PathVariable long customerOrderId) {
+        String customerOrdersString = cos.getAllCustomerOrdersLinesString(customerOrderId);
+        System.out.println(customerOrdersString);
+        return customerOrdersString;
     }
 
 }

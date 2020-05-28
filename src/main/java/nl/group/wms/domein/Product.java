@@ -13,10 +13,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    private int width;              // mm
-    private int height;             // mm
-    private int length;             // mm
-    private int weight;             // gr
+    private int width;              // mm	For later use
+    private int height;             // mm	For later use
+    private int length;             // mm	For later use
+    private int weight;             // gr	For later use
     private int price;              // ct
     private int inStock;
     private long eanCode;
@@ -140,8 +140,9 @@ public class Product {
     }
 
     public void decreaseStock(int amount){
-        if (amount < 0){
+        if (amount > 0){
             this.inStock -= amount;
+            System.out.println("amount decreased: " + amount);
         }
     }
 

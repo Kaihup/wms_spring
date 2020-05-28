@@ -5,4 +5,7 @@ export class Product{
     amountadded: number;
     amountremoved: number;
     amount: number;
+    customerOrderLineId: number;
+    inStock: number;
+    inStockLeft: number;
 }

@@ -46,7 +46,7 @@ public class CustomerOrder {
     }
 
     public void addStatusToMap(Enum status) {
-        System.out.println(Utils.ic(Utils.ANSI_GREEN, ("Customer order: " + id + ", added to statusMap: " + LocalDateTime.now() + ", " + status)));
+        System.out.println(Utils.ic(Utils.ANSI_GREEN, ("New customer order, added to statusMap: " + LocalDateTime.now() + ", " + status)));
         statusMap.put(LocalDateTime.now(), status);
 //        for (LocalDateTime ld : statusMap.keySet()) {
 //            System.out.println(ld);

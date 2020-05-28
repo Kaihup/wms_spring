@@ -21,11 +21,11 @@
         </div>
         <!-- max products -->
         <div class="col-3">
-            <input type="text" class="form-control" placeholder="Max Product Items" id=ipmaxProductItems>
+            <!-- <input type="text" class="form-control" placeholder="Lenght" id=iplength> -->
         </div>
         <!-- max weight -->
         <div class="col-3">
-            <input type="text" class="form-control" placeholder="Max Weight" id=ipmaxWeight>
+            <!-- <input type="text" class="form-control" placeholder="Max Weight" id=ipmaxWeight> -->
         </div>
     </div>
 
@@ -33,15 +33,15 @@
     <div class="form-row mb-3">
         <!-- length -->
         <div class="col-3">
-            <input type="text" class="form-control" placeholder="Lenght" id=iplength>
+            <input type="text" class="form-control" placeholder="Max Product Items" id=ipmaxProductItems>
         </div>
         <!-- width -->
         <div class="col-3">
-            <input type="text" class="form-control" placeholder="Width" id=ipwidth>
+            <!-- <input type="text" class="form-control" placeholder="Width" id=ipwidth> -->
         </div>
         <!-- height -->
         <div class="col-3">
-            <input type="text" class="form-control" placeholder="Height" id=ipheight>
+            <!-- <input type="text" class="form-control" placeholder="Height" id=ipheight> -->
         </div>
 
     </div>
@@ -57,6 +57,24 @@
 
 
 
-
-<h3 class="mt-4">Box Table</h3>
+<div class="form-row">
+    <div class="col-5">
+        <h3 class="mt-4">Boxes Overview</h3>
+    </div>
+    <!-- search balk -->
+    <div class="col">
+        <div class="input-group mt-4">
+            <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" 
+                placeholder="Search..." id="ipboxfilter" oninput="filterBoxTable()">
+            <div class="input-group-append">
+                <select class="custom-select" name="columNames" id="boxcolumNames" onchange="filterBoxTable()">
+                    <option value="Box ID">Box ID</option>
+                    <option value="Product">Product</option>
+                    <!-- <option value="Max items">Max items</option> -->
+                </select>
+            </div>
+        </div> 
+    </div> 
+</div>
+<p class="font-italic font-weight-lighter">Click headers to sort table</p>
 <div id=boxesTable></div>
