@@ -51,15 +51,19 @@ export class CustomerShopComponent implements OnInit {
   }
 
   checkMaximum(product: Product){
-    if (product.amount > product.inStock){
-      alert("The maximum amount you can order from this product is " + product.inStock + "!");
-      product.amount = product.inStock;
+    if (product.amount > product.currentItemsInStorage){
+      alert("The maximum amount you can order from this product is " + product.currentItemsInStorage + "!");
+      product.amount = product.currentItemsInStorage;
     }
   }
   
   newCustomerOrderLine(product: Product, rowIndex: number){
     var btnConfirm = document.getElementById('rowId' + rowIndex);
     (<HTMLInputElement>btnConfirm).disabled = false;
+
+    if(product.amountadded < 0){
+      product.amountadded = 0;
+    }
 
     product.amount = 0;
     product.amount = product.amountadded;
@@ -73,17 +77,21 @@ export class CustomerShopComponent implements OnInit {
         console.log("orderLine: " + customerOrderLineId + ' is made');
       }
     )
+    
   }
 
   updateCustomerOrderLine(product: Product){
     if(product.amountadded > 0){
       product.amount += product.amountadded;
-      var amounttotaltemp = product.amount;
+      var amounttotaltemp = product.amount + product.amountadded;
       this.checkMaximum(product);
-      product.amountadded -= (amounttotaltemp - product.inStock);
+      if(product.amount>product.currentItemsInStorage){
+        product.amountadded = (amounttotaltemp - product.currentItemsInStorage);
+      }
+      console.log("productamount: " + product.amountadded);
       this.http.post("http://localhost:8082/updateCustomerOrderLine/" + 
       product.amountadded + "/" + product.customerOrderLineId,{}).subscribe(
-        ()=>console.log("product updated")
+        ()=>console.log("product updated ")
       );
     }
     else if(product.amountremoved > 0){
@@ -157,7 +165,7 @@ export class CustomerShopComponent implements OnInit {
     return this.formattingPrice(priceproduct);
   }
 
-   calculateTotalPrice(){
+  calculateTotalPrice(){
     console.log(this.customerOrderId);
     if(this.customerOrderId != undefined){
       this.http.get('http://localhost:8082/getTotalPrice/' + 
@@ -179,7 +187,7 @@ export class CustomerShopComponent implements OnInit {
     if(product.amount == undefined){
       product.amount = 0;
     }
-     product.inStockLeft = product.inStock - product.amount;
+     product.inStockLeft = product.currentItemsInStorage - product.amount;
   }
 
   purchaseOrder(){
