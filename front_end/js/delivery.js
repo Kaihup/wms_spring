@@ -30,6 +30,12 @@ function showDeliveries() {
 							? "Store items"
 							: (deliveryRows[x].currentStatus == "ARRIVED" || 
 							deliveryRows[x].currentStatus == "NEEDS_RESOLVING") ? "Count items" : "Show details";
+					var showDate = deliveryRows[x].deliveryDate;
+					var showPlate = deliveryRows[x].licensePlateDeliverer;
+					if (deliveryRows[x].currentStatus == "EXPECTED"){
+						showDate = "";
+						showPlate = "";
+					}
 					deliveryTable +=
 						"<tr id=" +
 						deliveryRows[x].id +
@@ -43,10 +49,10 @@ function showDeliveries() {
 						deliveryRows[x].currentStatus +
 						"</td>" +
 						"<td>" +
-						deliveryRows[x].deliveryDate +
+						showDate +
 						"</td>" +
 						"<td>" +
-						deliveryRows[x].licensePlateDeliverer +
+						showPlate +
 						"</td>" +
 						"<td>" +
 						'<button type="button" class="btn btn-outline-secondary" onclick=changeWindow(' +
