@@ -32,7 +32,7 @@ function showBoxes() {
 						boxesRow[x].currentItemsInStorage +boxesRow[x].currentItemsReserved)) {
 							barColor = "danger";
 							barText = "100 %";
-					} else if (0.8*boxesRow[x].maxProductItems < (boxesRow[x].currentItemsCheckedIn +
+					} else if (0.8*boxesRow[x].maxProductItems <= (boxesRow[x].currentItemsCheckedIn +
 						boxesRow[x].currentItemsInStorage +boxesRow[x].currentItemsReserved)) {
 							barColor = "warning";
 							barText = ">80 %"
