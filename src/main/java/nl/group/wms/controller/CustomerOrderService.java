@@ -101,6 +101,7 @@ public class CustomerOrderService {
         return customerOrderLine.getId();
     }
 
+
     public void updateCustomerOrderLine(int amountIncrease, long customerOrderLineId) {
         CustomerOrderLine customerOrderLine = olr.findById(customerOrderLineId).get();
         int currentAmount = customerOrderLine.getAmountOrdered();

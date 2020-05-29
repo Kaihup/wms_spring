@@ -161,7 +161,7 @@ export class AllPickingOrdersComponent implements OnInit {
       btnMinOne.className = 'btn btn-sm col-2 mr-2 btn-outline-warning';
       btnMinMulti.className = 'btn btn-sm col-2 mr-2 btn-outline-warning';
       btnPlusMulti.className = 'btn btn-sm col-2 mr-2 btn-outline-secondary';
-      btnPlusOne.className = 'btn btn-sm col-2 mr-2 btn-outline-secondary';
+      btnPlusOne.className = 'btn btn-sm col-2 mr-2 btn-o utline-secondary';
 
       this.rowsConfirmed += 1;
       console.log('√ confirmed row ' + rowIndex);

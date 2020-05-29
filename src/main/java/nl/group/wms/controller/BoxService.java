@@ -4,7 +4,6 @@ import nl.group.wms.domein.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -141,19 +140,19 @@ public class BoxService {
                 pir.delete(item);
             }
             if (deviation > 1) { //rare bug dat de laatste in de loop niet verwijderd wordt (snelle oplossing)
-            	ProductItem item = pir.findFirstByCurrentStatusAndProductAndBox(ProductItem.status.CHECKED_IN,
+                ProductItem item = pir.findFirstByCurrentStatusAndProductAndBox(ProductItem.status.CHECKED_IN,
                         storageLine.getProduct(), storageLine.getBox());
                 pir.delete(item);
             }
         }
 
     }
-    
+
     public void deleteBox(long id) {
         Box box = br.findById(id).get();
         List<ProductItem> items = pir.findByBox(box);
-        for (ProductItem item: items) {
-        	pir.delete(item);
+        for (ProductItem item : items) {
+            pir.delete(item);
         }
         br.delete(box);
     }
